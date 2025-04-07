@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
+import 'package:app/presentation/screens/signup.dart';
 import 'package:app/presentation/screens/login.dart';
 
 
@@ -22,6 +23,7 @@ class PresentationController {
       _user = currentUser;
     }
 
+    // esto sera para pillar las rutas hechas de los users
     if (userLogged()) {
       //routesUser = await controladorDomini.getUserRoutes(_user!.uid);
     }
@@ -44,9 +46,30 @@ class PresentationController {
     }
   }
 
+  FirebaseAuth getFirebaseAuth() {
+    return _auth;
+  }
+
+  void setUser(User? event) async {
+    _user = event;
+  }
+
+  User? getUser() {
+    return _user;
+  }
+
+  void mostrarSignup(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Signup(presentation_controller: this),
+      ),
+    );
+  }
 
 
 
+  // Move to the map screen
   void mapScreen (BuildContext context) {
     Navigator.push(
       context,
@@ -57,4 +80,25 @@ class PresentationController {
     );
   }
 
+  // Move to the done routes screen
+  void doneRoutesScreen (BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            DonePage(presentation_controller: this),
+      ),
+    );
+  }
+
+  // Move to the me screen
+  void meScreen (BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            PerfilPage(presentation_controller: this),
+      ),
+    );
+  }
 }
