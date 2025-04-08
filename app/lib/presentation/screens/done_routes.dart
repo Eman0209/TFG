@@ -19,6 +19,13 @@ class _DonePageState extends State<DonePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('done routes');
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Done Routes Screen",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+        SizedBox(height: 70)
+        ]
+    );
   }
 }

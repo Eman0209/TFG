@@ -19,6 +19,13 @@ class _PerfilPageState extends State<PerfilPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('me');
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Mee Screen",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+        SizedBox(height: 70)
+        ]
+    );
   }
 }

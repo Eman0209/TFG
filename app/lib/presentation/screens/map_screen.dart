@@ -19,6 +19,13 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('map');
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Map Screen",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+        SizedBox(height: 70)
+        ]
+    );
   }
 }

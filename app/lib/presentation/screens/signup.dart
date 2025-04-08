@@ -37,6 +37,26 @@ class _SignupState extends State<Signup> {
   }
 
   Widget _signupScreen(BuildContext context) {
-    return Scaffold();
+    return ElevatedButton(
+      onPressed: () => _presentationController.handleSignIn(context),
+      child: Text('Sign in with Google'),
+    );
   }
+
+  /*
+  Future<void> createUser() async {
+    if (await _presentationController.usernameUnique(usernameController.text)) {
+      _presentationController.createUser(usernameController.text, context);
+    }
+    else {
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text('Ja hi ha un usuari amb aquest username'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+  */
 }
