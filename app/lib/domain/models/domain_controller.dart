@@ -7,23 +7,6 @@ class DomainController {
   final _firestore = FirebaseFirestore.instance;
 
   Future<UserCredential?> signInWithGoogle() async {
-    /*try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return null; // User canceled
-
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } catch (e) {
-      print('Google sign-in failed: $e');
-      return null;
-    }
-    */
     try {
       // Create an instance of GoogleSignIn
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -46,9 +29,28 @@ class DomainController {
     }
   }
 
+  void createUser(User? user, String username) async {
+    if (user != null) {
+      // Reference to the "users" collection
+      final userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+      // Check if user already exists
+      final userDoc = await userDocRef.get();
+      if (!userDoc.exists) {
+        // Create a new document with user info
+        await userDocRef.set({
+          'uid': user.uid,
+          'email': user.email,
+          'name': username,
+          'routes': []
+        });
+      }
+    }
+  }
+
   Future<bool> accountExists(User? user) async {
     if (user == null) return false;
-
+    
     final doc = await _firestore.collection('users').doc(user.uid).get();
     return doc.exists;
   }

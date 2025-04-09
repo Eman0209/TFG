@@ -6,7 +6,7 @@ import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
 import 'package:app/presentation/screens/signup.dart';
-import 'package:app/presentation/screens/login.dart';
+//simport 'package:app/presentation/screens/login.dart';
 
 
 // Aqui aniran totes les funcions de mostrar screens
@@ -58,36 +58,16 @@ class PresentationController {
     return _user;
   }
 
-  /*
   void createUser(String username, BuildContext context) async {
     domainController.createUser(_user, username);
-    //mostrarPerfil(context);
+    mapScreen(context);
     //una vez creado el user que quiero hacer? Mostrar el mapa?
-  }*/
-
-  void handleSignIn(BuildContext context) async {
-    final userCredential = await domainController.signInWithGoogle();
-
-    if (userCredential != null) {
-      final user = userCredential.user;
-      final username = user?.displayName ?? 'Anonymous';
-
-      // Optional: show a message or navigate
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Signed in as $username')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Google Sign-In failed')),
-      );
-    }
   }
 
   void checkLoggedInUser(BuildContext context) {
     //Obte l'usuari autentificat en el moment si existeix
     User? currentUser = _auth.currentUser;
-    print(currentUser);
-
+  
     //Si existeix l'usuari, estableix l'usuari de l'estat i redirigeix a la pantalla principal
     if (currentUser != null) {
       _user = currentUser;
@@ -97,15 +77,12 @@ class PresentationController {
 
   Future<void> handleGoogleSignIn(BuildContext context) async {
     try {
-      print("Handleando signin");
-      GoogleAuthProvider _googleAuthProvider = GoogleAuthProvider();
+      //print("Handleando signin");
+      GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
       final UserCredential userCredential =
-          await _auth.signInWithProvider(_googleAuthProvider);
+          await _auth.signInWithProvider(googleAuthProvider);
       bool userExists =
           await domainController.accountExists(userCredential.user);
-      print("User ");
-      print(userExists);
-      print(" ");
       _user = userCredential.user;
       //Si no hi ha un usuari associat al compte de google, redirigir a la pantalla de registre
       if (!userExists) {
@@ -113,9 +90,11 @@ class PresentationController {
       }
       //Altrament redirigir a la pantalla principal de l'app
       else {
-        mapScreen(context);
+        mostrarSignup(context);
+        //mapScreen(context);
       }
     } catch (error) {
+      //buscar si esto lo puedo cambiar por un log o algos
       print(error);
     }
   }

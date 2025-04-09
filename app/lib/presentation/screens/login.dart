@@ -1,9 +1,8 @@
 import "package:flutter/material.dart";
-import "package:flutter/widgets.dart";
 import "package:firebase_auth/firebase_auth.dart";
-import "package:cloud_firestore/cloud_firestore.dart";
+//import "package:cloud_firestore/cloud_firestore.dart";
 import "package:sign_in_button/sign_in_button.dart";
-import 'package:app/presentation/screens/signup.dart';
+//import 'package:app/presentation/screens/signup.dart';
 import 'package:app/presentation/presentation_controller.dart';
 
 class Login extends StatefulWidget {
@@ -19,7 +18,7 @@ class _Login extends State<Login> {
   
   late PresentationController _presentationController;
 
-  late FirebaseAuth _auth = FirebaseAuth.instance;
+  late FirebaseAuth auth = FirebaseAuth.instance;
 
   _Login(PresentationController presentationController) {
     _presentationController = presentationController;
@@ -28,13 +27,6 @@ class _Login extends State<Login> {
   @override
   void initState() {
     super.initState();
-    /*
-    _auth.authStateChanges().listen((event) {
-      setState(() {
-        _controladorPresentacion.setUser(event);
-      });
-      _controladorPresentacion.checkLoggetInUser(context);
-    });*/
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       //Comprovar si ja hi ha una sessio iniciada
       _presentationController.checkLoggedInUser(context);
@@ -62,6 +54,7 @@ class _Login extends State<Login> {
           height: MediaQuery.of(context).size.height * 0.3,
           decoration: BoxDecoration(
             image: DecorationImage(
+              //Substituir esta imagen por el logo de la app
               image: AssetImage('assets/loginpicture.png'),
               fit: BoxFit.cover,
             )
