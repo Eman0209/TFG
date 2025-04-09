@@ -90,8 +90,7 @@ class PresentationController {
       }
       //Altrament redirigir a la pantalla principal de l'app
       else {
-        mostrarSignup(context);
-        //mapScreen(context);
+        mapScreen(context);
       }
     } catch (error) {
       //buscar si esto lo puedo cambiar por un log o algos
@@ -117,7 +116,7 @@ class PresentationController {
   }
 
   // Move to the map screen
-  void mapScreen (BuildContext context) {
+  void mapScreen(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -128,7 +127,7 @@ class PresentationController {
   }
 
   // Move to the done routes screen
-  void doneRoutesScreen (BuildContext context) {
+  void doneRoutesScreen(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -139,7 +138,7 @@ class PresentationController {
   }
 
   // Move to the me screen
-  void meScreen (BuildContext context) {
+  void meScreen(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(

@@ -93,14 +93,14 @@ class _SignupState extends State<Signup> {
                     onPressed: () {
                       createUser();
                     },
-                    child: const Text(
-                      "Crear compte",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: Colors.deepPurple
+                    ),
+                    child: const Text(
+                      "Crear compte",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   )),
             ],
