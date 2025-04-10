@@ -22,10 +22,10 @@ class MyApp extends StatefulWidget {
 
   final PresentationController presentationController;
 
-  MyApp({Key? key, required this.presentationController}) : super(key: key);
+  const MyApp({Key? key, required this.presentationController}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState(presentationController);
+  State <MyApp> createState() => _MyAppState(presentationController);
 }
 
 class _MyAppState extends State<MyApp> {
@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // Llamar a userLogged al inicio
+    // Check if a user is already logged
     userLogged();
   }
 
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
     User? currentUser = _auth.currentUser;
     setState(() {
       _isLoggedIn = currentUser != null;
-      _selectedIndex = _isLoggedIn ? _selectedIndex : 4; // Si no está logueado, selecciona el índice 4
+      _selectedIndex = _isLoggedIn ? _selectedIndex : 4; // If it's not logged, index 4
     });
   }
 
@@ -62,8 +62,8 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         body: _isLoggedIn
-            ? MapPage(presentation_controller: _presentationController)
-            : Login(presentation_controller: _presentationController),
+            ? MapPage(presentationController: _presentationController)
+            : Login(presentationController: _presentationController),
       ),
     );
   }

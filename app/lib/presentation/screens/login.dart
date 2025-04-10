@@ -1,17 +1,15 @@
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
-//import "package:cloud_firestore/cloud_firestore.dart";
 import "package:sign_in_button/sign_in_button.dart";
-//import 'package:app/presentation/screens/signup.dart';
 import 'package:app/presentation/presentation_controller.dart';
 
 class Login extends StatefulWidget {
-  final PresentationController presentation_controller;
+  final PresentationController presentationController;
 
-  const Login({Key? key, required this.presentation_controller});
+  const Login({Key? key, required this.presentationController});
 
   @override
-  State<Login> createState() => _Login(presentation_controller);
+  State<Login> createState() => _Login(presentationController);
 }
 
 class _Login extends State<Login> {
@@ -27,7 +25,7 @@ class _Login extends State<Login> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       //Comprovar si ja hi ha una sessio iniciada
       _presentationController.checkLoggedInUser(context);
     });

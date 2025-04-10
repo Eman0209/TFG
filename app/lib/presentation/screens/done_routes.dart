@@ -3,20 +3,20 @@ import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
 
 class DonePage extends StatefulWidget {
-  final PresentationController presentation_controller;
+  final PresentationController presentationController;
 
-  const DonePage({Key? key, required this.presentation_controller});
+  const DonePage({Key? key, required this.presentationController});
 
   @override
-  State<DonePage> createState() => _DonePageState(presentation_controller);
+  State<DonePage> createState() => _DonePageState(presentationController);
 }
 
 class _DonePageState extends State<DonePage> {
   late PresentationController _presentationController;
   int _selectedIndex = 1;
 
-  _DonePageState(PresentationController presentation_controller) {
-    _presentationController = presentation_controller;
+  _DonePageState(PresentationController presentationController) {
+    _presentationController = presentationController;
   }
 
   @override

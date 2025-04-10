@@ -1,17 +1,16 @@
 import "package:flutter/material.dart";
-import "package:cloud_firestore/cloud_firestore.dart";
 import "package:firebase_auth/firebase_auth.dart";
 
 import 'package:app/presentation/presentation_controller.dart';
 
 class Signup extends StatefulWidget {
 
-  final PresentationController presentation_controller;
+  final PresentationController presentationController;
 
-  const Signup({Key? key, required this.presentation_controller}) : super(key: key);
+  const Signup({Key? key, required this.presentationController}) : super(key: key);
 
   @override
-  _SignupState createState() => _SignupState(presentation_controller);
+  State<Signup> createState() => _SignupState(presentationController);
 }
 
 class _SignupState extends State<Signup> {
@@ -21,9 +20,9 @@ class _SignupState extends State<Signup> {
 
   late User? user;
 
-  _SignupState(PresentationController presentation_controller) {
-    _presentationController = presentation_controller;
-    user = presentation_controller.getUser();
+  _SignupState(PresentationController presentationController) {
+    _presentationController = presentationController;
+    user = presentationController.getUser();
   }
 
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();

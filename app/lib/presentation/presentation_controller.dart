@@ -6,10 +6,10 @@ import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
 import 'package:app/presentation/screens/signup.dart';
-//simport 'package:app/presentation/screens/login.dart';
+//import 'package:app/presentation/screens/login.dart';
 
 
-// Aqui aniran totes les funcions de mostrar screens
+// Functions to see the screens
 class PresentationController {
   final domainController = DomainController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -28,11 +28,10 @@ class PresentationController {
       //routesUser = await controladorDomini.getUserRoutes(_user!.uid);
     }
 
-    // Nombre de las clases de las pantallas principales de la app
     _pages.addAll([
-      MapPage(presentation_controller: this),
-      DonePage(presentation_controller: this),
-      PerfilPage(presentation_controller: this),
+      MapPage(presentationController: this),
+      DonePage(presentationController: this),
+      PerfilPage(presentationController: this),
     ]);
   }
 
@@ -65,10 +64,10 @@ class PresentationController {
   }
 
   void checkLoggedInUser(BuildContext context) {
-    //Obte l'usuari autentificat en el moment si existeix
+    // Obtains the identified user at the moment if it exists
     User? currentUser = _auth.currentUser;
   
-    //Si existeix l'usuari, estableix l'usuari de l'estat i redirigeix a la pantalla principal
+    // If the user exists, put it in _user and go to mapScreen
     if (currentUser != null) {
       _user = currentUser;
       mapScreen(context);
@@ -77,18 +76,15 @@ class PresentationController {
 
   Future<void> handleGoogleSignIn(BuildContext context) async {
     try {
-      //print("Handleando signin");
       GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
-      final UserCredential userCredential =
-          await _auth.signInWithProvider(googleAuthProvider);
-      bool userExists =
-          await domainController.accountExists(userCredential.user);
+      final UserCredential userCredential = await _auth.signInWithProvider(googleAuthProvider);
+      bool userExists = await domainController.accountExists(userCredential.user);
       _user = userCredential.user;
-      //Si no hi ha un usuari associat al compte de google, redirigir a la pantalla de registre
+      // If there is no user of the google account, move to a signup screen
       if (!userExists) {
         mostrarSignup(context);
       }
-      //Altrament redirigir a la pantalla principal de l'app
+      // Otherwise move to map screen
       else {
         mapScreen(context);
       }
@@ -99,18 +95,20 @@ class PresentationController {
   }
 
   /*
+  // Quiero obligar a que el username sea unique?
   Future<bool> usernameUnique(String username) {
     return domainController.usernameUnique(username);
   }
   */
 
   /* ------------------------------ Screens ------------------------------ */
+  
   // Move to the signup screen
   void mostrarSignup(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Signup(presentation_controller: this),
+        builder: (context) => Signup(presentationController: this),
       ),
     );
   }
@@ -121,7 +119,7 @@ class PresentationController {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            MapPage(presentation_controller: this),
+            MapPage(presentationController: this),
       ),
     );
   }
@@ -132,7 +130,7 @@ class PresentationController {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            DonePage(presentation_controller: this),
+            DonePage(presentationController: this),
       ),
     );
   }
@@ -143,7 +141,7 @@ class PresentationController {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            PerfilPage(presentation_controller: this),
+            PerfilPage(presentationController: this),
       ),
     );
   }

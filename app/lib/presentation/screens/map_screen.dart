@@ -3,20 +3,20 @@ import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
 
 class MapPage extends StatefulWidget {
-  final PresentationController presentation_controller;
+  final PresentationController presentationController;
 
-  const MapPage({Key? key, required this.presentation_controller});
+  const MapPage({Key? key, required this.presentationController});
 
   @override
-  State<MapPage> createState() => _MapPageState(presentation_controller);
+  State<MapPage> createState() => _MapPageState(presentationController);
 }
 
 class _MapPageState extends State<MapPage> {
   late PresentationController _presentationController;
   int _selectedIndex = 0;
 
-  _MapPageState(PresentationController presentation_controller) {
-    _presentationController = presentation_controller;
+  _MapPageState(PresentationController presentationController) {
+    _presentationController = presentationController;
   }
 
   @override

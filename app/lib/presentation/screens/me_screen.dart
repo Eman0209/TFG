@@ -3,20 +3,20 @@ import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
 
 class PerfilPage extends StatefulWidget {
-  final PresentationController presentation_controller;
+  final PresentationController presentationController;
 
-  const PerfilPage({Key? key, required this.presentation_controller});
+  const PerfilPage({Key? key, required this.presentationController});
 
   @override
-  State<PerfilPage> createState() => _PerfilPageState(presentation_controller);
+  State<PerfilPage> createState() => _PerfilPageState(presentationController);
 }
 
 class _PerfilPageState extends State<PerfilPage> {
   late PresentationController _presentationController;
   int _selectedIndex = 2;
 
-  _PerfilPageState(PresentationController presentation_controller) {
-    _presentationController = presentation_controller;
+  _PerfilPageState(PresentationController presentationController) {
+    _presentationController = presentationController;
   }
 
   @override
