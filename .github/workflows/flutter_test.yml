@@ -1,0 +1,28 @@
+name: Flutter Tests
+
+on:
+  pull_request:
+    branches:
+      - master  
+      - dev
+      - pre
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2' # specify your Flutter version
+
+      - name: Move into Flutter app folder
+        working-directory: app
+        run: flutter pub get
+
+      - name: Run tests
+        working-directory: app
+        run: flutter test
