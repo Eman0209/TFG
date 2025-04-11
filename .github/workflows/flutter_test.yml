@@ -19,8 +19,10 @@ jobs:
         with:
           flutter-version: '3.19.0' # specify your Flutter version
 
-      - name: Install dependencies
+      - name: Move into Flutter app folder
+        working-directory: app
         run: flutter pub get
 
       - name: Run tests
+        working-directory: app
         run: flutter test
