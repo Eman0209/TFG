@@ -3,16 +3,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'auth_test.mocks.dart';
+
+import 'utils_test.mocks.dart';
 
 // Unit tests
 @GenerateMocks([FirebaseAuth, User])
 void main() {
-  late MockFirebaseAuth mockAuth;
-  late MockUser mockUser;
-
+  
   // userLogged
   group('userLogged', () {
+    late MockFirebaseAuth mockAuth;
+    late MockUser mockUser;
 
     setUp(() {
       mockAuth = MockFirebaseAuth();
@@ -32,7 +33,7 @@ void main() {
       when(mockAuth.currentUser).thenReturn(mockUser);
       
       final result = userLoggedTest(mockAuth);
-      debugPrint('Test result: $result');
+      debugPrint('userLogged when logged. Test result: $result');
       expect(result, isTrue);
     });
 
@@ -40,16 +41,15 @@ void main() {
       when(mockAuth.currentUser).thenReturn(null);
 
       final result = userLoggedTest(mockAuth);
-      debugPrint('Test result: $result');
+      debugPrint('userLogged when not logged. Test result: $result');
       expect(result, isFalse);
     });
   });
 
-  // getFirebaseAuth
-
-  // getUser
-
   // createUser
+  group('createUser', (){
+    
+  });
 
   // checkLoggedInUser
 
