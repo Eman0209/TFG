@@ -6,7 +6,6 @@ import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
 import 'package:app/presentation/screens/signup.dart';
-//import 'package:app/presentation/screens/login.dart';
 
 
 // Functions to see the screens
