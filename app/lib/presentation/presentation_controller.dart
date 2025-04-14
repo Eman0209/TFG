@@ -6,6 +6,9 @@ import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
 import 'package:app/presentation/screens/signup.dart';
+import 'package:app/presentation/screens/editUser_screen.dart';
+import 'package:app/presentation/screens/rewards_screen.dart';
+import 'package:app/presentation/screens/howToPlay_screen.dart';
 //import 'package:app/presentation/screens/login.dart';
 
 
@@ -60,6 +63,12 @@ class PresentationController {
   void createUser(String username, BuildContext context) async {
     domainController.createUser(_user, username);
     mapScreen(context);
+    //una vez creado el user que quiero hacer? Mostrar el mapa?
+  }
+
+  void editUsername(String username, BuildContext context) async {
+    domainController.editUsername(_user, username);
+    meScreen(context);
     //una vez creado el user que quiero hacer? Mostrar el mapa?
   }
 
@@ -145,4 +154,38 @@ class PresentationController {
       ),
     );
   }
+
+  // Move to the edit user screen
+  void editUserScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            EditUserScreen(presentationController: this),
+      ),
+    );
+  }
+
+  // Move to the rewards screen
+  void rewardsScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            RewardsScreen(presentationController: this),
+      ),
+    );
+  }
+
+  // Move to the how to play screen
+  void howToPlayScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            HowToPlayScreen(presentationController: this),
+      ),
+    );
+  }
+  
 }
