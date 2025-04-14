@@ -48,6 +48,23 @@ class DomainController {
     }
   }
 
+  void editUsername(User? user, String username) async {
+    if (user != null) {
+      final userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+      final userDoc = await userDocRef.get();
+      if (userDoc.exists) {
+        // Update only the 'name' field
+        await userDocRef.update({
+          'name': username,
+        });
+      } else {
+        // Optionally: handle the case where the user doesn't exist
+        print("User document does not exist. Can't update username.");
+      }
+    }
+  }
+
   Future<bool> accountExists(User? user) async {
     if (user == null) return false;
     
