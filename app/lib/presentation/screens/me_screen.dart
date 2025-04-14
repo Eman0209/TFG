@@ -138,7 +138,6 @@ class _PerfilPageState extends State<PerfilPage> {
     );
   }
 
-
   void _onTabChange(int index) {
     setState(() {
       _selectedIndex = index;
