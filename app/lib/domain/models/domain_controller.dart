@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Clase per a conectar amb el back
 class DomainController {
-  final _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore;
+
+  DomainController(this._firestore);
 
   Future<UserCredential?> signInWithGoogle() async {
     try {

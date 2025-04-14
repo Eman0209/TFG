@@ -1,5 +1,6 @@
 import 'package:app/domain/models/domain_controller.dart';
 import 'package:app/domain/models/routes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app/presentation/screens/map_screen.dart';
@@ -10,9 +11,18 @@ import 'package:app/presentation/screens/signup.dart';
 
 // Functions to see the screens
 class PresentationController {
-  final domainController = DomainController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  late User? _user;
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
+  DomainController domainController;
+  
+  PresentationController({
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth,
+  })  : _firestore = firestore ?? FirebaseFirestore.instance,
+        _auth = auth ?? FirebaseAuth.instance,
+        domainController = DomainController(firestore ?? FirebaseFirestore.instance);
+
+  User? _user;
   late List<Routes> routesUser;
   late final List<Widget> _pages = [];
 
@@ -56,6 +66,11 @@ class PresentationController {
     return _user;
   }
 
+  // Callback for testing (set in _TestableController)
+  void Function(BuildContext)? mapScreenCallback;
+
+  User? get currentUser => _user;
+
   void createUser(String username, BuildContext context) async {
     domainController.createUser(_user, username);
     mapScreen(context);
@@ -69,7 +84,11 @@ class PresentationController {
     // If the user exists, put it in _user and go to mapScreen
     if (currentUser != null) {
       _user = currentUser;
-      mapScreen(context);
+      if (mapScreenCallback != null) {
+        mapScreenCallback!(context); // Test hook
+      } else {
+        mapScreen(context); // Actual navigation
+      }
     }
   }
 
