@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Clase per a conectar amb el back
 class DomainController {
-  final _firestore = FirebaseFirestore.instance;
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
@@ -68,7 +67,7 @@ class DomainController {
   Future<bool> accountExists(User? user) async {
     if (user == null) return false;
     
-    final doc = await _firestore.collection('users').doc(user.uid).get();
+    final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
     return doc.exists;
   }
 
@@ -85,5 +84,27 @@ class DomainController {
     }
   }
   */
+
+  Future<List<Map<String, dynamic>>> getTrophies() async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance.collection('trophy').get();
+
+      final trophies = querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        return {
+          'name': data['name'] ?? '',
+          'description': data['description'] ?? '',
+          'image': data['image'] ?? '',
+        };
+      }).toList();
+
+      return trophies;
+    } catch (e) {
+      print('Error getting trophies: $e');
+      return [];
+    }
+  }
+
+  //faltaria un get trophies user
 
 }

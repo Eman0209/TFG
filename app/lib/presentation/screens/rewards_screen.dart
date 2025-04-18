@@ -16,17 +16,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
   _RewardsScreenState(PresentationController presentationController) {
     _presentationController = presentationController;
   }
-
-  // esta lista se cambiara por todos los trofeos diseñados y luego habra otra lista con los trofeos que tiene un user
-  final List<Map<String, dynamic>> trophies = [
-    {'title': 'Trophy 1', 'description': 'Explanation of the trophy', 'unlocked': true},
-    {'title': 'Trophy 2', 'description': 'Explanation of the trophy', 'unlocked': false},
-    {'title': 'Trophy 3', 'description': 'Explanation of the trophy', 'unlocked': true},
-    {'title': 'Trophy 4', 'description': 'Explanation of the trophy', 'unlocked': false},
-    {'title': 'Trophy 5', 'description': 'Explanation of the trophy', 'unlocked': false},
-    {'title': 'Trophy 6', 'description': 'Explanation of the trophy', 'unlocked': true},
-  ];
-
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,22 +32,37 @@ class _RewardsScreenState extends State<RewardsScreen> {
         title: const Text('Rewards', style: TextStyle(color: Colors.black)),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.count(
-          crossAxisCount: 3,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          children: [
-            for (int i = 0; i < trophies.length; i++)
-              _buildTrophyTile(
-                trophies[i]['title'],
-                trophies[i]['description'],
-                trophies[i]['unlocked'],
-                isSelected: i == 2,
-              ),
-          ],
-        ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _presentationController.getTrophies(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          final trophies = snapshot.data ?? [];
+
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 0.73,
+              children: List.generate(trophies.length, (i) {
+                final trophy = trophies[i];
+                return _buildTrophyTile(
+                  trophy['name'],
+                  trophy['description'],
+                  trophy['image'],
+                );
+              }),
+            ),
+          );
+        },
       ),
     );
   }
@@ -104,34 +109,39 @@ class _RewardsScreenState extends State<RewardsScreen> {
     );
   }
 
-  Widget _buildTrophyTile(String title, String description, bool unlocked, {bool isSelected = false}) {
+  Widget _buildTrophyTile(String title, String description, String image) {
     return GestureDetector(
-      onTap: unlocked
-          ? () => _showTrophyDialog(title, description)
-          : null, // Don't allow tap if locked
+      onTap: () {
+        _showTrophyDialog(title, description); 
+      },
       child: Column(
         children: [
           Container(
             decoration: BoxDecoration(
-              color: unlocked ? const Color(0xFFECE3FF) : Colors.grey.shade300,
-              border: isSelected ? Border.all(color: Colors.deepPurple, width: 2) : null,
+              color: Colors.grey.shade300,
+              border: null,
               borderRadius: BorderRadius.circular(8),
             ),
-            padding: const EdgeInsets.all(6),
-            child: Icon(
-              Icons.emoji_events,
-              size: 48,
-              color: unlocked ? Colors.deepPurple : Colors.grey,
+            padding: const EdgeInsets.all(8),
+            child: Image(
+              width: 100,
+              height: 100,
+              image: AssetImage(image),
+              color: Colors.grey,
+              colorBlendMode: BlendMode.srcIn
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 14,
-              color: unlocked ? Colors.black87 : Colors.grey,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              fontSize: 12,
+              color: Colors.grey,
+              fontWeight: FontWeight.normal,
             ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
           ),
         ],
       ),

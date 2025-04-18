@@ -110,6 +110,10 @@ class PresentationController {
   }
   */
 
+  Future<List<Map<String, dynamic>>> getTrophies() async {
+    return domainController.getTrophies();
+  }
+
   /* ------------------------------ Screens ------------------------------ */
   
   // Move to the signup screen
