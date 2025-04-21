@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
   final PresentationController presentationController;
@@ -20,17 +22,15 @@ class _MapPageState extends State<MapPage> {
     _presentationController = presentationController;
   }
 
-  static const initialCameraPosition = CameraPosition(
-    target: LatLng(41.3858,  2.0757300),
-    zoom: 16
-  );
+  final Completer<GoogleMapController> _mapController = Completer<GoogleMapController>();
 
-  late GoogleMapController _googleMapController;
+  final Location _locationController = Location();
+  LatLng? currentP; 
 
   @override
-  void dispose() {
-    _googleMapController.dispose();
-    super.dispose();
+  void initState(){
+    super.initState();
+    getLocationUpdates();
   }
   
   @override
@@ -42,11 +42,24 @@ class _MapPageState extends State<MapPage> {
         onTabChange: _onTabChange,
       ),
       body: Stack( 
-        children: [
-          GoogleMap(
-            myLocationButtonEnabled: true,
-            initialCameraPosition: initialCameraPosition,
-            onMapCreated: (controller) => _googleMapController = controller,
+        children: [ 
+          currentP == null 
+          ? const Center(
+              child: Text("Loading..."),
+            )
+          : GoogleMap(
+            onMapCreated: ((GoogleMapController controller) => _mapController.complete(controller)),
+            initialCameraPosition: CameraPosition( 
+              target: currentP!,
+              zoom: 16
+            ),
+            markers: {
+              Marker(
+                markerId: MarkerId("_currentLocation"),
+                icon: BitmapDescriptor.defaultMarker,
+                position: currentP!
+              ),
+            },
           ),
           SafeArea(
             child: Column(
@@ -99,16 +112,67 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
+  Future<void> cameraToPosition(LatLng pos) async {
+    final GoogleMapController controller = await _mapController.future;
+    CameraPosition newCameraPosition = CameraPosition(
+      target: pos, 
+      zoom: 16
+    );
+    await controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
+  }
+  
   Widget centerCamera() {
     return FloatingActionButton(
       backgroundColor: Color.fromARGB(255, 206, 179, 254),
       foregroundColor: Colors.black,
-      onPressed: () => _googleMapController.animateCamera(
-        // esto se deberia cambiar por la location del user
-        CameraUpdate.newCameraPosition(initialCameraPosition),
-      ),
+      onPressed: () async {
+        if (currentP == null) {
+          const Center(
+            child: Text("Loading..."),
+          );
+        }
+        final controller = await _mapController.future;
+        controller.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: currentP!,
+              zoom: 16
+            )
+          ),
+        );
+      },
       child: const Icon(Icons.center_focus_strong),
     );
+  }
+
+  Future<void> getLocationUpdates() async {
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await _locationController.serviceEnabled();
+    if (serviceEnabled) {
+      serviceEnabled = await _locationController.requestService();
+    } else {
+      return;
+    }
+
+    permissionGranted = await _locationController.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await _locationController.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      } 
+    }
+
+    _locationController.onLocationChanged.listen((LocationData currentLocation) {
+      if (currentLocation.latitude != null && currentLocation.longitude != null) {
+        setState(() {
+          currentP = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          cameraToPosition(currentP!);
+        });
+      }
+    });
+
   }
 
   Widget startAndInfoButtonsWidget() {
