@@ -9,6 +9,7 @@ import 'package:app/presentation/screens/signup.dart';
 import 'package:app/presentation/screens/editUser_screen.dart';
 import 'package:app/presentation/screens/rewards_screen.dart';
 import 'package:app/presentation/screens/howToPlay_screen.dart';
+import 'package:app/presentation/screens/info_route_screen.dart';
 //import 'package:app/presentation/screens/login.dart';
 
 
@@ -17,7 +18,7 @@ class PresentationController {
   final domainController = DomainController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late User? _user;
-  late List<Routes> routesUser;
+  late List<RouteData> routesUser;
   late final List<Widget> _pages = [];
 
   Future<void> initialice() async {
@@ -69,7 +70,6 @@ class PresentationController {
   void editUsername(String username, BuildContext context) async {
     domainController.editUsername(_user, username);
     meScreen(context);
-    //una vez creado el user que quiero hacer? Mostrar el mapa?
   }
 
   void checkLoggedInUser(BuildContext context) {
@@ -114,6 +114,10 @@ class PresentationController {
     return domainController.getTrophies();
   }
 
+  Future<RouteData?> getRouteData(String routeId) async {
+    return domainController.getRouteData(routeId);
+  }
+
   /* ------------------------------ Screens ------------------------------ */
   
   // Move to the signup screen
@@ -133,6 +137,22 @@ class PresentationController {
       MaterialPageRoute(
         builder: (context) =>
             MapPage(presentationController: this),
+      ),
+    );
+  }
+
+  // Move to the information screen
+  void infoRoute(BuildContext context, bool completedScreen) {
+    //aqui se tendra que revisar que este en el listado de rutas completadas para enviar el isCompleted true
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            // He d'aconseguir el id de la ruta un cop fagi el display al mapa
+            RouteInfoScreen(
+              routeId: "NWjKzu7Amz2AXJLZijQL",
+              fromCompletedScreen: completedScreen, 
+              presentationController: this),
       ),
     );
   }

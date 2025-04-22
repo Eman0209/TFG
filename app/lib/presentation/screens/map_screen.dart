@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'package:location/location.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
   final PresentationController presentationController;
@@ -196,7 +196,7 @@ class _MapPageState extends State<MapPage> {
         ),
         ElevatedButton(
           onPressed: () {
-            // Your Info logic here
+            _presentationController.infoRoute(context, false);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 206, 179, 254),
