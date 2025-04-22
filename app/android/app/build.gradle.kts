@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -8,11 +11,16 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(FileInputStream(localPropertiesFile))
+}
+
 android {
     ndkVersion = "27.0.12077973"
     namespace = "com.example.app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -28,10 +36,12 @@ android {
         applicationId = "com.example.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 23
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+
+        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = localProperties["GOOGLE_MAPS_API_KEY"]?.toString() ?: ""
     }
 
     buildTypes {
