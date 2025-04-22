@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:app/domain/models/routes.dart';
 
 // Clase per a conectar amb el back
 class DomainController {
@@ -106,5 +107,18 @@ class DomainController {
   }
 
   //faltaria un get trophies user
+
+
+  // get of a route in de bbdd
+  Future<RouteData?> getRouteData(String routeId) async {
+    try {
+      final doc = await FirebaseFirestore.instance.collection('routes').doc(routeId).get();
+      if (!doc.exists) return null;
+      return RouteData.fromMap(doc.data()!);
+    } catch (e) {
+      print('Error fetching route: $e');
+      return null;
+    }
+  }
 
 }
