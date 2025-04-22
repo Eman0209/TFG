@@ -87,6 +87,7 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
+  // Pensar si al final final lo implemento
   Widget searchWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
