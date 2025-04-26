@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:app/presentation/presentation_controller.dart';
 
 class EditUserScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit User')),
+      appBar: AppBar(title: Text('editUser'.tr())),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -38,8 +39,8 @@ class _EditUserScreenState extends State<EditUserScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const Spacer(flex: 1), 
-              const Text(
-                "Edita el teu nom d'usuari",
+              Text(
+                'editNameUser'.tr(),
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -48,7 +49,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                "Modifica la teva informació",
+                'modifyInfo'.tr(),
                 style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                 textAlign: TextAlign.center,
               ),
@@ -57,7 +58,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 controller: _usernameController,
                 style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 decoration: InputDecoration(
-                  hintText: "Nom d'usuari",
+                  hintText: 'username'.tr(),
                   contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -76,8 +77,8 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   backgroundColor: Colors.deepPurple,
                 ),
-                child: const Text(
-                  "Desar canvis",
+                child: Text(
+                  'saveChanges'.tr(),
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
@@ -96,13 +97,13 @@ class _EditUserScreenState extends State<EditUserScreen> {
         _username = _usernameController.text;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Username updated to: $_username')),
+        SnackBar(content: Text('username_updated'.tr(args: [_username]))),
       );
       //aqui se llamaria al update
       _presentationController.editUsername(_username, context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Username cannot be empty!')),
+        SnackBar(content: Text('username_empty'.tr())),
       );
     }
   }

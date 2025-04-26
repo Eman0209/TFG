@@ -1,5 +1,6 @@
 import 'package:app/domain/models/routes.dart';
 import 'package:app/presentation/presentation_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class RouteInfoScreen extends StatefulWidget {
@@ -41,8 +42,8 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         }
 
         if (!snapshot.hasData || snapshot.data == null) {
-          return const Scaffold(
-            body: Center(child: Text("Route not found")),
+          return Scaffold(
+            body: Center(child: Text('route_not_found'.tr())),
           );
         }
 
@@ -64,8 +65,8 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         icon: const Icon(Icons.arrow_back, color: Colors.black),
         onPressed: () => Navigator.pop(context),
       ),
-      title: const Text(
-        'Information about the route',
+      title: Text(
+        'info_route'.tr(),
         style: TextStyle(color: Colors.black),
       ),
       centerTitle: true,
@@ -123,7 +124,9 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Path', style: TextStyle(
+        Text(
+          'route'.tr() , 
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
           )
@@ -174,9 +177,9 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
             foregroundColor: Colors.black,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
-          child: const Padding(
+          child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-            child: Text('Start'),
+            child: Text('start'.tr()),
           ),
         ),
       );

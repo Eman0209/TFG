@@ -2,9 +2,11 @@ import 'package:app/data/datasources/rewards_datasource.dart';
 import 'package:app/data/datasources/routes_datasource.dart';
 import 'package:app/data/datasources/user_datasource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
@@ -33,6 +35,9 @@ class PresentationController {
   late User? _user;
   late List<RouteData> routesUser;
   late final List<Widget> _pages = [];
+
+  late Locale? _language = const Locale('en');
+  Locale? get language => _language;
 
   final Logger _logger = Logger('PresentationController');
 
@@ -140,6 +145,21 @@ class PresentationController {
     return userController.usernameUnique(username);
   }
   */
+
+  void changeLanguage(Locale? lang, BuildContext context) async {
+    _language = lang;
+    context.setLocale(lang!);
+   _loadLanguage();
+  }
+
+  // Es necesario guardar el language en el controlador?
+  Future<void> _loadLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final languageCode = prefs.getString('languageCode');
+    if (languageCode != null) {
+      _language = Locale(languageCode);
+    }
+  }
 
   Future<List<Map<String, dynamic>>> getTrophies() async {
     return rewardsController.fetchTrophies();

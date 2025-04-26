@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
@@ -44,8 +45,8 @@ class _MapPageState extends State<MapPage> {
       body: Stack( 
         children: [ 
           currentP == null 
-          ? const Center(
-              child: Text("Loading..."),
+          ? Center(
+              child: Text('carrega'.tr(),)
             )
           : GoogleMap(
             onMapCreated: ((GoogleMapController controller) => _mapController.complete(controller)),
@@ -105,7 +106,7 @@ class _MapPageState extends State<MapPage> {
       child: TextField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          hintText: 'Search routes...',
+          hintText: 'search'.tr(),
           border: InputBorder.none,
           icon: Icon(Icons.search),
         ),
@@ -128,8 +129,8 @@ class _MapPageState extends State<MapPage> {
       foregroundColor: Colors.black,
       onPressed: () async {
         if (currentP == null) {
-          const Center(
-            child: Text("Loading..."),
+          Center(
+            child: Text('carrega'.tr()),
           );
         }
         final controller = await _mapController.future;
@@ -192,7 +193,7 @@ class _MapPageState extends State<MapPage> {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: const Text('Start'),
+          child: Text('start'.tr()),
         ),
         ElevatedButton(
           onPressed: () {
@@ -206,7 +207,7 @@ class _MapPageState extends State<MapPage> {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: const Text('Info'),
+          child: Text('info'.tr()),
         ),
       ],
     );

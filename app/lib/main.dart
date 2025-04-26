@@ -5,9 +5,12 @@ import 'package:app/data/firebase_options.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/screens/login.dart';
 import 'package:app/presentation/screens/map_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   // Initialice Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -15,7 +18,14 @@ void main() async {
   final presentationController = PresentationController();
   await presentationController.initialice();
 
-  runApp(MyApp(presentationController: presentationController));
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en', ''), Locale('es', ''), Locale('ca', '')], 
+      path: 'assets/lang', 
+      fallbackLocale: Locale('en', ''), 
+      child: MyApp(presentationController: presentationController),
+    ),   
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -60,6 +70,13 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
+      supportedLocales: EasyLocalization.of(context)!.supportedLocales,
+      localizationsDelegates: [
+        EasyLocalization.of(context)!.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: Scaffold(
         body: _isLoggedIn
             ? MapPage(presentationController: _presentationController)
