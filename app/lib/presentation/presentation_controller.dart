@@ -1,5 +1,7 @@
-import 'package:app/domain/models/domain_controller.dart';
-import 'package:app/domain/models/routes.dart';
+import 'package:app/data/datasources/rewards_datasource.dart';
+import 'package:app/data/datasources/routes_datasource.dart';
+import 'package:app/data/datasources/user_datasource.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app/presentation/screens/map_screen.dart';
@@ -10,16 +12,42 @@ import 'package:app/presentation/screens/editUser_screen.dart';
 import 'package:app/presentation/screens/rewards_screen.dart';
 import 'package:app/presentation/screens/howToPlay_screen.dart';
 import 'package:app/presentation/screens/info_route_screen.dart';
-//import 'package:app/presentation/screens/login.dart';
+import 'package:app/domain/models/routes.dart';
+import 'package:app/domain/controllers/user_controller.dart';
+import 'package:app/domain/controllers/routes_controller.dart';
+import 'package:app/domain/controllers/rewards_controller.dart';
 
 
 // Functions to see the screens
 class PresentationController {
-  final domainController = DomainController();
+  
+  late final FirebaseRoutesDatasource routesDatasource;
+  late final RoutesController routesController;
+  late final FirebaseUserDatasource userDatasource;
+  late final UserController userController;
+  late final FirebaseRewardsDatasource rewardsDatasource;
+  late final RewardsController rewardsController;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late User? _user;
   late List<RouteData> routesUser;
   late final List<Widget> _pages = [];
+
+  PresentationController() {
+    final firestore = FirebaseFirestore.instance;
+
+    routesDatasource = FirebaseRoutesDatasource(firestore);
+    routesController = RoutesController(routesDatasource);
+
+    userDatasource = FirebaseUserDatasource( 
+      auth: FirebaseAuth.instance,
+      firestore: FirebaseFirestore.instance,
+    );
+    userController = UserController(userDatasource);
+
+    rewardsDatasource = FirebaseRewardsDatasource(firestore);
+    rewardsController = RewardsController(rewardsDatasource);
+  }
 
   Future<void> initialice() async {
     User? currentUser = _auth.currentUser;
@@ -62,13 +90,13 @@ class PresentationController {
   }
 
   void createUser(String username, BuildContext context) async {
-    domainController.createUser(_user, username);
+    userController.createUser(_user, username);
     mapScreen(context);
     //una vez creado el user que quiero hacer? Mostrar el mapa?
   }
 
   void editUsername(String username, BuildContext context) async {
-    domainController.editUsername(_user, username);
+    userController.editUsername(_user, username);
     meScreen(context);
   }
 
@@ -87,7 +115,7 @@ class PresentationController {
     try {
       GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
       final UserCredential userCredential = await _auth.signInWithProvider(googleAuthProvider);
-      bool userExists = await domainController.accountExists(userCredential.user);
+      bool userExists = await userController.accountExists(userCredential.user);
       _user = userCredential.user;
       // If there is no user of the google account, move to a signup screen
       if (!userExists) {
@@ -106,16 +134,16 @@ class PresentationController {
   /*
   // Quiero obligar a que el username sea unique?
   Future<bool> usernameUnique(String username) {
-    return domainController.usernameUnique(username);
+    return userController.usernameUnique(username);
   }
   */
 
   Future<List<Map<String, dynamic>>> getTrophies() async {
-    return domainController.getTrophies();
+    return rewardsController.fetchTrophies();
   }
 
   Future<RouteData?> getRouteData(String routeId) async {
-    return domainController.getRouteData(routeId);
+    return routesController.fetchRouteData(routeId);
   }
 
   /* ------------------------------ Screens ------------------------------ */
