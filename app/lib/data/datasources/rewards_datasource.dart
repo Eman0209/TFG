@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logging/logging.dart';
 
 class FirebaseRewardsDatasource {
   final FirebaseFirestore firestore;
 
   FirebaseRewardsDatasource(this.firestore);
+
+  final Logger _logger = Logger('FirebaseRoutesDatasource');
 
   Future<List<Map<String, dynamic>>> getTrophies() async {
     try {
@@ -20,7 +23,7 @@ class FirebaseRewardsDatasource {
 
       return trophies;
     } catch (e) {
-      print('Error getting trophies: $e');
+      _logger.severe('Error getting trophies: $e');
       return [];
     }
   }

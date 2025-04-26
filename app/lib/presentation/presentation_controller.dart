@@ -4,13 +4,14 @@ import 'package:app/data/datasources/user_datasource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
 import 'package:app/presentation/screens/signup.dart';
-import 'package:app/presentation/screens/editUser_screen.dart';
+import 'package:app/presentation/screens/edit_user_screen.dart';
 import 'package:app/presentation/screens/rewards_screen.dart';
-import 'package:app/presentation/screens/howToPlay_screen.dart';
+import 'package:app/presentation/screens/how_to_play_screen.dart';
 import 'package:app/presentation/screens/info_route_screen.dart';
 import 'package:app/domain/models/routes.dart';
 import 'package:app/domain/controllers/user_controller.dart';
@@ -32,6 +33,8 @@ class PresentationController {
   late User? _user;
   late List<RouteData> routesUser;
   late final List<Widget> _pages = [];
+
+  final Logger _logger = Logger('PresentationController');
 
   PresentationController() {
     final firestore = FirebaseFirestore.instance;
@@ -127,7 +130,7 @@ class PresentationController {
       }
     } catch (error) {
       //buscar si esto lo puedo cambiar por un log o algos
-      print(error);
+      _logger.severe('An error occurred: $error');
     }
   }
 

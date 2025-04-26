@@ -8,7 +8,7 @@ import 'package:app/presentation/widgets/bnav_bar.dart';
 class MapPage extends StatefulWidget {
   final PresentationController presentationController;
 
-  const MapPage({Key? key, required this.presentationController});
+  const MapPage({super.key, required this.presentationController});
 
   @override
   State<MapPage> createState() => _MapPageState(presentationController);
