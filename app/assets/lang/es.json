@@ -1,9 +1,14 @@
 {
+    "add_info": "Añade tu información",
     "carrega": "Cargando...",
     "catalan": "Catalan",
+    "close": "Cerrar",
+    "create_account": "Crear cuenta",
+    "done": "Hechas",
     "editNameUser": "Edita tú nombre de usuario",
     "editUser": "Editar Usuario",
     "english": "Inglés",
+    "google_access": "Acceso con Google",
     "howToPlay": "Como jugar",
     "info": "Info",
     "info_route": "Información sobre la ruta",
@@ -14,11 +19,13 @@
     "rewards": "Trofeos",
     "route": "Camino",
     "route_not_found": "Ruta no encontrada",
+    "ruta": "Ruta",
     "saveChanges": "Guardar cambios",
     "search": "Busca rutas...",
     "spanish": "Castellano",
     "start": "Empezar",
     "username": "Nombre de usuario",
     "username_empty": "Nombre de usuario no puede estar vacio!",
-    "username_updated": "Nombre de usuario actualizado a: {}"
+    "username_updated": "Nombre de usuario actualizado a: {}",
+    "welcome_txt": "Bienvenido a XXX"
 }

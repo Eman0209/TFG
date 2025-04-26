@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -29,19 +30,19 @@ class CustomBottomNavigationBar extends StatelessWidget {
           onTabChange(index);
         },
         selectedIndex: currentIndex,
-        tabs: const [
+        tabs: [
           GButton(
-            text: "Route",
+            text: 'ruta'.tr(),
             textStyle: TextStyle(fontSize: 14, color: Colors.black),
             icon: Icons.location_on_sharp,
           ),
           GButton(
-            text: "Done",
+            text: 'done'.tr(),
             textStyle: TextStyle(fontSize: 14, color: Colors.black),
             icon: Icons.task_alt_rounded,
           ),
           GButton(
-            text: "Me",
+            text: 'me'.tr(),
             textStyle: TextStyle(fontSize: 14, color: Colors.black),
             icon: Icons.account_circle,
           ),

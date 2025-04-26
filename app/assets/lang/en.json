@@ -1,9 +1,14 @@
 {
+    "add_info": "Add your information",
     "carrega": "Loading...",
     "catalan": "Catalan",
+    "close": "Close",
+    "create_account": "Create account",
+    "done": "Done",
     "editNameUser": "Edit your user name",
     "editUser": "Edit User",
     "english": "English",
+    "google_access": "Access with Google",
     "howToPlay": "How To Play",
     "info": "Info",
     "info_route": "Information about the route",
@@ -14,11 +19,13 @@
     "rewards": "Rewards",
     "route": "Path",
     "route_not_found": "Route not found",
+    "ruta": "Route",
     "saveChanges": "Save changes",
     "search": "Search routes...",
     "spanish": "Spanish",
     "start": "Start",
     "username": "Username",
     "username_empty": "Username cannot be empty!",
-    "username_updated": "Username updated to: {}"
+    "username_updated": "Username updated to: {}",
+    "welcome_txt": "Welcome to XXX"
 }

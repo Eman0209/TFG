@@ -1,9 +1,14 @@
 {   
+    "add_info": "Afegeix la teva informació",
     "carrega": "Carregant...",
     "catalan": "Català",
+    "close": "Tancar",
+    "create_account": "Crear compte",
+    "done": "Fetes",
     "editNameUser": "Edita el teu nom d'usuari",
     "editUser": "Editar Usuari",
     "english": "Anglès",
+    "google_access": "Accés amb Google",
     "howToPlay": "Com jugar",
     "info": "Info",
     "info_route": "Informació sobre la ruta",
@@ -14,11 +19,13 @@
     "rewards": "Trofeus",
     "route": "Camí",
     "route_not_found": "Ruta no trobada",
+    "ruta": "Ruta",
     "saveChanges": "Desar canvis",
     "search": "Cerca rutes...",
     "spanish": "Castellà",
     "start": "Començar",
     "username": "Nom d'usuari",
     "username_empty": "Nom d'usuari no pot estar buit!",
-    "username_updated": "Nom d'usuari actualitzat a: {}"
+    "username_updated": "Nom d'usuari actualitzat a: {}",
+    "welcome_txt": "Benvingut a XXX"
 }

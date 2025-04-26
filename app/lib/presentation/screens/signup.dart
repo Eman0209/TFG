@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
-
+import "package:easy_localization/easy_localization.dart";
 import 'package:app/presentation/presentation_controller.dart';
 
 class Signup extends StatefulWidget {
@@ -49,8 +49,8 @@ class _SignupState extends State<Signup> {
               Column(
                 children: <Widget>[
                   const SizedBox(height: 60.0),
-                  const Text(
-                    "Crear compte",
+                  Text(
+                    'create_account'.tr(),
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -60,7 +60,7 @@ class _SignupState extends State<Signup> {
                     height: 20,
                   ),
                   Text(
-                    "Afegeix la teva informació",
+                    'add_info'.tr(),
                     style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                   )
                 ],
@@ -71,7 +71,7 @@ class _SignupState extends State<Signup> {
                     style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                     controller: usernameController,
                     decoration: InputDecoration(
-                      hintText: "Nom d'usuari",
+                      hintText: 'username'.tr(),
                       contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
@@ -97,8 +97,8 @@ class _SignupState extends State<Signup> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: Colors.deepPurple
                     ),
-                    child: const Text(
-                      "Crear compte",
+                    child: Text(
+                      'create_account'.tr(),
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   )),
