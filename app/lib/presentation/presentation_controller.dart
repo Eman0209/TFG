@@ -5,6 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/presentation/screens/map_screen.dart';
@@ -165,8 +168,34 @@ class PresentationController {
     return rewardsController.fetchTrophies();
   }
 
+  Future<List<RouteData?>> getAllRoutesData() async {
+    return routesController.fetchAllRoutesData();
+  }
+
   Future<RouteData?> getRouteData(String routeId) async {
     return routesController.fetchRouteData(routeId);
+  }
+
+  Future<List<PointLatLng>> getRoutesPoints() async {
+    List<RouteData?> routes = await getAllRoutesData();
+
+    List<String> addresses = routes
+      .where((route) => route != null)
+      .expand((route) => route!.path)
+      .toList();
+
+    List<LatLng> directions = await routesController.getRouteCoordinatesFromNames(addresses);
+    
+    List<PointLatLng> points = directions
+      .map((loc) => PointLatLng(loc.latitude, loc.longitude))
+      .toList();
+
+    return points;
+
+    // Convertir direcciones a coordenadas
+    //List<LatLng> directions = await routesController.getRouteCoordinatesFromNames(addresses);
+
+    //return directions;
   }
 
   /* ------------------------------ Screens ------------------------------ */

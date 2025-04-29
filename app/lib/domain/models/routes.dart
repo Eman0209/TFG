@@ -1,18 +1,21 @@
 class RouteData {
+  final String id;
   final String name;
   final String description;
   final int duration;
   final List<String> path;
 
   RouteData({
+    required this.id,
     required this.name,
     required this.description,
     required this.duration,
     required this.path,
   });
 
-  factory RouteData.fromMap(Map<String, dynamic> data) {
+  factory RouteData.fromMap(Map<String, dynamic> data, String documentId) {
     return RouteData(
+      id: documentId,
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       duration: data['time'] ?? '1h',

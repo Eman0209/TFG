@@ -3,6 +3,7 @@ import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
 
@@ -28,10 +29,19 @@ class _MapPageState extends State<MapPage> {
   final Location _locationController = Location();
   LatLng? currentP; 
 
+  final Set<Polyline> _polylines = {};
+
   @override
   void initState(){
     super.initState();
-    getLocationUpdates();
+    getLocationUpdates().then(
+      (_) => {
+        getPolylinePoints2().then((coordinates) => {
+          print(coordinates)
+        }),
+      }
+    );
+    //_setPolyline();
   }
   
   @override
@@ -61,6 +71,7 @@ class _MapPageState extends State<MapPage> {
                 position: currentP!
               ),
             },
+            polylines: _polylines,
           ),
           SafeArea(
             child: Column(
@@ -175,6 +186,51 @@ class _MapPageState extends State<MapPage> {
       }
     });
 
+  }
+
+  Future<List<LatLng>> getPolylinePoints2() async {
+    List<LatLng> polylineCoordinates = [];
+    PolylinePoints polylinePoints = PolylinePoints();
+    //PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(request: request);
+    List<PointLatLng> routePoints = await _presentationController.getRoutesPoints();
+
+    final request = PolylineRequest(
+      origin: routePoints.first,
+      destination: routePoints.last,
+      mode: TravelMode.walking,
+      wayPoints: routePoints
+          .sublist(1, routePoints.length - 1)
+          .map((point) => PolylineWayPoint(location: '${point.latitude},${point.longitude}'))
+          .toList(),
+    );
+    
+    final result = await polylinePoints.getRouteBetweenCoordinates(
+      googleApiKey: "",
+      request: request,
+    );
+
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        }
+      );
+    } else {
+      print(result.errorMessage);
+    }
+    return polylineCoordinates;
+
+  }
+
+  Future<void> _setPolyline() async {
+    print("polylines");
+    _polylines.add(
+      Polyline(
+        polylineId: PolylineId('route'),
+        //points: await _presentationController.getRoutesPoints(),
+        color: Colors.blue,
+        width: 5,
+      ),
+    );
   }
 
   Widget startAndInfoButtonsWidget() {
