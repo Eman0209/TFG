@@ -78,12 +78,20 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
             child: ListView(
               children: [
-                _buildTextSection('Name', name),
-                _buildTextSection('Description', description),
+                _buildTextSection('name'.tr(), name),
+                _buildTextSection('description'.tr(), description),
                 if (fromCompletedScreen)
-                  _buildTextSection('Finished in', 'It was finished in $duration.')
+                  // Especificar lo de minutos o horas
+                  _buildTextSection(
+                    'finished_in'.tr(),
+                    'finished_message'.tr(namedArgs: {'duration': duration.toString()})
+                  )
                 else
-                  _buildTextSection('Time', 'It’s going to last about $duration h.'),
+                  // Especificar lo de minutos o horas
+                  _buildTextSection(
+                    'time'.tr(),
+                    'last_message'.tr(namedArgs: {'duration': duration.toString()})
+                  ),
                 _buildPath(path),
                 const SizedBox(height: 40),
               ],
