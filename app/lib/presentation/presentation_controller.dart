@@ -1,6 +1,7 @@
 import 'package:app/data/datasources/rewards_datasource.dart';
 import 'package:app/data/datasources/routes_datasource.dart';
 import 'package:app/data/datasources/user_datasource.dart';
+import 'package:app/presentation/screens/mystery_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,6 +19,7 @@ import 'package:app/presentation/screens/edit_user_screen.dart';
 import 'package:app/presentation/screens/rewards_screen.dart';
 import 'package:app/presentation/screens/how_to_play_screen.dart';
 import 'package:app/presentation/screens/info_route_screen.dart';
+import 'package:app/presentation/screens/route_screen.dart';
 import 'package:app/domain/models/routes.dart';
 import 'package:app/domain/controllers/user_controller.dart';
 import 'package:app/domain/controllers/routes_controller.dart';
@@ -176,6 +178,7 @@ class PresentationController {
     return routesController.fetchRouteData(routeId);
   }
 
+  /*
   Future<List<PointLatLng>> getRoutesPoints() async {
     List<RouteData?> routes = await getAllRoutesData();
 
@@ -196,6 +199,20 @@ class PresentationController {
     //List<LatLng> directions = await routesController.getRouteCoordinatesFromNames(addresses);
 
     //return directions;
+  }
+  */
+  Future<List<LatLng>> getRoutesPoints() async {
+    List<RouteData?> routes = await getAllRoutesData();
+
+    List<String> addresses = routes
+      .where((route) => route != null)
+      .expand((route) => route!.path)
+      .toList();
+
+    // Convertir direcciones a coordenadas
+    List<LatLng> directions = await routesController.getRouteCoordinatesFromNames(addresses);
+
+    return directions;
   }
 
   /* ------------------------------ Screens ------------------------------ */
@@ -222,7 +239,7 @@ class PresentationController {
   }
 
   // Move to the information screen
-  void infoRoute(BuildContext context, bool completedScreen) {
+  void infoRoute(BuildContext context, bool completedScreen, String routeId) {
     //aqui se tendra que revisar que este en el listado de rutas completadas para enviar el isCompleted true
     Navigator.push(
       context,
@@ -230,9 +247,29 @@ class PresentationController {
         builder: (context) =>
             // He d'aconseguir el id de la ruta un cop fagi el display al mapa
             RouteInfoScreen(
-              routeId: "NWjKzu7Amz2AXJLZijQL",
+              routeId: routeId,
               fromCompletedScreen: completedScreen, 
               presentationController: this),
+      ),
+    );
+  }
+
+  void startRoute(BuildContext context, String routeId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+          RouteScreen(presentationController: this),
+      ),
+    );
+  }
+
+  void misteriScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+          MysteryScreen(presentationController: this),
       ),
     );
   }
