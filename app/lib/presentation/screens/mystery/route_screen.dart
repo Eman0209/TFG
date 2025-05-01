@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -11,7 +12,6 @@ class RouteScreen extends StatefulWidget {
   final PresentationController presentationController;
   final String routeId;
   
-
   const RouteScreen({
     Key? key, 
     required this.presentationController,
@@ -38,6 +38,8 @@ class _RouteScreenState extends State<RouteScreen> {
 
   final Set<Polyline> _polylines = {};
 
+  bool _showAlert = false;
+
   @override
   void initState(){
     super.initState();
@@ -61,7 +63,8 @@ class _RouteScreenState extends State<RouteScreen> {
               child: Text('carrega'.tr(),)
             )
           : maps(),
-          // Si quiero añadir algun boton mas a la pantalla o algo añadir aqui
+          // Alert Popup
+          if (_showAlert) alertPopUp()
         ]
       )
     );
@@ -98,6 +101,7 @@ class _RouteScreenState extends State<RouteScreen> {
       if (currentLocation.latitude != null && currentLocation.longitude != null) {
         setState(() {
           currentP = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          checkProximity(currentLocation.latitude!, currentLocation.longitude!);
           cameraToPosition(currentP!);
         });
       }
@@ -113,7 +117,7 @@ class _RouteScreenState extends State<RouteScreen> {
     await controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }
 
-   Future<void> _setPolyline() async {
+  Future<void> _setPolyline() async {
     _polylines.add(
       Polyline(
         polylineId: PolylineId('route'),
@@ -121,6 +125,93 @@ class _RouteScreenState extends State<RouteScreen> {
         color: Colors.deepPurple,
         width: 5,
       ),
+    );
+  }
+
+  Future<double> calculateDistance(double lat1, double lon1, double lat2, double lon2) async {
+    return await Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
+  }
+
+  Future<void> checkProximity(double userLat, double userLon) async {
+    // Extract waypoints from the polyline
+    List<LatLng> waypoints = [];
+    for (var polyline in _polylines) {
+      waypoints.addAll(polyline.points);
+    }
+
+    for (var waypoint in waypoints) {
+      double distance = await calculateDistance(userLat, userLon, waypoint.latitude, waypoint.longitude);
+      
+      // If user is within the threshold, show alert
+      if (distance <= 50.0) {
+        setState(() {
+          _showAlert = true;
+        });
+        break; // Optionally stop after finding the first nearby waypoint
+      }
+    }
+  }
+
+  Widget alertPopUp() {
+    return Positioned(
+      top: 120,
+      left: 24,
+      right: 24,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.deepPurple[50],
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.grey.shade400,
+            width: 2,
+            style: BorderStyle.solid,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.notifications_active_outlined,
+              color: Colors.deepPurple),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Alert",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text("You are close to a new track."),
+                  SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navega hasta la nueva pantalla de inicio del step
+
+                    },
+                    child: Text("Follow the track"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  _showAlert = false;
+                });
+              },
+            )
+          ]
+        )
+      )
     );
   }
 
