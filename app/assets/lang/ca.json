@@ -1,8 +1,10 @@
 {   
     "add_info": "Afegeix la teva informació",
+    "alert": "Alerta",
     "carrega": "Carregant...",
     "catalan": "Català",
     "close": "Tancar",
+    "close_track": "Esta aprop d'una nova pista.",
     "create_account": "Crear compte",
     "description": "Descripció",
     "done": "Fetes",
@@ -11,6 +13,7 @@
     "english": "Anglès",
     "finished_in": "Finalitzat en",
     "finished_message": "Va ser finalitzada en @duration minuts.",
+    "follow_track": "Seguir la pista",
     "google_access": "Accés amb Google",
     "howToPlay": "Com jugar",
     "info": "Info",

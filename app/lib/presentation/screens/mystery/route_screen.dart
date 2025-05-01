@@ -129,7 +129,7 @@ class _RouteScreenState extends State<RouteScreen> {
   }
 
   Future<double> calculateDistance(double lat1, double lon1, double lat2, double lon2) async {
-    return await Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
+    return Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
   }
 
   Future<void> checkProximity(double userLat, double userLon) async {
@@ -178,7 +178,7 @@ class _RouteScreenState extends State<RouteScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Alert",
+                    'alert'.tr(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -186,14 +186,14 @@ class _RouteScreenState extends State<RouteScreen> {
                     ),
                   ),
                   SizedBox(height: 4),
-                  Text("You are close to a new track."),
+                  Text('close_track'.tr()),
                   SizedBox(height: 8),
                   ElevatedButton(
                     onPressed: () {
                       // Navega hasta la nueva pantalla de inicio del step
 
                     },
-                    child: Text("Follow the track"),
+                    child: Text('follow_track'.tr()),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 206, 179, 254),
                     ),

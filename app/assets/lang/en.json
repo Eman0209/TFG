@@ -1,8 +1,10 @@
 {
     "add_info": "Add your information",
+    "alert": "Alert",
     "carrega": "Loading...",
     "catalan": "Catalan",
     "close": "Close",
+    "close_track": "You are close to a new track.",
     "create_account": "Create account",
     "description": "Description",
     "done": "Done",
@@ -11,6 +13,7 @@
     "english": "English",
     "finished_in": "Finished in",
     "finished_message": "It was finished in @duration minutes.",
+    "follow_track": "Follow the track",
     "google_access": "Access with Google",
     "howToPlay": "How To Play",
     "info": "Info",
