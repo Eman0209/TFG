@@ -25,7 +25,6 @@ class _MapPageState extends State<MapPage> {
   }
 
   final Completer<GoogleMapController> _mapController = Completer<GoogleMapController>();
-
   final Location _locationController = Location();
   LatLng? currentP; 
 
@@ -192,7 +191,6 @@ class _MapPageState extends State<MapPage> {
         });
       }
     });
-
   }
   
   /*
@@ -259,7 +257,7 @@ class _MapPageState extends State<MapPage> {
         ElevatedButton(
           onPressed: () {
             //aqui necesito pasar el id de la ruta
-            _presentationController.startRoute(context, "NWjKzu7Amz2AXJLZijQL");
+            _presentationController.misteriScreen(context, "NWjKzu7Amz2AXJLZijQL", "VZQmKDgsmyLp5oaKsICZ");
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 206, 179, 254),

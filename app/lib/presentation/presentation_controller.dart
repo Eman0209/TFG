@@ -1,29 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app/data/datasources/mystery_datasource.dart';
 import 'package:app/data/datasources/rewards_datasource.dart';
 import 'package:app/data/datasources/routes_datasource.dart';
 import 'package:app/data/datasources/user_datasource.dart';
-import 'package:app/presentation/screens/mystery_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:logging/logging.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
-import 'package:app/presentation/screens/signup.dart';
-import 'package:app/presentation/screens/edit_user_screen.dart';
-import 'package:app/presentation/screens/rewards_screen.dart';
-import 'package:app/presentation/screens/how_to_play_screen.dart';
+import 'package:app/presentation/screens/user/signup.dart';
+import 'package:app/presentation/screens/mystery/mystery_screen.dart';
+import 'package:app/presentation/screens/user/edit_user_screen.dart';
+import 'package:app/presentation/screens/user/rewards_screen.dart';
+import 'package:app/presentation/screens/user/how_to_play_screen.dart';
 import 'package:app/presentation/screens/info_route_screen.dart';
-import 'package:app/presentation/screens/route_screen.dart';
+import 'package:app/presentation/screens/mystery/route_screen.dart';
 import 'package:app/domain/models/routes.dart';
+import 'package:app/domain/models/steps.dart';
 import 'package:app/domain/controllers/user_controller.dart';
 import 'package:app/domain/controllers/routes_controller.dart';
 import 'package:app/domain/controllers/rewards_controller.dart';
+import 'package:app/domain/controllers/mystery_controller.dart';
 
 
 // Functions to see the screens
@@ -35,6 +36,8 @@ class PresentationController {
   late final UserController userController;
   late final FirebaseRewardsDatasource rewardsDatasource;
   late final RewardsController rewardsController;
+  late final FirebaseMysteryDatasource mysteryDatasource;
+  late final MysteryController mysteryController;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late User? _user;
@@ -60,6 +63,9 @@ class PresentationController {
 
     rewardsDatasource = FirebaseRewardsDatasource(firestore);
     rewardsController = RewardsController(rewardsDatasource);
+
+    mysteryDatasource = FirebaseMysteryDatasource(firestore);
+    mysteryController = MysteryController(mysteryDatasource);
   }
 
   Future<void> initialice() async {
@@ -215,6 +221,15 @@ class PresentationController {
     return directions;
   }
 
+  Future<String> getMysteryTitle (String routeId) async {
+    RouteData? data = await routesController.fetchRouteData(routeId);
+    return data!.name;
+  }
+
+  Future<List<StepData>> getCompletedSteps(String mysteryId) {
+    return mysteryController.fetchCompletedSteps(mysteryId);
+  }
+
   /* ------------------------------ Screens ------------------------------ */
   
   // Move to the signup screen
@@ -259,17 +274,17 @@ class PresentationController {
       context,
       MaterialPageRoute(
         builder: (context) =>
-          RouteScreen(presentationController: this),
+          RouteScreen(presentationController: this, routeId: routeId),
       ),
     );
   }
 
-  void misteriScreen(BuildContext context) {
+  void misteriScreen(BuildContext context, String routeId, String mysteryId) async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
-          MysteryScreen(presentationController: this),
+          MysteryScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId,),
       ),
     );
   }

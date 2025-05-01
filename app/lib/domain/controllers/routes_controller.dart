@@ -2,6 +2,7 @@ import 'package:app/domain/models/routes.dart';
 import 'package:app/data/datasources/routes_datasource.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:logging/logging.dart';
 
 // Clase per a conectar amb el back
 class RoutesController {
@@ -9,6 +10,8 @@ class RoutesController {
   final FirebaseRoutesDatasource datasource;
 
   RoutesController(this.datasource);
+
+  final Logger _logger = Logger('RoutesController');
 
   // get all routes
   Future<List<RouteData?>> fetchAllRoutesData() async {
@@ -37,7 +40,7 @@ class RoutesController {
         return LatLng(locations[0].latitude, locations[0].longitude);
       }
     } catch (e) {
-      print("Geocoding failed: $e");
+      _logger.severe("Geocoding failed: $e");
     }
     return null;
   }

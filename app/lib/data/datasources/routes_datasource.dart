@@ -11,11 +11,11 @@ class FirebaseRoutesDatasource {
 
   Future<List<RouteData?>> getAllRoutesData() async {
     try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('routes').get();
+      QuerySnapshot snapshot = await firestore.collection('routes').get();
       return snapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      return RouteData.fromMap(data, doc.id);
-    }).toList();
+        final data = doc.data() as Map<String, dynamic>;
+        return RouteData.fromMap(data, doc.id);
+      }).toList();
     } catch (e) {
       _logger.severe('Error fetching routes: $e');
       return [];
