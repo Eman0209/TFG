@@ -67,6 +67,27 @@ class FirebaseUserDatasource {
     return doc.exists;
   }
 
+  Future<List<String>> getRoutes(User user) async {
+    try {
+      final doc = await firestore.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        final data = doc.data();
+        if (data != null && data['routes'] is List) {
+          return List<String>.from(data['routes']);
+        } else {
+          _logger.severe('Routes field is missing or not a list');
+          return [];
+        }
+      } else {
+        _logger.severe('User document not found');
+        return [];
+      }
+    } catch (e) {
+      _logger.severe('Error fetching routes: $e');
+      return [];
+    }
+  }
+
   /*
   Future<bool> usernameUnique(String username) async {
     final respuesta = await http.get

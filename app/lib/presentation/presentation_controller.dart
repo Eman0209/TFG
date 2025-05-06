@@ -176,6 +176,16 @@ class PresentationController {
     return rewardsController.fetchTrophies();
   }
 
+  Future<List<RouteData>> getUserDoneRoutes() async {
+    List<String> doneRoutes = await userController.fetchRoutes(_user);
+    List<RouteData> infoRoutes = [];
+    for (String routeId in doneRoutes) {
+      RouteData? routeInfo = await getRouteData(routeId);
+      infoRoutes.add(routeInfo!);
+    }  
+    return infoRoutes;
+  }
+
   Future<List<RouteData?>> getAllRoutesData() async {
     return routesController.fetchAllRoutesData();
   }
@@ -207,6 +217,7 @@ class PresentationController {
     //return directions;
   }
   */
+
   Future<List<LatLng>> getRoutesPoints() async {
     List<RouteData?> routes = await getAllRoutesData();
 
@@ -260,7 +271,7 @@ class PresentationController {
 
   // Move to the information screen
   void infoRoute(BuildContext context, bool completedScreen, String routeId) {
-    //aqui se tendra que revisar que este en el listado de rutas completadas para enviar el isCompleted true
+    // aqui se tendra que revisar que este en el listado de rutas completadas para enviar el isCompleted true
     Navigator.push(
       context,
       MaterialPageRoute(
