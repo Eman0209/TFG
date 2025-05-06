@@ -1,4 +1,5 @@
 import 'package:app/domain/models/steps.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/custom_appbar.dart';
@@ -9,7 +10,7 @@ class MysteryScreen extends StatefulWidget {
   final String mysteryId;
 
   const MysteryScreen({
-    Key? key, 
+    super.key, 
     required this.presentationController,
     required this.routeId,
     required this.mysteryId,
@@ -59,7 +60,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
               } else if (snapshot.hasError) {
-                return Text("Error loading title");
+                return Text('error_title'.tr());
               }
               return Text(
                 snapshot.data!, 
@@ -84,9 +85,9 @@ class _MysteryScreenState extends State<MysteryScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text("Error loading steps"));
+                  return Center(child: Text('error_steps'.tr()));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text("No steps found"));
+                  return Center(child: Text('mystery_not_started'.tr()));
                 }
 
                 final steps = snapshot.data!;
@@ -150,7 +151,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
   
     switch (index) {
       case 0:
-        _presentationController.startRoute(context, _routeId);
+        _presentationController.startedRouteScreen(context, _routeId);
         break;
       case 1:
         //_presentationController.misteriScreen(context, _routeId, "VZQmKDgsmyLp5oaKsICZ");

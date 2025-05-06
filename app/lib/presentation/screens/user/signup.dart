@@ -7,7 +7,7 @@ class Signup extends StatefulWidget {
 
   final PresentationController presentationController;
 
-  const Signup({Key? key, required this.presentationController}) : super(key: key);
+  const Signup({super.key, required this.presentationController});
 
   @override
   State<Signup> createState() => _SignupState(presentationController);

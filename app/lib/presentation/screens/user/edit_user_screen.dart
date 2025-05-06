@@ -5,7 +5,7 @@ import 'package:app/presentation/presentation_controller.dart';
 class EditUserScreen extends StatefulWidget {
   final PresentationController presentationController;
 
-  const EditUserScreen({Key? key, required this.presentationController});
+  const EditUserScreen({super.key, required this.presentationController});
 
   @override
   State<EditUserScreen> createState() => _EditUserScreenState(presentationController);

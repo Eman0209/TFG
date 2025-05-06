@@ -12,4 +12,8 @@ class MysteryController {
     return await datasource.getCompletedSteps(mysteryId);
   }
 
+  Future<String?> fetchIntroduction(String mysteryId) async {
+    return await datasource.getIntroduction(mysteryId);
+  }
+
 }

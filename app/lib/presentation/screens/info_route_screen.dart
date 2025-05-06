@@ -49,7 +49,8 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
 
         final route = snapshot.data!;
       
-      return Scaffold( backgroundColor: const Color(0xFFF8F4FF),
+      return Scaffold( 
+        backgroundColor: const Color(0xFFF8F4FF),
         appBar: _buildAppBar(context),
         body: _buildBody(route.name, route.description, route.duration, route.path),
         floatingActionButton: _buildFloatingButton(),
@@ -178,7 +179,8 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         padding: const EdgeInsets.only(right: 16.0),
         child: ElevatedButton(
           onPressed: () {
-            // Start logic here
+            // Modificar el string 
+            _presentationController.stepScreen(context, "VZQmKDgsmyLp5oaKsICZ");
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFECE3FF),

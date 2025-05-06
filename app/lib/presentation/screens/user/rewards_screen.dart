@@ -5,7 +5,7 @@ import 'package:app/presentation/presentation_controller.dart';
 class RewardsScreen extends StatefulWidget {
   final PresentationController presentationController;
 
-  const RewardsScreen({Key? key, required this.presentationController});
+  const RewardsScreen({super.key, required this.presentationController});
 
   @override
   State<RewardsScreen> createState() => _RewardsScreenState(presentationController);

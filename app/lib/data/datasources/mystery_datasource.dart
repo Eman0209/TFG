@@ -11,7 +11,6 @@ class FirebaseMysteryDatasource {
 
   Future<List<StepData>> getCompletedSteps(String mysteryId) async {
     try {
-      _logger.severe('Entra al get steps');
       QuerySnapshot querySnapshot = await firestore
           .collection('mystery')
           .doc(mysteryId)
@@ -27,6 +26,21 @@ class FirebaseMysteryDatasource {
     } catch (e) {
       _logger.severe('Error fetching steps: $e');
       return [];
+    }
+  }
+
+  Future<String?> getIntroduction(String mysteryId) async {
+    try {
+      final doc = await firestore.collection('mystery').doc(mysteryId).get();
+      if (doc.exists && doc.data()!.containsKey('introduction')) {
+        return doc['introduction'] as String;
+      } else {
+        _logger.severe('Mystery not found or no introduction');
+        return null;
+      }
+    } catch (e) {
+      _logger.severe('Error fetching introduction: $e');
+      return null;
     }
   }
 

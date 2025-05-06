@@ -6,7 +6,7 @@ import 'package:app/presentation/widgets/bnav_bar.dart';
 class PerfilPage extends StatefulWidget {
   final PresentationController presentationController;
 
-  const PerfilPage({Key? key, required this.presentationController});
+  const PerfilPage({super.key, required this.presentationController});
 
   @override
   State<PerfilPage> createState() => _PerfilPageState(presentationController);

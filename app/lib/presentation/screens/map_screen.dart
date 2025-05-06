@@ -256,8 +256,9 @@ class _MapPageState extends State<MapPage> {
       children: [
         ElevatedButton(
           onPressed: () {
-            //aqui necesito pasar el id de la ruta
-            _presentationController.misteriScreen(context, "NWjKzu7Amz2AXJLZijQL", "VZQmKDgsmyLp5oaKsICZ");
+            //aqui necesito pasar el id del misterio de la ruta
+            //_presentationController.misteriScreen(context, "NWjKzu7Amz2AXJLZijQL", "VZQmKDgsmyLp5oaKsICZ");
+            _presentationController.stepScreen(context, "VZQmKDgsmyLp5oaKsICZ");
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 206, 179, 254),

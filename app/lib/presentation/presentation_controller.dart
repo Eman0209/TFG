@@ -13,12 +13,13 @@ import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
 import 'package:app/presentation/screens/user/signup.dart';
-import 'package:app/presentation/screens/mystery/mystery_screen.dart';
 import 'package:app/presentation/screens/user/edit_user_screen.dart';
 import 'package:app/presentation/screens/user/rewards_screen.dart';
 import 'package:app/presentation/screens/user/how_to_play_screen.dart';
 import 'package:app/presentation/screens/info_route_screen.dart';
 import 'package:app/presentation/screens/mystery/route_screen.dart';
+import 'package:app/presentation/screens/mystery/mystery_screen.dart';
+import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:app/domain/models/routes.dart';
 import 'package:app/domain/models/steps.dart';
 import 'package:app/domain/controllers/user_controller.dart';
@@ -145,7 +146,6 @@ class PresentationController {
         mapScreen(context);
       }
     } catch (error) {
-      //buscar si esto lo puedo cambiar por un log o algos
       _logger.severe('An error occurred: $error');
     }
   }
@@ -221,9 +221,14 @@ class PresentationController {
     return directions;
   }
 
-  Future<String> getMysteryTitle (String routeId) async {
+  Future<String> getMysteryTitle(String routeId) async {
     RouteData? data = await routesController.fetchRouteData(routeId);
     return data!.name;
+  }
+
+  Future<String> getIntroduction(String mysteryId) async {
+    String? intro = await mysteryController.fetchIntroduction(mysteryId);
+    return intro!;
   }
 
   Future<List<StepData>> getCompletedSteps(String mysteryId) {
@@ -269,7 +274,7 @@ class PresentationController {
     );
   }
 
-  void startRoute(BuildContext context, String routeId) {
+  void startedRouteScreen(BuildContext context, String routeId) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -285,6 +290,16 @@ class PresentationController {
       MaterialPageRoute(
         builder: (context) =>
           MysteryScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId,),
+      ),
+    );
+  }
+
+  void stepScreen(BuildContext context, String mysteryId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+          StepScreen(presentationController: this, mysteryId: mysteryId),
       ),
     );
   }

@@ -13,7 +13,7 @@ class RouteScreen extends StatefulWidget {
   final String routeId;
   
   const RouteScreen({
-    Key? key, 
+    super.key, 
     required this.presentationController,
     required this.routeId
   });
@@ -193,10 +193,10 @@ class _RouteScreenState extends State<RouteScreen> {
                       // Navega hasta la nueva pantalla de inicio del step
 
                     },
-                    child: Text('follow_track'.tr()),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 206, 179, 254),
                     ),
+                    child: Text('follow_track'.tr()),                   
                   )
                 ],
               ),

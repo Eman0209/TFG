@@ -5,7 +5,7 @@ import 'package:app/presentation/widgets/bnav_bar.dart';
 class DonePage extends StatefulWidget {
   final PresentationController presentationController;
 
-  const DonePage({Key? key, required this.presentationController});
+  const DonePage({super.key, required this.presentationController});
 
   @override
   State<DonePage> createState() => _DonePageState(presentationController);

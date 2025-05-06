@@ -32,7 +32,7 @@ class MyApp extends StatefulWidget {
 
   final PresentationController presentationController;
 
-  const MyApp({Key? key, required this.presentationController}) : super(key: key);
+  const MyApp({super.key, required this.presentationController});
 
   @override
   State <MyApp> createState() => _MyAppState(presentationController);

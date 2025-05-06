@@ -7,7 +7,7 @@ import 'package:app/presentation/presentation_controller.dart';
 class Login extends StatefulWidget {
   final PresentationController presentationController;
 
-  const Login({Key? key, required this.presentationController});
+  const Login({super.key, required this.presentationController});
 
   @override
   State<Login> createState() => _Login(presentationController);
