@@ -32,12 +32,15 @@ class _MysteryScreenState extends State<MysteryScreen> {
 
   late Future<List<StepData?>> _stepsFuture;
   late Future<String> _routeTitle;
+  bool isFinished = false;
+  late Future<int> _stepsLength;
 
   @override
   void initState() {
     super.initState();
     _routeTitle = _presentationController.getMysteryTitle(widget.routeId);
     _stepsFuture = _presentationController.getCompletedSteps(widget.mysteryId);
+    _stepsLength = _presentationController.getLengthOfSteps(widget.mysteryId);
   }
 
   @override
@@ -54,21 +57,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 8),
-          FutureBuilder<String>(
-            future: _routeTitle,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('error_title'.tr());
-              }
-              return Text(
-                snapshot.data!, 
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center
-              );
-            },
-          ),
+          title(),
           SizedBox(height: 8),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.9, 
@@ -77,70 +66,199 @@ class _MysteryScreenState extends State<MysteryScreen> {
               color: Colors.grey.shade400,
             ),
           ),
-          SizedBox(height: 16),
-          Expanded(
-            child: FutureBuilder<List<StepData?>>(
-              future: _stepsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('error_steps'.tr()));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('mystery_not_started'.tr()));
-                }
-
-                final steps = snapshot.data!;
-                return ListView.separated(
-                  padding: EdgeInsets.all(16),
-                  itemCount: steps.length,
-                  separatorBuilder: (_, __) => SizedBox(height: 16),
-                  itemBuilder: (context, index) {
-                    final step = steps[index];
-                    return IntrinsicHeight(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          
-                          Column(
-                            children: [
-                              Icon(Icons.check_circle, color: Colors.black),
-                              if (index != steps.length - 1)
-                                Expanded(
-                                  child: Container(width: 2, color: Colors.grey.shade400),
-                                ),
-                            ],
-                          ),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  step!.title, 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold, 
-                                    fontSize: 16
-                                  )
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  step.resum, 
-                                  style: TextStyle(color: Colors.grey[700])
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          )
+          steps(),
+          const SizedBox(height: 8),
+          if (isFinished) 
+            finalizePopUp(),
+          const SizedBox(height: 80),
         ]
       ),
+    floatingActionButton: isFinished
+      ?
+        finalizeButton()
+      : null
+    );
+  }
+
+  Widget title() {
+    return FutureBuilder<String>(
+      future: _routeTitle,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('error_title'.tr());
+        }
+        return Text(
+          snapshot.data!, 
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center
+        );
+      },
+    );
+  }
+
+  Widget steps() {
+    return Expanded(
+      child: FutureBuilder<List<StepData?>>(
+        future: _stepsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('error_steps'.tr()));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('mystery_not_started'.tr()));
+          }
+
+          final steps = snapshot.data!;
+
+          return FutureBuilder<int>(
+            future: _stepsLength,
+            builder: (context, lengthSnapshot) {
+              if (lengthSnapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (lengthSnapshot.hasError) {
+                return Center(child: Text('error_length'.tr()));
+              }
+
+              final stepsLength = lengthSnapshot.data ?? 0;
+
+              if (!isFinished && steps.length >= stepsLength) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() {
+                    isFinished = true;
+                  });
+                });
+              }
+              
+              return ListView.separated(
+                padding: EdgeInsets.all(16),
+                itemCount: steps.length,
+                separatorBuilder: (_, __) => SizedBox(height: 16),
+                itemBuilder: (context, index) {
+                  final step = steps[index];
+                  return IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [        
+                        Column(
+                          children: [
+                            Icon(Icons.check_circle, color: Colors.black),
+                            if (index != steps.length - 1)
+                              Expanded(
+                                child: Container(width: 2, color: Colors.grey.shade400),
+                              ),
+                          ],
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                step!.title, 
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold, 
+                                  fontSize: 16
+                                )
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                step.resum, 
+                                style: TextStyle(color: Colors.grey[700])
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget finalizePopUp() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.85,
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.deepPurple[50],
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.grey.shade400,
+          width: 2,
+          style: BorderStyle.solid,
+        ),
+      ),
+      child: Column (
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row (
+            children: [
+              Icon(
+                Icons.sentiment_satisfied_alt,
+                color: Colors.deepPurple
+              ),
+              SizedBox(width: 12),
+              Text(
+                "Finished",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.deepPurple,
+                ),
+              ),
+            ]
+          ),
+          const SizedBox(height: 12),
+          const Align(
+            alignment: Alignment.centerLeft,
+              child:
+                Text("Congratulations you finished the mystery."),
+          ),
+          SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () {
+              // afegir ruta com a finalitzada
+
+              // Navega hasta la nueva pantalla de done routes o a la finalitzada con info?
+
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 206, 179, 254),
+            ),
+            child: Text("Close the route"),                   
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget finalizeButton() {
+    // faltaria añadir un if para ver si esta finalizada
+    return ElevatedButton(
+      onPressed: () {
+        // afegir ruta com a finalitzada
+
+        // boto que porti a alguna pantalla a cual? Al mapa principal para buscar otras?
+        //_presentationController.startedRouteScreen(context, "NWjKzu7Amz2AXJLZijQL");
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color.fromARGB(255, 206, 179, 254),
+        foregroundColor: Colors.black,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+      child: Text("Start new track"),
     );
   }
 
@@ -160,4 +278,5 @@ class _MysteryScreenState extends State<MysteryScreen> {
         break;
     }
   }
+
 }

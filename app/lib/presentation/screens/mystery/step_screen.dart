@@ -73,18 +73,18 @@ class _StepScreenState extends State<StepScreen> {
 
   Widget goToMap(){
     return ElevatedButton(
-            onPressed: () {
-              _presentationController.startedRouteScreen(context, "NWjKzu7Amz2AXJLZijQL");
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 206, 179, 254),
-              foregroundColor: Colors.black,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            child: Text('go_map'.tr()),
+      onPressed: () {
+        _presentationController.startedRouteScreen(context, "NWjKzu7Amz2AXJLZijQL");
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color.fromARGB(255, 206, 179, 254),
+        foregroundColor: Colors.black,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+      child: Text('go_map'.tr()),
     );
   }
 

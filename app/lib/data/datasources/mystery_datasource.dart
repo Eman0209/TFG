@@ -44,4 +44,23 @@ class FirebaseMysteryDatasource {
     }
   }
 
+  Future<int> getStepsLength(String mysteryId) async {
+    try {
+      QuerySnapshot querySnapshot = await firestore
+          .collection('mystery')
+          .doc(mysteryId)
+          .collection('steps')
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.size;
+      } else {
+        _logger.severe('Mystery not found or no introduction');
+        return 0;
+      }
+    } catch (e) {
+      _logger.severe('Error fetching introduction: $e');
+      return 0;
+    }
+  }
+
 }

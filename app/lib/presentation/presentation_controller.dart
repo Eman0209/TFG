@@ -186,6 +186,13 @@ class PresentationController {
     return infoRoutes;
   }
 
+  /*
+  void addDoneRoute(BuildContext context) async {
+    userController.addDoneRoute(_user);
+    meScreen(context);
+  }
+  */
+
   Future<List<RouteData?>> getAllRoutesData() async {
     return routesController.fetchAllRoutesData();
   }
@@ -244,6 +251,10 @@ class PresentationController {
 
   Future<List<StepData>> getCompletedSteps(String mysteryId) {
     return mysteryController.fetchCompletedSteps(mysteryId);
+  }
+
+  Future<int> getLengthOfSteps(String mysteryId) {
+    return mysteryController.fetchLengthOfSteps(mysteryId);
   }
 
   /* ------------------------------ Screens ------------------------------ */
