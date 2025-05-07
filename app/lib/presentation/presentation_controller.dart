@@ -186,12 +186,10 @@ class PresentationController {
     return infoRoutes;
   }
 
-  /*
-  void addDoneRoute(BuildContext context) async {
-    userController.addDoneRoute(_user);
-    meScreen(context);
+  void addDoneRoute(BuildContext context, String routeId) async {
+    await userController.addDoneRoute(_user, routeId);
+    doneRoutesScreen(context);
   }
-  */
 
   Future<List<RouteData?>> getAllRoutesData() async {
     return routesController.fetchAllRoutesData();

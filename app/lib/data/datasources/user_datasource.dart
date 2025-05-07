@@ -100,5 +100,20 @@ class FirebaseUserDatasource {
     }
   }
   */
+
+  Future<void> addDoneRoute(User user, String routeId) async {
+    final userDocRef = firestore.collection('users').doc(user.uid);
+    final userDoc = await userDocRef.get();
+
+    if (userDoc.exists) {
+      // Update only the 'name' field
+      await userDocRef.update({
+        'routes': FieldValue.arrayUnion([routeId]),
+      });
+    } else {
+      _logger.severe("User document does not exist. Can't update routes.");
+    }
+
+  }
   
 }

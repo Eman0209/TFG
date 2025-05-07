@@ -28,4 +28,8 @@ class UserController {
     return await datasource.getRoutes(user!);
   }
 
+  Future<void> addDoneRoute(User? user, String routeId) async {
+    await datasource.addDoneRoute(user!, routeId);
+  }
+
 }

@@ -208,7 +208,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
               ),
               SizedBox(width: 12),
               Text(
-                "Finished",
+                'finished'.tr(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -218,23 +218,20 @@ class _MysteryScreenState extends State<MysteryScreen> {
             ]
           ),
           const SizedBox(height: 12),
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
               child:
-                Text("Congratulations you finished the mystery."),
+                Text('finished_congrats'.tr()),
           ),
           SizedBox(height: 8),
           ElevatedButton(
             onPressed: () {
-              // afegir ruta com a finalitzada
-
-              // Navega hasta la nueva pantalla de done routes o a la finalitzada con info?
-
+              _presentationController.addDoneRoute(context, widget.routeId);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color.fromARGB(255, 206, 179, 254),
             ),
-            child: Text("Close the route"),                   
+            child: Text('close_route'.tr()),                   
           )
         ],
       ),
@@ -242,13 +239,10 @@ class _MysteryScreenState extends State<MysteryScreen> {
   }
 
   Widget finalizeButton() {
-    // faltaria añadir un if para ver si esta finalizada
     return ElevatedButton(
       onPressed: () {
-        // afegir ruta com a finalitzada
-
-        // boto que porti a alguna pantalla a cual? Al mapa principal para buscar otras?
-        //_presentationController.startedRouteScreen(context, "NWjKzu7Amz2AXJLZijQL");
+        // afegir funcio que canvii a una nova pista 
+        
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -258,7 +252,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
           borderRadius: BorderRadius.circular(30),
         ),
       ),
-      child: Text("Start new track"),
+      child: Text('start_new_track'.tr()),
     );
   }
 
