@@ -1,5 +1,6 @@
 import 'package:app/data/datasources/mystery_datasource.dart';
 import 'package:app/domain/models/steps.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Clase per a conectar amb el back
 class MysteryController {
@@ -8,8 +9,8 @@ class MysteryController {
 
   MysteryController(this.datasource);
 
-  Future<List<StepData>> fetchCompletedSteps(String mysteryId) async {
-    return await datasource.getCompletedSteps(mysteryId);
+  Future<List<StepData>> fetchCompletedSteps(User user, String mysteryId) async {
+    return await datasource.getCompletedSteps(user, mysteryId);
   }
 
   Future<String?> fetchIntroduction(String mysteryId) async {

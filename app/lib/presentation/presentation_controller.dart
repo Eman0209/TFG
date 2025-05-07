@@ -248,7 +248,7 @@ class PresentationController {
   }
 
   Future<List<StepData>> getCompletedSteps(String mysteryId) {
-    return mysteryController.fetchCompletedSteps(mysteryId);
+    return mysteryController.fetchCompletedSteps(_user!, mysteryId);
   }
 
   Future<int> getLengthOfSteps(String mysteryId) {
