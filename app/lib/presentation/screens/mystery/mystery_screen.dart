@@ -32,6 +32,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
 
   late Future<List<StepData?>> _stepsFuture;
   late Future<String> _routeTitle;
+  
   bool isFinished = false;
   late Future<int> _stepsLength;
 
