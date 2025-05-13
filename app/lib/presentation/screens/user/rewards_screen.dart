@@ -17,15 +17,9 @@ class _RewardsScreenState extends State<RewardsScreen> {
   _RewardsScreenState(PresentationController presentationController) {
     _presentationController = presentationController;
   }
-/*
-  late Future<List<Map<String, dynamic>>> _myTrophies;
 
-  @override
-  void initState() {
-    super.initState();
-    _myTrophies = _presentationController.getMyOwnTrophies();
-  }
- */ 
+  bool _trophyGiven = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +55,14 @@ class _RewardsScreenState extends State<RewardsScreen> {
 
         final allTrophies = snapshot.data![0] as List<Map<String, dynamic>>;
         final ownedTrophies = snapshot.data![1] as List<String>;
+
+        if (ownedTrophies.length >= 11 && !_trophyGiven) {
+            _trophyGiven = true;
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _presentationController.addUserTrophy("lh6Ox374RuLD7CCR7rfu");
+            });
+        }
 
         return Padding(
           padding: const EdgeInsets.all(16.0),

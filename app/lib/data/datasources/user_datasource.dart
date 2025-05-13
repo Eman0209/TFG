@@ -106,7 +106,6 @@ class FirebaseUserDatasource {
     final userDoc = await userDocRef.get();
 
     if (userDoc.exists) {
-      // Update only the 'name' field
       await userDocRef.update({
         'routes': FieldValue.arrayUnion([routeId]),
       });

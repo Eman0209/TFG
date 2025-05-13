@@ -33,6 +33,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
   late Future<List<StepData?>> _stepsFuture;
   late Future<String> _routeTitle;
   
+  bool _trophyGiven = false;
   bool isFinished = false;
   late Future<int> _stepsLength;
 
@@ -113,6 +114,14 @@ class _MysteryScreenState extends State<MysteryScreen> {
           }
 
           final steps = snapshot.data!;
+
+          if (steps.length >= 5 && !_trophyGiven) {
+            _trophyGiven = true;
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _presentationController.addUserTrophy("xLqeRq8Aa5PPAIV7lycM");
+            });
+          }
 
           return FutureBuilder<int>(
             future: _stepsLength,
@@ -226,7 +235,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
           ),
           SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               _presentationController.addDoneRoute(context, widget.routeId);
             },
             style: ElevatedButton.styleFrom(

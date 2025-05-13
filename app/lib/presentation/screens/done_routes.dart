@@ -23,6 +23,8 @@ class _DonePageState extends State<DonePage> {
 
   late Future<List<RouteData>> _doneRoutesFuture;
 
+  bool _trophyGiven = false;
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +51,21 @@ class _DonePageState extends State<DonePage> {
           }
 
           final routes = snapshot.data!;
+
+          if (routes.length >= 1 && routes.length <= 4 && !_trophyGiven) {
+            _trophyGiven = true;
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _presentationController.addUserTrophy("ET0rOLRFFZJlAJQhMbSa");
+            });
+          } else if (routes.length >= 5 && !_trophyGiven) {
+            _trophyGiven = true;
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _presentationController.addUserTrophy("shdnjm4R4LeMPwBTZrvH");
+            });
+          }
+
           return Column(
             children: [
               Expanded(

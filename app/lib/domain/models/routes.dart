@@ -1,6 +1,7 @@
 class RouteData {
   final String id;
   final String name;
+  final String category;
   final String description;
   final int duration;
   final List<String> path;
@@ -9,6 +10,7 @@ class RouteData {
   RouteData({
     required this.id,
     required this.name,
+    required this.category,
     required this.description,
     required this.duration,
     required this.path,
@@ -19,6 +21,7 @@ class RouteData {
     return RouteData(
       id: documentId,
       name: data['name'] ?? '',
+      category: data['category'] ?? '',
       description: data['description'] ?? '',
       duration: data['time'] ?? '1h',
       path: List<String>.from(data['path'] ?? []),
@@ -31,6 +34,7 @@ class RouteData {
     return {
       'name': name,
       'description': description,
+      'category': category,
       'time': duration,
       'path': path,
       'mysteryId': mysteryId,

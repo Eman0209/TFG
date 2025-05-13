@@ -13,8 +13,11 @@ class RewardsController {
   }
 
   Future<List<String>> fetchMyOwnTrophies(User? user) async {
-    return await datasource.getMyOwnTrophies(user);
+    return await datasource.getMyOwnTrophies(user!.uid);
   }
 
+  Future<void> addUserTrophy(User? user, String trophyId) async {
+    await datasource.addUserTrophy(user!.uid, trophyId);
+  }
 
 }
