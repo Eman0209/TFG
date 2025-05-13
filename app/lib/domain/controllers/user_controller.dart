@@ -24,5 +24,12 @@ class UserController {
     return await datasource.accountExists(user!);
   }
 
+  Future<List<String>> fetchRoutes(User? user) async {
+    return await datasource.getRoutes(user!);
+  }
+
+  Future<void> addDoneRoute(User? user, String routeId) async {
+    await datasource.addDoneRoute(user!, routeId);
+  }
 
 }

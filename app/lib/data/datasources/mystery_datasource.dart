@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logging/logging.dart';
 import 'package:app/domain/models/steps.dart';
 
@@ -9,20 +10,47 @@ class FirebaseMysteryDatasource {
 
   final Logger _logger = Logger('FirebaseMysteryDatasource');
 
-  Future<List<StepData>> getCompletedSteps(String mysteryId) async {
+  Future<List<StepData>> getCompletedSteps(User user, String mysteryId) async {
     try {
-      QuerySnapshot querySnapshot = await firestore
-          .collection('mystery')
-          .doc(mysteryId)
-          .collection('steps')
-          .orderBy('order')
-          .get();
+      // Get the completed step IDs from the user document
+      final userDoc = await firestore.collection('users').doc(user.uid).get();
+      final userData = userDoc.data();
+      
+      if (userData == null || !userData.containsKey('steps')) {
+        _logger.warning('No completed steps found for user');
+        return [];
+      }
 
-      return querySnapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        return StepData.fromMap(data);
-      }).where((step) => step.completed)
-      .toList(); 
+      final List<dynamic> completedStepIds = userData['steps'];
+      if (completedStepIds.isEmpty) return [];
+
+      // Fetch all steps that match the completed step IDs
+      final stepsCollection = firestore
+        .collection('mystery')
+        .doc(mysteryId)
+        .collection('steps');
+
+      // Get each step by ID
+      final futures = completedStepIds.map((stepId) async {
+        final doc = await stepsCollection.doc(stepId).get();
+        if (doc.exists) {
+          final data = doc.data() as Map<String, dynamic>;
+          return StepData.fromMap(data);
+        } else {
+          return null;
+        }
+      });
+
+      final results = await Future.wait(futures);
+
+      // Filter out nulls and sort by the 'order' field
+      final completedSteps = results
+          .whereType<StepData>()
+          .toList()
+        ..sort((a, b) => a.order.compareTo(b.order));
+
+      return completedSteps;
+      
     } catch (e) {
       _logger.severe('Error fetching steps: $e');
       return [];
@@ -41,6 +69,25 @@ class FirebaseMysteryDatasource {
     } catch (e) {
       _logger.severe('Error fetching introduction: $e');
       return null;
+    }
+  }
+
+  Future<int> getStepsLength(String mysteryId) async {
+    try {
+      QuerySnapshot querySnapshot = await firestore
+          .collection('mystery')
+          .doc(mysteryId)
+          .collection('steps')
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.size;
+      } else {
+        _logger.severe('Mystery not found or no introduction');
+        return 0;
+      }
+    } catch (e) {
+      _logger.severe('Error fetching introduction: $e');
+      return 0;
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:app/domain/models/routes.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class RouteInfoScreen extends StatefulWidget {
   final PresentationController presentationController;
@@ -53,7 +54,7 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         backgroundColor: const Color(0xFFF8F4FF),
         appBar: _buildAppBar(context),
         body: _buildBody(route.name, route.description, route.duration, route.path),
-        floatingActionButton: _buildFloatingButton(),
+        floatingActionButton: _buildFloatingButton(route.name),
       );
     });
   }
@@ -167,10 +168,14 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
     );
   }
 
-  Widget _buildFloatingButton() {
+  Widget _buildFloatingButton(String routeName) {
     if (fromCompletedScreen) {
       return FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          //final shareText = 'I just completed the mystery route: $routeName! 🕵️‍♂️🔍 Try it out too!';
+          String shareText = 'share_text'.tr(namedArgs: {'routeName': routeName});
+          Share.share(shareText);
+        },
         backgroundColor: const Color(0xFFECE3FF),
         child: const Icon(Icons.share),
       );
