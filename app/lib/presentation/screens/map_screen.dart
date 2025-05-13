@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
+import 'package:app/presentation/widgets/custom_google_map.dart';
 
 class MapPage extends StatefulWidget {
   final PresentationController presentationController;
 
-  const MapPage({Key? key, required this.presentationController});
+  const MapPage({super.key, required this.presentationController});
 
   @override
   State<MapPage> createState() => _MapPageState(presentationController);
@@ -23,14 +25,28 @@ class _MapPageState extends State<MapPage> {
   }
 
   final Completer<GoogleMapController> _mapController = Completer<GoogleMapController>();
-
   final Location _locationController = Location();
   LatLng? currentP; 
+
+  final Set<Polyline> _polylines = {};
+
+  //Map<PolylineId, Polyline> polylines = {};
+
+  LatLng? _selectedPoint;
+  bool _showButtons = false;
 
   @override
   void initState(){
     super.initState();
-    getLocationUpdates();
+    getLocationUpdates();/*.then(
+      (_) => {
+        getPolylinePoints().then((coordinates) => {
+          print(coordinates),
+          generatePolylineFromPoints(coordinates)
+        }),
+      }
+    );*/
+    _setPolyline();
   }
   
   @override
@@ -44,23 +60,10 @@ class _MapPageState extends State<MapPage> {
       body: Stack( 
         children: [ 
           currentP == null 
-          ? const Center(
-              child: Text("Loading..."),
+          ? Center(
+              child: Text('carrega'.tr(),)
             )
-          : GoogleMap(
-            onMapCreated: ((GoogleMapController controller) => _mapController.complete(controller)),
-            initialCameraPosition: CameraPosition( 
-              target: currentP!,
-              zoom: 16
-            ),
-            markers: {
-              Marker(
-                markerId: MarkerId("_currentLocation"),
-                icon: BitmapDescriptor.defaultMarker,
-                position: currentP!
-              ),
-            },
-          ),
+          : maps(),
           SafeArea(
             child: Column(
               children: [
@@ -76,14 +79,29 @@ class _MapPageState extends State<MapPage> {
             right: 20,
             child: centerCamera()
           ),
-          Positioned(
-            bottom: 10, 
-            left: 20,
-            right: 60,
-            child: startAndInfoButtonsWidget()
-          ),
+          if (_showButtons) 
+            Positioned(
+              bottom: 10, 
+              left: 20,
+              right: 60,
+              child: startAndInfoButtonsWidget()
+            ),
         ]  
       ),
+    );
+  }
+
+  Widget maps() {
+    return CustomGoogleMap(
+      currentPosition: currentP!,
+      polylines: _polylines,
+      mapControllerCompleter: _mapController,
+      onPolylineTap: (tapped, selected) {
+        setState(() {
+          _selectedPoint = selected;
+          _showButtons = selected != null;
+        });
+      },
     );
   }
 
@@ -105,7 +123,7 @@ class _MapPageState extends State<MapPage> {
       child: TextField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          hintText: 'Search routes...',
+          hintText: 'search'.tr(),
           border: InputBorder.none,
           icon: Icon(Icons.search),
         ),
@@ -128,8 +146,8 @@ class _MapPageState extends State<MapPage> {
       foregroundColor: Colors.black,
       onPressed: () async {
         if (currentP == null) {
-          const Center(
-            child: Text("Loading..."),
+          Center(
+            child: Text('carrega'.tr()),
           );
         }
         final controller = await _mapController.future;
@@ -169,11 +187,67 @@ class _MapPageState extends State<MapPage> {
       if (currentLocation.latitude != null && currentLocation.longitude != null) {
         setState(() {
           currentP = LatLng(currentLocation.latitude!, currentLocation.longitude!);
-          cameraToPosition(currentP!);
+          //cameraToPosition(currentP!);
         });
       }
     });
+  }
+  
+  /*
+  Future<List<LatLng>> getPolylinePoints() async {
+    List<LatLng> polylineCoordinates = [];
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> routePoints = await _presentationController.getRoutesPoints();
 
+    final request = PolylineRequest(
+      origin: routePoints.first,
+      destination: routePoints.last,
+      mode: TravelMode.walking,
+      wayPoints: routePoints
+          .sublist(1, routePoints.length - 1)
+          .map((point) => PolylineWayPoint(location: '${point.latitude},${point.longitude}'))
+          .toList(),
+    );
+    
+    final result = await polylinePoints.getRouteBetweenCoordinates(
+      googleApiKey: "",
+      request: request,
+    );
+
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        }
+      );
+    } else {
+      print(result.errorMessage);
+    }
+    return polylineCoordinates;
+
+  }
+
+  void generatePolylineFromPoints(List<LatLng> polylineCoordinates) async {
+    PolylineId id = PolylineId("poly"); //might have diferent id for each polyline
+    Polyline polyline = Polyline(
+      polylineId: id, 
+      color: Colors.deepPurple, 
+      points: polylineCoordinates,
+      width: 8
+    );
+    setState(() {
+      polylines[id] = polyline;
+    });
+  }*/
+
+  Future<void> _setPolyline() async {
+    _polylines.add(
+      Polyline(
+        polylineId: PolylineId('route'),
+        points: await _presentationController.getRoutesPoints(),
+        color: Colors.deepPurple,
+        width: 5,
+      ),
+    );
   }
 
   Widget startAndInfoButtonsWidget() {
@@ -182,7 +256,9 @@ class _MapPageState extends State<MapPage> {
       children: [
         ElevatedButton(
           onPressed: () {
-            // Your Start logic here
+            //aqui necesito pasar el id del misterio de la ruta
+            //_presentationController.misteriScreen(context, "NWjKzu7Amz2AXJLZijQL", "VZQmKDgsmyLp5oaKsICZ");
+            _presentationController.stepScreen(context, "VZQmKDgsmyLp5oaKsICZ");
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -192,11 +268,12 @@ class _MapPageState extends State<MapPage> {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: const Text('Start'),
+          child: Text('start'.tr()),
         ),
         ElevatedButton(
           onPressed: () {
-            _presentationController.infoRoute(context, false);
+            //aqui necesito pasar el id de la ruta
+            _presentationController.infoRoute(context, false, "NWjKzu7Amz2AXJLZijQL");
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -206,7 +283,7 @@ class _MapPageState extends State<MapPage> {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: const Text('Info'),
+          child: Text('info'.tr()),
         ),
       ],
     );
@@ -219,7 +296,7 @@ class _MapPageState extends State<MapPage> {
   
     switch (index) {
       case 0:
-        _presentationController.mapScreen(context);
+        //_presentationController.mapScreen(context);
         break;
       case 1:
           _presentationController.doneRoutesScreen(context);

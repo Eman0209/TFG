@@ -1,5 +1,6 @@
 import 'package:app/domain/models/routes.dart';
 import 'package:app/presentation/presentation_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class RouteInfoScreen extends StatefulWidget {
@@ -41,14 +42,15 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         }
 
         if (!snapshot.hasData || snapshot.data == null) {
-          return const Scaffold(
-            body: Center(child: Text("Route not found")),
+          return Scaffold(
+            body: Center(child: Text('route_not_found'.tr())),
           );
         }
 
         final route = snapshot.data!;
       
-      return Scaffold( backgroundColor: const Color(0xFFF8F4FF),
+      return Scaffold( 
+        backgroundColor: const Color(0xFFF8F4FF),
         appBar: _buildAppBar(context),
         body: _buildBody(route.name, route.description, route.duration, route.path),
         floatingActionButton: _buildFloatingButton(),
@@ -64,8 +66,8 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         icon: const Icon(Icons.arrow_back, color: Colors.black),
         onPressed: () => Navigator.pop(context),
       ),
-      title: const Text(
-        'Information about the route',
+      title: Text(
+        'info_route'.tr(),
         style: TextStyle(color: Colors.black),
       ),
       centerTitle: true,
@@ -77,12 +79,20 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
             child: ListView(
               children: [
-                _buildTextSection('Name', name),
-                _buildTextSection('Description', description),
+                _buildTextSection('name'.tr(), name),
+                _buildTextSection('description'.tr(), description),
                 if (fromCompletedScreen)
-                  _buildTextSection('Finished in', 'It was finished in $duration.')
+                  // Especificar lo de minutos o horas
+                  _buildTextSection(
+                    'finished_in'.tr(),
+                    'finished_message'.tr(namedArgs: {'duration': duration.toString()})
+                  )
                 else
-                  _buildTextSection('Time', 'It’s going to last about $duration h.'),
+                  // Especificar lo de minutos o horas
+                  _buildTextSection(
+                    'time'.tr(),
+                    'last_message'.tr(namedArgs: {'duration': duration.toString()})
+                  ),
                 _buildPath(path),
                 const SizedBox(height: 40),
               ],
@@ -123,7 +133,9 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Path', style: TextStyle(
+        Text(
+          'route'.tr() , 
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
           )
@@ -167,16 +179,17 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         padding: const EdgeInsets.only(right: 16.0),
         child: ElevatedButton(
           onPressed: () {
-            // Start logic here
+            // Modificar el string 
+            _presentationController.stepScreen(context, "VZQmKDgsmyLp5oaKsICZ");
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFECE3FF),
             foregroundColor: Colors.black,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
-          child: const Padding(
+          child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-            child: Text('Start'),
+            child: Text('start'.tr()),
           ),
         ),
       );

@@ -1,12 +1,13 @@
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:sign_in_button/sign_in_button.dart";
+import "package:easy_localization/easy_localization.dart";
 import 'package:app/presentation/presentation_controller.dart';
 
 class Login extends StatefulWidget {
   final PresentationController presentationController;
 
-  const Login({Key? key, required this.presentationController});
+  const Login({super.key, required this.presentationController});
 
   @override
   State<Login> createState() => _Login(presentationController);
@@ -44,7 +45,7 @@ class _Login extends State<Login> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Benvingut a XXX",
+        Text('welcome_txt'.tr(),
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
         SizedBox(height: 70),
         Container(
@@ -73,7 +74,7 @@ class _Login extends State<Login> {
         onPressed: () {
           _handleGoogleSignIn();
         },
-        text: "Accedeix amb Google",
+        text: 'google_access'.tr(),
         padding: EdgeInsets.all(10.0),
       )
     ));

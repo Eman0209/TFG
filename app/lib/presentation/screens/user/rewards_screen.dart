@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:app/presentation/presentation_controller.dart';
 
 class RewardsScreen extends StatefulWidget {
   final PresentationController presentationController;
 
-  const RewardsScreen({Key? key, required this.presentationController});
+  const RewardsScreen({super.key, required this.presentationController});
 
   @override
   State<RewardsScreen> createState() => _RewardsScreenState(presentationController);
@@ -29,7 +30,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Rewards', style: TextStyle(color: Colors.black)),
+        title: Text('rewards'.tr(), style: TextStyle(color: Colors.black)),
         centerTitle: true,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
@@ -101,7 +102,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                 foregroundColor: Colors.black,
               ),
               onPressed: () => Navigator.pop(context),
-              child: const Text("Close"),
+              child: Text('close'.tr()),
             ),
           ],
         ),

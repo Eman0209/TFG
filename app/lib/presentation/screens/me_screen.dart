@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
 
 class PerfilPage extends StatefulWidget {
   final PresentationController presentationController;
 
-  const PerfilPage({Key? key, required this.presentationController});
+  const PerfilPage({super.key, required this.presentationController});
 
   @override
   State<PerfilPage> createState() => _PerfilPageState(presentationController);
@@ -32,8 +33,8 @@ class _PerfilPageState extends State<PerfilPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Me",
+            Text(
+              'me'.tr(),
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w600,
@@ -42,7 +43,7 @@ class _PerfilPageState extends State<PerfilPage> {
             const SizedBox(height: 20),
             _buildMenuItem(
               icon: Icons.emoji_events_outlined,
-              text: "Rewards",
+              text: 'rewards'.tr(),
               onTap: () {
                 _presentationController.rewardsScreen(context);
               }
@@ -50,7 +51,7 @@ class _PerfilPageState extends State<PerfilPage> {
             const SizedBox(height: 10),
             _buildMenuItem(
               icon: Icons.language,
-              text: "Language",
+              text: 'language'.tr(),
               onTap: () {
                 _showLanguagePicker(context);
               }
@@ -58,7 +59,7 @@ class _PerfilPageState extends State<PerfilPage> {
             const SizedBox(height: 10),
             _buildMenuItem(
               icon: Icons.person_outline,
-              text: "Edit User",
+              text: 'editUser'.tr(),
               onTap: () {
                 _presentationController.editUserScreen(context);
               }
@@ -66,7 +67,7 @@ class _PerfilPageState extends State<PerfilPage> {
             const SizedBox(height: 10),
             _buildMenuItem(
               icon: Icons.warning_amber_outlined,
-              text: "How to play",
+              text: 'howToPlay'.tr(),
                onTap: () {
                 _presentationController.howToPlayScreen(context);
               }
@@ -115,25 +116,42 @@ class _PerfilPageState extends State<PerfilPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: const Text('English'),
+            title: Text('english'.tr()),
             onTap: () {
-              Navigator.pop(context);
-              // Set language logic here
+              Navigator.pop(context); 
+              // Switch to English
+              changeLanguage(Locale('en'));
             },
           ),
           ListTile(
-            title: const Text('Español'),
+            title: Text('spanish'.tr()),
             onTap: () {
               Navigator.pop(context);
+              // Switch to Spanish
+              changeLanguage(Locale('es'));
             },
           ),
           ListTile(
-            title: const Text('Català'),
+            title: Text('catalan'.tr()),
             onTap: () {
               Navigator.pop(context);
+              // Switch to Catalan
+              changeLanguage(Locale('ca'));
             },
           ),
         ],
+      ),
+    );
+  }
+
+  void changeLanguage(Locale locale) {
+    _presentationController.changeLanguage(locale, context);
+    Navigator.of(context).pop();
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    scaffoldMessenger.showSnackBar(
+      SnackBar(
+        content: Text('restart_for_changes'.tr()),
+        backgroundColor: Colors.green,
       ),
     );
   }

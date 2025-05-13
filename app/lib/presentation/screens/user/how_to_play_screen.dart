@@ -4,7 +4,7 @@ import 'package:app/presentation/presentation_controller.dart';
 class HowToPlayScreen extends StatefulWidget {
   final PresentationController presentationController;
 
-  const HowToPlayScreen({Key? key, required this.presentationController});
+  const HowToPlayScreen({super.key, required this.presentationController});
 
   @override
   State<HowToPlayScreen> createState() => _HowToPlayScreenState(presentationController);
