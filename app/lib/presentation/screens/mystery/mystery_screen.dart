@@ -71,12 +71,12 @@ class _MysteryScreenState extends State<MysteryScreen> {
           const SizedBox(height: 8),
           if (isFinished) 
             finalizePopUp(),
-          const SizedBox(height: 80),
+          const SizedBox(height: 30),
         ]
       ),
-    floatingActionButton: isFinished
+    floatingActionButton: !isFinished
       ?
-        finalizeButton()
+        newTrackButton()
       : null
     );
   }
@@ -239,7 +239,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
     );
   }
 
-  Widget finalizeButton() {
+  Widget newTrackButton() {
     return ElevatedButton(
       onPressed: () {
         // afegir funcio que canvii a una nova pista 

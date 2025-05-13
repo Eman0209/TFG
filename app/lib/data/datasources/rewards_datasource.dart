@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logging/logging.dart';
 
 class FirebaseRewardsDatasource {
@@ -15,6 +16,7 @@ class FirebaseRewardsDatasource {
       final trophies = querySnapshot.docs.map((doc) {
         final data = doc.data();
         return {
+          'id': doc.id,
           'name': data['name'] ?? '',
           'description': data['description'] ?? '',
           'image': data['image'] ?? '',
@@ -28,6 +30,20 @@ class FirebaseRewardsDatasource {
     }
   }
 
-  //faltaria un get trophies user
+  Future<List<String>> getMyOwnTrophies(User? user) async {
+    try {
+      final querySnapshot = await firestore
+          .collection('myOwnTrophies')
+          .where('userId', isEqualTo: user!.uid)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => doc['trophyId'] as String)
+          .toList();
+    } catch (e) {
+      _logger.severe('Error fetching user trophies: $e');
+      return [];
+    }
+  }
 
 }

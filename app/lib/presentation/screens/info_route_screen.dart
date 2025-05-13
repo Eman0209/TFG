@@ -172,7 +172,6 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
     if (fromCompletedScreen) {
       return FloatingActionButton(
         onPressed: () {
-          //final shareText = 'I just completed the mystery route: $routeName! 🕵️‍♂️🔍 Try it out too!';
           String shareText = 'share_text'.tr(namedArgs: {'routeName': routeName});
           Share.share(shareText);
         },

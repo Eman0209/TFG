@@ -17,8 +17,15 @@ class _RewardsScreenState extends State<RewardsScreen> {
   _RewardsScreenState(PresentationController presentationController) {
     _presentationController = presentationController;
   }
-  
+/*
+  late Future<List<Map<String, dynamic>>> _myTrophies;
 
+  @override
+  void initState() {
+    super.initState();
+    _myTrophies = _presentationController.getMyOwnTrophies();
+  }
+ */ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,38 +40,48 @@ class _RewardsScreenState extends State<RewardsScreen> {
         title: Text('rewards'.tr(), style: TextStyle(color: Colors.black)),
         centerTitle: true,
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _presentationController.getTrophies(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: getAllTrophies(),
+    );
+  }
 
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
+  Widget getAllTrophies() {
+    return FutureBuilder<List<dynamic>>(
+      future: Future.wait([
+        _presentationController.getTrophies(),     
+        _presentationController.getMyOwnTrophies() 
+      ]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          final trophies = snapshot.data ?? [];
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
 
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 0.73,
-              children: List.generate(trophies.length, (i) {
-                final trophy = trophies[i];
-                return _buildTrophyTile(
-                  trophy['name'],
-                  trophy['description'],
-                  trophy['image'],
-                );
-              }),
-            ),
-          );
-        },
-      ),
+        final allTrophies = snapshot.data![0] as List<Map<String, dynamic>>;
+        final ownedTrophies = snapshot.data![1] as List<String>;
+
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: GridView.count(
+            crossAxisCount: 3,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 0.73,
+            children: List.generate(allTrophies.length, (i) {
+              final trophy = allTrophies[i];
+              final isOwned = ownedTrophies.contains(trophy['id']);
+              return _buildTrophyTile(
+                trophy['name'],
+                trophy['description'],
+                trophy['image'],
+                isOwned,
+              );
+            }),
+          ),
+        );
+      },
     );
   }
 
@@ -110,7 +127,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
     );
   }
 
-  Widget _buildTrophyTile(String title, String description, String image) {
+  Widget _buildTrophyTile(String title, String description, String image, bool isOwned,) {
     return GestureDetector(
       onTap: () {
         _showTrophyDialog(title, description); 
@@ -128,8 +145,8 @@ class _RewardsScreenState extends State<RewardsScreen> {
               width: 100,
               height: 100,
               image: AssetImage(image),
-              color: Colors.grey,
-              colorBlendMode: BlendMode.srcIn
+              color: isOwned ? null : Colors.grey,
+              colorBlendMode: isOwned ? null : BlendMode.srcIn,
             ),
           ),
           const SizedBox(height: 8),
@@ -138,8 +155,9 @@ class _RewardsScreenState extends State<RewardsScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey,
-              fontWeight: FontWeight.normal,
+              //esto es del nombre, pensar si quiero que se modifique
+              color: isOwned ? Colors.black : Colors.grey,
+              fontWeight: isOwned ? FontWeight.bold : FontWeight.normal,
             ),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,

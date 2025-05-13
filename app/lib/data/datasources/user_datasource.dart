@@ -113,7 +113,6 @@ class FirebaseUserDatasource {
     } else {
       _logger.severe("User document does not exist. Can't update routes.");
     }
-
   }
   
 }

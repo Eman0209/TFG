@@ -1,4 +1,5 @@
 import 'package:app/data/datasources/rewards_datasource.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Clase per a conectar amb el back
 class RewardsController {
@@ -11,7 +12,9 @@ class RewardsController {
     return await datasource.getTrophies();
   }
 
-  //faltaria un get trophies user
+  Future<List<String>> fetchMyOwnTrophies(User? user) async {
+    return await datasource.getMyOwnTrophies(user);
+  }
 
 
 }

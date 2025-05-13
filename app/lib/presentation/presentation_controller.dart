@@ -176,6 +176,10 @@ class PresentationController {
     return rewardsController.fetchTrophies();
   }
 
+  Future<List<String>> getMyOwnTrophies() async {
+    return rewardsController.fetchMyOwnTrophies(_user!);
+  }
+
   Future<List<RouteData>> getUserDoneRoutes() async {
     List<String> doneRoutes = await userController.fetchRoutes(_user);
     List<RouteData> infoRoutes = [];
