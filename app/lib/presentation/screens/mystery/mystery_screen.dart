@@ -1,4 +1,5 @@
 import 'package:app/domain/models/steps.dart';
+import 'package:app/presentation/screens/mystery/time_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:app/presentation/presentation_controller.dart';
@@ -37,12 +38,15 @@ class _MysteryScreenState extends State<MysteryScreen> {
   bool isFinished = false;
   late Future<int> _stepsLength;
 
+  final timerService = TimerService();
+
   @override
   void initState() {
     super.initState();
     _routeTitle = _presentationController.getMysteryTitle(widget.routeId);
     _stepsFuture = _presentationController.getCompletedSteps(widget.mysteryId);
     _stepsLength = _presentationController.getLengthOfSteps(widget.mysteryId);
+    timerService.start();
   }
 
   @override
@@ -236,7 +240,11 @@ class _MysteryScreenState extends State<MysteryScreen> {
           SizedBox(height: 8),
           ElevatedButton(
             onPressed: () async {
-              _presentationController.addDoneRoute(context, widget.routeId);
+              timerService.stop();
+
+              final duration = timerService.elapsed;
+
+              _presentationController.addDoneRoute(context, widget.routeId, duration);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color.fromARGB(255, 206, 179, 254),

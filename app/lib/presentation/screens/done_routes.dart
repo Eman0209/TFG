@@ -52,7 +52,7 @@ class _DonePageState extends State<DonePage> {
 
           final routes = snapshot.data!;
 
-          if (routes.length >= 1 && routes.length <= 4 && !_trophyGiven) {
+          if (routes.isNotEmpty && routes.length <= 4 && !_trophyGiven) {
             _trophyGiven = true;
 
             WidgetsBinding.instance.addPostFrameCallback((_) {

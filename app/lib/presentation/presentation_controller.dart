@@ -185,7 +185,7 @@ class PresentationController {
   }
 
   Future<List<RouteData>> getUserDoneRoutes() async {
-    List<String> doneRoutes = await userController.fetchRoutes(_user);
+    List<String> doneRoutes = await routesController.fetchDoneRoutes(_user);
     List<RouteData> infoRoutes = [];
     for (String routeId in doneRoutes) {
       RouteData? routeInfo = await getRouteData(routeId);
@@ -194,8 +194,8 @@ class PresentationController {
     return infoRoutes;
   }
 
-  void addDoneRoute(BuildContext context, String routeId) async {
-    await userController.addDoneRoute(_user, routeId);
+  void addDoneRoute(BuildContext context, String routeId, Duration timeSpent) async {
+    await routesController.addDoneRoute(_user, routeId, timeSpent);
     // aqui se pueden ver las categorias de la ruta y añadir el reward correspondiente
     RouteData? routeInfo = await getRouteData(routeId);
     if (routeInfo!.category == "hystory") {
@@ -272,6 +272,11 @@ class PresentationController {
 
   Future<int> getLengthOfSteps(String mysteryId) {
     return mysteryController.fetchLengthOfSteps(mysteryId);
+  }
+
+  Future<Duration> getRouteDuration(String routeId) async {
+    Duration? duration = await routesController.fetchRouteDuration(_user!, routeId);
+    return duration!;
   }
 
   /* ------------------------------ Screens ------------------------------ */

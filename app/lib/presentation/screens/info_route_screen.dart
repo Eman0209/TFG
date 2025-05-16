@@ -49,14 +49,41 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         }
 
         final route = snapshot.data!;
+
+        if (!fromCompletedScreen) {
+          return Scaffold(
+            backgroundColor: const Color(0xFFF8F4FF),
+            appBar: _buildAppBar(context),
+            body: _buildBody(route.name, route.description, Duration(seconds: route.duration), route.path),
+            floatingActionButton: _buildFloatingButton(route.name),
+          );
+        }
       
-      return Scaffold( 
-        backgroundColor: const Color(0xFFF8F4FF),
-        appBar: _buildAppBar(context),
-        body: _buildBody(route.name, route.description, route.duration, route.path),
-        floatingActionButton: _buildFloatingButton(route.name),
-      );
-    });
+        return FutureBuilder<Duration>(
+          future: _presentationController.getRouteDuration(routeId),
+          builder: (context, durationSnapshot) {
+            if (durationSnapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            final duration = durationSnapshot.data ?? Duration.zero;
+
+            if (duration < Duration(minutes: 30)) {
+              _presentationController.addUserTrophy("Pu52xSz71yaQtE3JquXs");
+            }
+
+            return Scaffold(
+              backgroundColor: const Color(0xFFF8F4FF),
+              appBar: _buildAppBar(context),
+              body: _buildBody(route.name, route.description, duration, route.path),
+              floatingActionButton: _buildFloatingButton(route.name),
+            );
+          },
+        );
+      },
+    );
   }
 
   AppBar _buildAppBar(BuildContext context) {
@@ -75,30 +102,39 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
     );
   }
 
-  Widget _buildBody(String name, String description, int duration, List<String> path) {
+  String formatDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+    return '${_twoDigits(hours)}:${_twoDigits(minutes)}:${_twoDigits(seconds)}';
+  }
+
+  String _twoDigits(int n) => n.toString().padLeft(2, '0');
+
+  Widget _buildBody(String name, String description, Duration duration, List<String> path) {
+    final formattedDuration = formatDuration(duration);
+
     return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-            child: ListView(
-              children: [
-                _buildTextSection('name'.tr(), name),
-                _buildTextSection('description'.tr(), description),
-                if (fromCompletedScreen)
-                  // Especificar lo de minutos o horas
-                  _buildTextSection(
-                    'finished_in'.tr(),
-                    'finished_message'.tr(namedArgs: {'duration': duration.toString()})
-                  )
-                else
-                  // Especificar lo de minutos o horas
-                  _buildTextSection(
-                    'time'.tr(),
-                    'last_message'.tr(namedArgs: {'duration': duration.toString()})
-                  ),
-                _buildPath(path),
-                const SizedBox(height: 40),
-              ],
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+      child: ListView(
+        children: [
+          _buildTextSection('name'.tr(), name),
+          _buildTextSection('description'.tr(), description),
+          if (fromCompletedScreen)
+            _buildTextSection(
+              'finished_in'.tr(),
+              'finished_message'.tr(namedArgs: {'duration': formattedDuration})
+            )
+          else
+            _buildTextSection(
+              'time'.tr(),
+              'last_message'.tr(namedArgs: {'duration': formattedDuration})
             ),
-          );
+          _buildPath(path),
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
   }
 
   Widget _buildTextSection(String title, String content) {

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logging/logging.dart';
 import 'package:app/domain/models/steps.dart';
 
@@ -10,18 +9,23 @@ class FirebaseMysteryDatasource {
 
   final Logger _logger = Logger('FirebaseMysteryDatasource');
 
-  Future<List<StepData>> getCompletedSteps(User user, String mysteryId) async {
+  Future<List<StepData>> getCompletedSteps(String userId, String mysteryId) async {
     try {
-      // Get the completed step IDs from the user document
-      final userDoc = await firestore.collection('users').doc(user.uid).get();
-      final userData = userDoc.data();
+      // Get the completed step IDs from the 'doneSteps' collection
+      final querySnapshot = await firestore
+          .collection('doneSteps')
+          .where('userId', isEqualTo: userId)
+          .limit(1)
+          .get();
       
-      if (userData == null || !userData.containsKey('steps')) {
-        _logger.warning('No completed steps found for user');
+      if (querySnapshot.docs.isEmpty) {
+        _logger.warning('No doneSteps document found for user $userId');
         return [];
       }
 
-      final List<dynamic> completedStepIds = userData['steps'];
+      final docData = querySnapshot.docs.first.data();
+      final List<dynamic> completedStepIds = docData['steps'] ?? [];
+
       if (completedStepIds.isEmpty) return [];
 
       // Fetch all steps that match the completed step IDs
