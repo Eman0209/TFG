@@ -1,5 +1,6 @@
 import 'package:app/domain/models/routes.dart';
 import 'package:app/data/datasources/routes_datasource.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logging/logging.dart';
@@ -43,6 +44,18 @@ class RoutesController {
       _logger.severe("Geocoding failed: $e");
     }
     return null;
+  }
+
+  Future<List<String>> fetchDoneRoutes(User? user) async {
+    return await datasource.getDoneRoutes(user!.uid);
+  }
+
+  Future<void> addDoneRoute(User? user, String routeId, Duration timeSpent) async {
+    await datasource.addDoneRoute(user!.uid, routeId, timeSpent);
+  }
+
+  Future<Duration?> fetchRouteDuration(User? user, String routeId) async {
+    return await datasource.getRouteDuration(user!.uid, routeId);
   }
 
 }

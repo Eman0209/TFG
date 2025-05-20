@@ -176,8 +176,16 @@ class PresentationController {
     return rewardsController.fetchTrophies();
   }
 
+  Future<List<String>> getMyOwnTrophies() async {
+    return rewardsController.fetchMyOwnTrophies(_user!);
+  }
+
+  Future<void> addUserTrophy(String trophyId) async {
+    await rewardsController.addUserTrophy(_user!, trophyId);
+  }
+
   Future<List<RouteData>> getUserDoneRoutes() async {
-    List<String> doneRoutes = await userController.fetchRoutes(_user);
+    List<String> doneRoutes = await routesController.fetchDoneRoutes(_user);
     List<RouteData> infoRoutes = [];
     for (String routeId in doneRoutes) {
       RouteData? routeInfo = await getRouteData(routeId);
@@ -186,8 +194,19 @@ class PresentationController {
     return infoRoutes;
   }
 
-  void addDoneRoute(BuildContext context, String routeId) async {
-    await userController.addDoneRoute(_user, routeId);
+  void addDoneRoute(BuildContext context, String routeId, Duration timeSpent) async {
+    await routesController.addDoneRoute(_user, routeId, timeSpent);
+    // aqui se pueden ver las categorias de la ruta y añadir el reward correspondiente
+    RouteData? routeInfo = await getRouteData(routeId);
+    if (routeInfo!.category == "hystory") {
+      await addUserTrophy("BrK3LP4sD9i6MWCAjksn");
+    } else if (routeInfo.category == "phantom") {
+      await addUserTrophy("BEgCnA6mXMZAccR9lzRi");
+    } else if (routeInfo.category == "modern") {
+      await addUserTrophy("5MbItqeOAMZhla3RYkyA");
+    } else if (routeInfo.category == "espiritual") {
+      await addUserTrophy("7PCCHmDRP9GTsaN0gKot");
+    }
     doneRoutesScreen(context);
   }
 
@@ -253,6 +272,11 @@ class PresentationController {
 
   Future<int> getLengthOfSteps(String mysteryId) {
     return mysteryController.fetchLengthOfSteps(mysteryId);
+  }
+
+  Future<Duration> getRouteDuration(String routeId) async {
+    Duration? duration = await routesController.fetchRouteDuration(_user!, routeId);
+    return duration!;
   }
 
   /* ------------------------------ Screens ------------------------------ */

@@ -43,7 +43,6 @@ class FirebaseUserDatasource {
         'uid': user.uid,
         'email': user.email,
         'name': username,
-        'routes': [],
       });
     }
   }
@@ -67,27 +66,6 @@ class FirebaseUserDatasource {
     return doc.exists;
   }
 
-  Future<List<String>> getRoutes(User user) async {
-    try {
-      final doc = await firestore.collection('users').doc(user.uid).get();
-      if (doc.exists) {
-        final data = doc.data();
-        if (data != null && data['routes'] is List) {
-          return List<String>.from(data['routes']);
-        } else {
-          _logger.severe('Routes field is missing or not a list');
-          return [];
-        }
-      } else {
-        _logger.severe('User document not found');
-        return [];
-      }
-    } catch (e) {
-      _logger.severe('Error fetching routes: $e');
-      return [];
-    }
-  }
-
   /*
   Future<bool> usernameUnique(String username) async {
     final respuesta = await http.get
@@ -100,20 +78,5 @@ class FirebaseUserDatasource {
     }
   }
   */
-
-  Future<void> addDoneRoute(User user, String routeId) async {
-    final userDocRef = firestore.collection('users').doc(user.uid);
-    final userDoc = await userDocRef.get();
-
-    if (userDoc.exists) {
-      // Update only the 'name' field
-      await userDocRef.update({
-        'routes': FieldValue.arrayUnion([routeId]),
-      });
-    } else {
-      _logger.severe("User document does not exist. Can't update routes.");
-    }
-
-  }
   
 }

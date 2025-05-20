@@ -1,4 +1,5 @@
 import 'package:app/domain/models/steps.dart';
+import 'package:app/presentation/screens/mystery/time_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:app/presentation/presentation_controller.dart';
@@ -33,8 +34,11 @@ class _MysteryScreenState extends State<MysteryScreen> {
   late Future<List<StepData?>> _stepsFuture;
   late Future<String> _routeTitle;
   
+  bool _trophyGiven = false;
   bool isFinished = false;
   late Future<int> _stepsLength;
+
+  final timerService = TimerService();
 
   @override
   void initState() {
@@ -42,6 +46,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
     _routeTitle = _presentationController.getMysteryTitle(widget.routeId);
     _stepsFuture = _presentationController.getCompletedSteps(widget.mysteryId);
     _stepsLength = _presentationController.getLengthOfSteps(widget.mysteryId);
+    timerService.start();
   }
 
   @override
@@ -71,12 +76,12 @@ class _MysteryScreenState extends State<MysteryScreen> {
           const SizedBox(height: 8),
           if (isFinished) 
             finalizePopUp(),
-          const SizedBox(height: 80),
+          const SizedBox(height: 30),
         ]
       ),
-    floatingActionButton: isFinished
+    floatingActionButton: !isFinished
       ?
-        finalizeButton()
+        newTrackButton()
       : null
     );
   }
@@ -113,6 +118,14 @@ class _MysteryScreenState extends State<MysteryScreen> {
           }
 
           final steps = snapshot.data!;
+
+          if (steps.length >= 5 && !_trophyGiven) {
+            _trophyGiven = true;
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _presentationController.addUserTrophy("xLqeRq8Aa5PPAIV7lycM");
+            });
+          }
 
           return FutureBuilder<int>(
             future: _stepsLength,
@@ -226,8 +239,12 @@ class _MysteryScreenState extends State<MysteryScreen> {
           ),
           SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () {
-              _presentationController.addDoneRoute(context, widget.routeId);
+            onPressed: () async {
+              timerService.stop();
+
+              final duration = timerService.elapsed;
+
+              _presentationController.addDoneRoute(context, widget.routeId, duration);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -239,7 +256,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
     );
   }
 
-  Widget finalizeButton() {
+  Widget newTrackButton() {
     return ElevatedButton(
       onPressed: () {
         // afegir funcio que canvii a una nova pista 

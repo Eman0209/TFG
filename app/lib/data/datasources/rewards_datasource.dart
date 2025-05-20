@@ -15,6 +15,7 @@ class FirebaseRewardsDatasource {
       final trophies = querySnapshot.docs.map((doc) {
         final data = doc.data();
         return {
+          'id': doc.id,
           'name': data['name'] ?? '',
           'description': data['description'] ?? '',
           'image': data['image'] ?? '',
@@ -28,6 +29,43 @@ class FirebaseRewardsDatasource {
     }
   }
 
-  //faltaria un get trophies user
+  Future<List<String>> getMyOwnTrophies(String userId) async {
+    try {
+      final querySnapshot = await firestore
+          .collection('myOwnTrophies')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => doc['trophyId'] as String)
+          .toList();
+    } catch (e) {
+      _logger.severe('Error fetching user trophies: $e');
+      return [];
+    }
+  }
+
+  Future<void> addUserTrophy(String userId, String trophyId) async {
+    try {
+      final userTrophyRef = firestore.collection('myOwnTrophies');
+
+      final existing = await userTrophyRef
+          .where('userId', isEqualTo: userId)
+          .where('trophyId', isEqualTo: trophyId)
+          .get();
+
+      if (existing.docs.isEmpty) {
+        await userTrophyRef.add({
+          'userId': userId,
+          'trophyId': trophyId
+        });
+        _logger.info('Trophy $trophyId added for user $userId.');
+      } else {
+        _logger.info('Trophy $trophyId already exists for user $userId.');
+      }
+    } catch (e) {
+      _logger.severe('Error adding user trophy: $e');
+    }
+  }
 
 }
