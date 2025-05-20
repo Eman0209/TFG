@@ -19,7 +19,7 @@ import 'package:app/presentation/screens/user/how_to_play_screen.dart';
 import 'package:app/presentation/screens/info_route_screen.dart';
 import 'package:app/presentation/screens/mystery/route_screen.dart';
 import 'package:app/presentation/screens/mystery/mystery_screen.dart';
-import 'package:app/presentation/screens/mystery/step_screen.dart';
+import 'package:app/presentation/screens/mystery/introduction_screen.dart';
 import 'package:app/domain/models/routes.dart';
 import 'package:app/domain/models/steps.dart';
 import 'package:app/domain/controllers/user_controller.dart';
@@ -256,6 +256,16 @@ class PresentationController {
     return directions;
   }
 
+  Future<String> getRouteId() async {
+    //maybe pasar el polyline y a partir de aqui que lo busque en la BBDD
+    return "NWjKzu7Amz2AXJLZijQL";
+  }
+
+  Future<String> getMysteryId(String routeId) async {
+    RouteData? data = await routesController.fetchRouteData(routeId);
+    return data!.mysteryId;
+  }
+
   Future<String> getMysteryTitle(String routeId) async {
     RouteData? data = await routesController.fetchRouteData(routeId);
     return data!.name;
@@ -338,12 +348,12 @@ class PresentationController {
     );
   }
 
-  void stepScreen(BuildContext context, String mysteryId) {
+  void introductionScreen(BuildContext context, String mysteryId, String routeId) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
-          StepScreen(presentationController: this, mysteryId: mysteryId),
+          IntroScreen(presentationController: this, mysteryId: mysteryId, routeId: routeId),
       ),
     );
   }

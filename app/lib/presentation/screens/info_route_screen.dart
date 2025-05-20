@@ -218,9 +218,10 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
       return Padding(
         padding: const EdgeInsets.only(right: 16.0),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             // Modificar el string 
-            _presentationController.stepScreen(context, "VZQmKDgsmyLp5oaKsICZ");
+            String mysteryId = await _presentationController.getMysteryId(routeId);
+            _presentationController.introductionScreen(context, mysteryId, routeId);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFECE3FF),

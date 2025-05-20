@@ -2,24 +2,26 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:app/presentation/presentation_controller.dart';
 
-class StepScreen extends StatefulWidget {
+class IntroScreen extends StatefulWidget {
   final PresentationController presentationController;
   final String mysteryId;
+  final String routeId;
 
-  const StepScreen({
+  const IntroScreen({
     super.key,  
     required this.presentationController,
-    required this.mysteryId
+    required this.mysteryId,
+    required this.routeId
   });
 
   @override
-  State<StepScreen> createState() => _StepScreenState(presentationController);
+  State<IntroScreen> createState() => _IntroScreenState(presentationController);
 }
 
-class _StepScreenState extends State<StepScreen> {
+class _IntroScreenState extends State<IntroScreen> {
   late PresentationController _presentationController;
 
-  _StepScreenState(PresentationController presentationController) {
+  _IntroScreenState(PresentationController presentationController) {
     _presentationController = presentationController;
   }
 
@@ -74,7 +76,7 @@ class _StepScreenState extends State<StepScreen> {
   Widget goToMap(){
     return ElevatedButton(
       onPressed: () {
-        _presentationController.startedRouteScreen(context, "NWjKzu7Amz2AXJLZijQL");
+        _presentationController.startedRouteScreen(context, widget.routeId);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(255, 206, 179, 254),
