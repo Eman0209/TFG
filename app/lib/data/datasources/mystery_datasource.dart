@@ -9,6 +9,33 @@ class FirebaseMysteryDatasource {
 
   final Logger _logger = Logger('FirebaseMysteryDatasource');
 
+  Future<StepData?> getStepInfo(String mysteryId, int order) async {
+    try {
+      final stepsCollection = firestore
+        .collection('mystery')
+        .doc(mysteryId)
+        .collection('steps');
+      
+      final querySnapshot = await stepsCollection
+        .where('order', isEqualTo: order+1)
+        .limit(1)
+        .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final doc = querySnapshot.docs.first;
+        final data = doc.data();
+        return StepData.fromMap(data);
+      } else {
+      _logger.warning('No step found with order $order');
+      return null;
+    }
+
+    } catch (e) {
+      _logger.severe('Error fetching step info: $e');
+      return null;
+    }
+  }
+
   Future<List<StepData>> getCompletedSteps(String userId, String mysteryId) async {
     try {
       // Get the completed step IDs from the 'doneSteps' collection

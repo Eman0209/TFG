@@ -38,6 +38,8 @@ class _MysteryScreenState extends State<MysteryScreen> {
   bool isFinished = false;
   late Future<int> _stepsLength;
 
+  int lastStep = 0;
+
   final timerService = TimerService();
 
   @override
@@ -152,6 +154,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
                 separatorBuilder: (_, __) => SizedBox(height: 16),
                 itemBuilder: (context, index) {
                   final step = steps[index];
+                  lastStep = steps[index]!.order;
                   return IntrinsicHeight(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,9 +261,9 @@ class _MysteryScreenState extends State<MysteryScreen> {
 
   Widget newTrackButton() {
     return ElevatedButton(
-      onPressed: () {
-        // afegir funcio que canvii a una nova pista 
-        
+      onPressed: () async {
+        String mysteryId = await _presentationController.getMysteryId(_routeId);
+        _presentationController.stepScreen(context, mysteryId, _routeId, lastStep);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(255, 206, 179, 254),

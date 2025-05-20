@@ -1,3 +1,4 @@
+import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -276,6 +277,10 @@ class PresentationController {
     return intro!;
   }
 
+  Future<StepData?> getStepInfo(String mysteryId, int order) {
+    return mysteryController.fetchStepInfo(mysteryId, order);
+  }
+
   Future<List<StepData>> getCompletedSteps(String mysteryId) {
     return mysteryController.fetchCompletedSteps(_user!, mysteryId);
   }
@@ -354,6 +359,16 @@ class PresentationController {
       MaterialPageRoute(
         builder: (context) =>
           IntroScreen(presentationController: this, mysteryId: mysteryId, routeId: routeId),
+      ),
+    );
+  }
+
+  void stepScreen(BuildContext context, String mysteryId, String routeId, int stepOrder) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+          StepScreen(presentationController: this, mysteryId: mysteryId, routeId: routeId, stepOrder: stepOrder),
       ),
     );
   }
