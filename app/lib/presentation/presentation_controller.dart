@@ -76,11 +76,6 @@ class PresentationController {
       _user = currentUser;
     }
 
-    // esto sera para pillar las rutas hechas de los users
-    if (userLogged()) {
-      //routesUser = await controladorDomini.getUserRoutes(_user!.uid);
-    }
-
     _pages.addAll([
       MapPage(presentationController: this),
       DonePage(presentationController: this),
@@ -195,9 +190,25 @@ class PresentationController {
     return infoRoutes;
   }
 
+  void addStardtedRoute(BuildContext context, String routeId) async {
+    await routesController.addStardtedRoute(_user, routeId);
+  }
+
+  void deleteStartedRoute(BuildContext context, String routeId) async {
+    await routesController.deleteStartedRoute(_user, routeId);
+  }
+
+  Future<bool> isRouteStarted(String routeId) async {
+    return await routesController.isRouteStarted(_user, routeId);
+  }
+
+  Future<bool> isRouteDone(String routeId) async {
+    return await routesController.isRouteFinished(_user, routeId);
+  }
+
   void addDoneRoute(BuildContext context, String routeId, Duration timeSpent) async {
     await routesController.addDoneRoute(_user, routeId, timeSpent);
-    // aqui se pueden ver las categorias de la ruta y añadir el reward correspondiente
+    // aqui se pueden ver las categorias de la ruta y se añade el reward correspondiente
     RouteData? routeInfo = await getRouteData(routeId);
     if (routeInfo!.category == "hystory") {
       await addUserTrophy("BrK3LP4sD9i6MWCAjksn");
@@ -258,7 +269,7 @@ class PresentationController {
   }
 
   Future<String> getRouteId() async {
-    //maybe pasar el polyline y a partir de aqui que lo busque en la BBDD
+    // Maybe pasar el polyline y a partir de aqui que lo busque en la BBDD
     return "NWjKzu7Amz2AXJLZijQL";
   }
 
@@ -292,6 +303,15 @@ class PresentationController {
   Future<Duration> getRouteDuration(String routeId) async {
     Duration? duration = await routesController.fetchRouteDuration(_user!, routeId);
     return duration!;
+  }
+
+  Future<Duration> getStartedRouteDuration(String routeId) async {
+    Duration? duration = await routesController.fetchStartedRouteDuration(_user!, routeId);
+    return duration!;
+  }
+
+  Future<void> updateStartedRouteDuration(String routeId, Duration timeSpent) async {
+    await routesController.updateStartedRouteDuration(_user!, routeId, timeSpent);
   }
 
   /* ------------------------------ Screens ------------------------------ */
@@ -343,7 +363,7 @@ class PresentationController {
     );
   }
 
-  void misteriScreen(BuildContext context, String routeId, String mysteryId) async {
+  void mysteryScreen(BuildContext context, String routeId, String mysteryId) async {
     Navigator.push(
       context,
       MaterialPageRoute(

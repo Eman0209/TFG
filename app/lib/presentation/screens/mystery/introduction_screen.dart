@@ -75,7 +75,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
   Widget goToMap(){
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
+        _presentationController.addStardtedRoute(context, widget.routeId);
         _presentationController.startedRouteScreen(context, widget.routeId);
       },
       style: ElevatedButton.styleFrom(

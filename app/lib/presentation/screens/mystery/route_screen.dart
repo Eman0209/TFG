@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:app/presentation/screens/mystery/time_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
@@ -40,11 +41,14 @@ class _RouteScreenState extends State<RouteScreen> {
 
   bool _showAlert = false;
 
+  final TimerService _timerService = TimerService();
+
   @override
   void initState(){
     super.initState();
     getLocationUpdates();
     _setPolyline();
+    _timerService.start();
   }
 
   @override
@@ -191,7 +195,8 @@ class _RouteScreenState extends State<RouteScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       String mysteryId = await _presentationController.getMysteryId(_routeId);
-                      _presentationController.misteriScreen(context, _routeId, mysteryId);
+                      await _timerService.persistElapsedTime(_presentationController, _routeId);
+                      _presentationController.mysteryScreen(context, _routeId, mysteryId);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -215,7 +220,7 @@ class _RouteScreenState extends State<RouteScreen> {
     );
   }
 
-  void _onTabChange(int index) {
+  Future<void> _onTabChange(int index) async {
     setState(() {
       _selectedIndex = index;
     });
@@ -225,7 +230,9 @@ class _RouteScreenState extends State<RouteScreen> {
         //_presentationController.startRoute(context, _routeId);
         break;
       case 1:
-        _presentationController.misteriScreen(context, _routeId, "VZQmKDgsmyLp5oaKsICZ");
+        String mysteryId = await _presentationController.getMysteryId(_routeId);
+        await _timerService.persistElapsedTime(_presentationController, _routeId);
+        _presentationController.mysteryScreen(context, _routeId, mysteryId);
         break;
       default:
         break;
