@@ -133,7 +133,6 @@ class _RouteScreenState extends State<RouteScreen> {
   }
 
   Future<void> checkProximity(double userLat, double userLon) async {
-    // Extract waypoints from the polyline
     List<LatLng> waypoints = [];
     for (var polyline in _polylines) {
       waypoints.addAll(polyline.points);
@@ -142,12 +141,11 @@ class _RouteScreenState extends State<RouteScreen> {
     for (var waypoint in waypoints) {
       double distance = await calculateDistance(userLat, userLon, waypoint.latitude, waypoint.longitude);
       
-      // If user is within the threshold, show alert
       if (distance <= 50.0) {
         setState(() {
           _showAlert = true;
         });
-        break; // Optionally stop after finding the first nearby waypoint
+        break;
       }
     }
   }
@@ -188,10 +186,12 @@ class _RouteScreenState extends State<RouteScreen> {
                   SizedBox(height: 4),
                   Text('close_track'.tr()),
                   SizedBox(height: 8),
+                  Text('go_mystery_screent'.tr()),
+                  SizedBox(height: 8),
                   ElevatedButton(
-                    onPressed: () {
-                      // Navega hasta la nueva pantalla de inicio del step
-
+                    onPressed: () async {
+                      String mysteryId = await _presentationController.getMysteryId(_routeId);
+                      _presentationController.misteriScreen(context, _routeId, mysteryId);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 206, 179, 254),

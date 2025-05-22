@@ -9,6 +9,10 @@ class MysteryController {
 
   MysteryController(this.datasource);
 
+  Future<StepData?> fetchStepInfo(String mysteryId, int order) async {
+    return await datasource.getStepInfo(mysteryId, order);
+  }
+
   Future<List<StepData>> fetchCompletedSteps(User user, String mysteryId) async {
     return await datasource.getCompletedSteps(user.uid, mysteryId);
   }

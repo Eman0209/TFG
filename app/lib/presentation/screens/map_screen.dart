@@ -255,10 +255,10 @@ class _MapPageState extends State<MapPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: () {
-            //aqui necesito pasar el id del misterio de la ruta
-            //_presentationController.misteriScreen(context, "NWjKzu7Amz2AXJLZijQL", "VZQmKDgsmyLp5oaKsICZ");
-            _presentationController.stepScreen(context, "VZQmKDgsmyLp5oaKsICZ");
+          onPressed: () async {
+            String routeId = await _presentationController.getRouteId();
+            String mysteryId = await _presentationController.getMysteryId(routeId);
+            _presentationController.introductionScreen(context, mysteryId, routeId);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -271,9 +271,9 @@ class _MapPageState extends State<MapPage> {
           child: Text('start'.tr()),
         ),
         ElevatedButton(
-          onPressed: () {
-            //aqui necesito pasar el id de la ruta
-            _presentationController.infoRoute(context, false, "NWjKzu7Amz2AXJLZijQL");
+          onPressed: () async {
+            String routeId = await _presentationController.getRouteId();
+            _presentationController.infoRoute(context, false, routeId);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 206, 179, 254),

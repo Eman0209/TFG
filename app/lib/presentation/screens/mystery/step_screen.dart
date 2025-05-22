@@ -1,15 +1,20 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:app/domain/models/steps.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:app/presentation/presentation_controller.dart';
 
 class StepScreen extends StatefulWidget {
   final PresentationController presentationController;
   final String mysteryId;
+  final String routeId;
+  final int stepOrder;
 
   const StepScreen({
     super.key,  
     required this.presentationController,
-    required this.mysteryId
+    required this.mysteryId,
+    required this.routeId,
+    required this.stepOrder,
   });
 
   @override
@@ -23,58 +28,79 @@ class _StepScreenState extends State<StepScreen> {
     _presentationController = presentationController;
   }
 
-  late Future<String> _mysteryIntroduction;
-
-  @override
-  void initState() {
-    super.initState();
-    _mysteryIntroduction = _presentationController.getIntroduction(widget.mysteryId);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F4FF),
-      appBar: AppBar(title: Text('introduction'.tr())),
-      body: Column (
+    return FutureBuilder<StepData?>(
+      future: _presentationController.getStepInfo(widget.mysteryId, widget.stepOrder),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+          return Center(child: Text('Step not found or error loading step.'));
+        }
+
+        final step = snapshot.data!;
+
+        return Scaffold(
+          backgroundColor: const Color(0xFFF8F4FF),
+          appBar: _buildAppBar(context),
+          body: buildStepContent(step),
+          floatingActionButton: startGame(),
+        );
+      }
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.black),
+        onPressed: () => Navigator.pop(context),
+      ),
+      title: Text(
+        'new_track'.tr(),
+        style: TextStyle(color: Colors.black),
+      ),
+      centerTitle: true,
+    );
+  }
+
+  Widget buildStepContent(StepData step) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 16),
-          FutureBuilder<String>(
-            future: _mysteryIntroduction,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('error_introduction'.tr());
-              }
-              return Padding(
-                padding: EdgeInsets.only(left: 12.0),
-                child: Text(
-                  snapshot.data!, 
-                  style: TextStyle(fontSize: 18),
-                )
-              );
-            },
-          ),
-          SizedBox(height: 16),
           Text(
-            'go_to_location'.tr(),
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold
-            )
+            'Narration',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 16),
-          goToMap()
-        ]
+          SizedBox(height: 8),
+          Text(
+            step.narration,
+            style: TextStyle(fontSize: 16),
+          ),
+          SizedBox(height: 24),
+          Text(
+            'Instructions',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Text(
+            step.instructions,
+            style: TextStyle(fontSize: 16),
+          ),
+        ],
       ),
     );
   }
 
-  Widget goToMap(){
+  Widget startGame() {
     return ElevatedButton(
       onPressed: () {
-        _presentationController.startedRouteScreen(context, "NWjKzu7Amz2AXJLZijQL");
+
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -84,7 +110,7 @@ class _StepScreenState extends State<StepScreen> {
           borderRadius: BorderRadius.circular(30),
         ),
       ),
-      child: Text('go_map'.tr()),
+      child: Text('start_game'.tr()),
     );
   }
 
