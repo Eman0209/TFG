@@ -81,6 +81,8 @@ class PresentationController {
       DonePage(presentationController: this),
       PerfilPage(presentationController: this),
     ]);
+
+    _loadLanguage();
   }
 
   bool userLogged() {
@@ -156,10 +158,11 @@ class PresentationController {
   void changeLanguage(Locale? lang, BuildContext context) async {
     _language = lang;
     context.setLocale(lang!);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('languageCode', lang.languageCode);
    _loadLanguage();
   }
 
-  // Es necesario guardar el language en el controlador?
   Future<void> _loadLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final languageCode = prefs.getString('languageCode');
@@ -169,7 +172,15 @@ class PresentationController {
   }
 
   Future<List<Map<String, dynamic>>> getTrophies() async {
-    return rewardsController.fetchTrophies();
+    if(_language == Locale('en')) {
+      return rewardsController.fetchTrophies('en');
+    }
+    else if(_language == Locale('es')) {
+      return rewardsController.fetchTrophies('es');
+    }
+    else {
+      return rewardsController.fetchTrophies('ca');
+    }
   }
 
   Future<List<String>> getMyOwnTrophies() async {
@@ -222,12 +233,28 @@ class PresentationController {
     doneRoutesScreen(context);
   }
 
-  Future<List<RouteData?>> getAllRoutesData() async {
-    return routesController.fetchAllRoutesData();
+  Future<List<RouteData?>> getAllRoutesData(BuildContext context) async {
+    if(_language == Locale('en')) {
+      return routesController.fetchAllRoutesData('en');
+    }
+    else if(_language == Locale('es')) {
+      return routesController.fetchAllRoutesData('es');
+    }
+    else {
+      return routesController.fetchAllRoutesData('ca');
+    }
   }
 
   Future<RouteData?> getRouteData(String routeId) async {
-    return routesController.fetchRouteData(routeId);
+    if(_language == Locale('en')) {
+      return routesController.fetchRouteData(routeId, 'en');
+    }
+    else if(_language == Locale('es')) {
+      return routesController.fetchRouteData(routeId, 'es');
+    }
+    else {
+      return routesController.fetchRouteData(routeId, 'ca');
+    }
   }
 
   /*
@@ -254,8 +281,8 @@ class PresentationController {
   }
   */
 
-  Future<List<LatLng>> getRoutesPoints() async {
-    List<RouteData?> routes = await getAllRoutesData();
+  Future<List<LatLng>> getRoutesPoints(BuildContext context) async {
+    List<RouteData?> routes = await getAllRoutesData(context);
 
     List<String> addresses = routes
       .where((route) => route != null)
@@ -274,26 +301,69 @@ class PresentationController {
   }
 
   Future<String> getMysteryId(String routeId) async {
-    RouteData? data = await routesController.fetchRouteData(routeId);
+    RouteData? data;
+    if(_language == Locale('en')) {
+       data = await routesController.fetchRouteData(routeId, 'en');
+    }
+    else if(_language == Locale('es')) {
+      data = await routesController.fetchRouteData(routeId, 'es');
+    }
+    else {
+      data = await routesController.fetchRouteData(routeId, 'ca');
+    }
     return data!.mysteryId;
   }
 
   Future<String> getMysteryTitle(String routeId) async {
-    RouteData? data = await routesController.fetchRouteData(routeId);
+    RouteData? data;
+    if(_language == Locale('en')) {
+       data = await routesController.fetchRouteData(routeId, 'en');
+    }
+    else if(_language == Locale('es')) {
+      data = await routesController.fetchRouteData(routeId, 'es');
+    }
+    else {
+      data = await routesController.fetchRouteData(routeId, 'ca');
+    }
     return data!.name;
   }
 
   Future<String> getIntroduction(String mysteryId) async {
-    String? intro = await mysteryController.fetchIntroduction(mysteryId);
+    String? intro;
+    if(_language == Locale('en')) {
+      intro = await mysteryController.fetchIntroduction(mysteryId, 'en');
+    }
+    else if(_language == Locale('es')) {
+      intro = await mysteryController.fetchIntroduction(mysteryId, 'es');
+    }
+    else {
+      intro = await mysteryController.fetchIntroduction(mysteryId, 'ca');
+    }
     return intro!;
   }
 
   Future<StepData?> getStepInfo(String mysteryId, int order) {
-    return mysteryController.fetchStepInfo(mysteryId, order);
+    if(_language == Locale('en')) {
+      return mysteryController.fetchStepInfo(mysteryId, order, 'steps_en');
+    }
+    else if(_language == Locale('es')) {
+      return mysteryController.fetchStepInfo(mysteryId, order, 'steps_es');
+    }
+    else {
+      return mysteryController.fetchStepInfo(mysteryId, order, 'steps');
+    }
   }
 
   Future<List<StepData>> getCompletedSteps(String mysteryId) {
-    return mysteryController.fetchCompletedSteps(_user!, mysteryId);
+    if(_language == Locale('en')) {
+      return mysteryController.fetchCompletedSteps(_user!, mysteryId, 'steps_en');
+    }
+    else if(_language == Locale('es')) {
+      return mysteryController.fetchCompletedSteps(_user!, mysteryId, 'steps_es');
+    }
+    else {
+      return mysteryController.fetchCompletedSteps(_user!, mysteryId, 'steps');
+    }
   }
 
   Future<int> getLengthOfSteps(String mysteryId) {

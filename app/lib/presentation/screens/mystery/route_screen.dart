@@ -125,7 +125,7 @@ class _RouteScreenState extends State<RouteScreen> {
     _polylines.add(
       Polyline(
         polylineId: PolylineId('route'),
-        points: await _presentationController.getRoutesPoints(),
+        points: await _presentationController.getRoutesPoints(context),
         color: Colors.deepPurple,
         width: 5,
       ),

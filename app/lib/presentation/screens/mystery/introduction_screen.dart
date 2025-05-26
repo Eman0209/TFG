@@ -38,38 +38,43 @@ class _IntroScreenState extends State<IntroScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F4FF),
       appBar: AppBar(title: Text('introduction'.tr())),
-      body: Column (
-        children: [
-          SizedBox(height: 16),
-          FutureBuilder<String>(
-            future: _mysteryIntroduction,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('error_introduction'.tr());
-              }
-              return Padding(
-                padding: EdgeInsets.only(left: 12.0),
-                child: Text(
-                  snapshot.data!, 
-                  style: TextStyle(fontSize: 18),
-                )
-              );
-            },
-          ),
-          SizedBox(height: 16),
-          Text(
-            'go_to_location'.tr(),
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold
-            )
-          ),
-          SizedBox(height: 16),
-          goToMap()
-        ]
-      ),
+      body: Center (
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 16),
+            FutureBuilder<String>(
+              future: _mysteryIntroduction,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('error_introduction'.tr());
+                }
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    snapshot.data!, 
+                    style: TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center,
+                  )
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'go_to_location'.tr(),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 16),
+            goToMap()
+          ]
+        ),
+      )
     );
   }
 

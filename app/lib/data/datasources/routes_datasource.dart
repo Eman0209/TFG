@@ -9,12 +9,12 @@ class FirebaseRoutesDatasource {
 
   final Logger _logger = Logger('FirebaseRoutesDatasource');
 
-  Future<List<RouteData?>> getAllRoutesData() async {
+  Future<List<RouteData?>> getAllRoutesData(String language) async {
     try {
       QuerySnapshot snapshot = await firestore.collection('routes').get();
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
-        return RouteData.fromMap(data, doc.id);
+        return RouteData.fromMap(data, doc.id, language);
       }).toList();
     } catch (e) {
       _logger.severe('Error fetching routes: $e');
@@ -22,11 +22,11 @@ class FirebaseRoutesDatasource {
     }
   }
 
-  Future<RouteData?> getRouteData(String routeId) async {
+  Future<RouteData?> getRouteData(String routeId, String language) async {
     try {
       final doc = await firestore.collection('routes').doc(routeId).get();
       if (!doc.exists) return null;
-      return RouteData.fromMap(doc.data()!, doc.id);
+      return RouteData.fromMap(doc.data()!, doc.id, language);
     } catch (e) {
       _logger.severe('Error fetching route: $e');
       return null;

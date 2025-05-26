@@ -15,13 +15,13 @@ class RoutesController {
   final Logger _logger = Logger('RoutesController');
 
   // get all routes
-  Future<List<RouteData?>> fetchAllRoutesData() async {
-    return await datasource.getAllRoutesData();
+  Future<List<RouteData?>> fetchAllRoutesData(String language) async {
+    return await datasource.getAllRoutesData(language);
   }
 
   // get of a route in de bbdd
-  Future<RouteData?> fetchRouteData(String routeId) async {
-    return await datasource.getRouteData(routeId);
+  Future<RouteData?> fetchRouteData(String routeId, String language) async {
+    return await datasource.getRouteData(routeId, language);
   }
 
   // Donde irian estas funciones?

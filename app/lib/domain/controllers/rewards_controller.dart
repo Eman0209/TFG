@@ -8,8 +8,8 @@ class RewardsController {
 
   RewardsController(this.datasource);
 
-  Future<List<Map<String, dynamic>>> fetchTrophies() async {
-    return await datasource.getTrophies();
+  Future<List<Map<String, dynamic>>> fetchTrophies(String language) async {
+    return await datasource.getTrophies(language);
   }
 
   Future<List<String>> fetchMyOwnTrophies(User? user) async {
