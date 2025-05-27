@@ -17,13 +17,21 @@ class RouteData {
     required this.mysteryId,
   });
 
-  factory RouteData.fromMap(Map<String, dynamic> data, String documentId) {
+  factory RouteData.fromMap(Map<String, dynamic> data, String documentId, String language) {
+    String langKey = language.toLowerCase();
+    String descriptionKey = data.containsKey('description_$langKey')
+        ? 'description_$langKey'
+        : 'description'; 
+    String nameKey = data.containsKey('name_$langKey')
+        ? 'name_$langKey'
+        : 'name'; 
+
     return RouteData(
       id: documentId,
-      name: data['name'] ?? '',
+      name: data[nameKey] ?? '',
       category: data['category'] ?? '',
-      description: data['description'] ?? '',
-      duration: data['time'] ?? '1h',
+      description: data[descriptionKey] ?? '',
+      duration: data['time'] is int ? data['time'] : 60,
       path: List<String>.from(data['path'] ?? []),
       mysteryId: data['mysteryId'] ?? ''
     );

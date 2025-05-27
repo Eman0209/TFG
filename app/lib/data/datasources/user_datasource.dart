@@ -7,17 +7,19 @@ class FirebaseUserDatasource {
 
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
+  final GoogleSignIn googleSignIn;
 
   FirebaseUserDatasource({
     required this.auth,
     required this.firestore,
+    required this.googleSignIn,
   });
 
   final Logger _logger = Logger('FirebaseUserDatasource');
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) return null;
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;

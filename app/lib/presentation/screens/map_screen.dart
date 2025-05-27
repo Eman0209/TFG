@@ -243,7 +243,7 @@ class _MapPageState extends State<MapPage> {
     _polylines.add(
       Polyline(
         polylineId: PolylineId('route'),
-        points: await _presentationController.getRoutesPoints(),
+        points: await _presentationController.getRoutesPoints(context),
         color: Colors.deepPurple,
         width: 5,
       ),
@@ -258,7 +258,46 @@ class _MapPageState extends State<MapPage> {
           onPressed: () async {
             String routeId = await _presentationController.getRouteId();
             String mysteryId = await _presentationController.getMysteryId(routeId);
-            _presentationController.introductionScreen(context, mysteryId, routeId);
+            final isStarted = await _presentationController.isRouteStarted(routeId);
+            final isFinished = await _presentationController.isRouteDone(routeId);
+            
+            if (isStarted) {
+              // Show popup
+              await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('route_started'.tr()),
+                    content: Text('route_started_explanation'.tr()),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+              _presentationController.mysteryScreen(context, routeId, mysteryId);
+            } else if(isFinished) {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('route_completed'.tr()),
+                  content: Text('route_completed_explanation'.tr()),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+            } else {     
+              _presentationController.introductionScreen(context, mysteryId, routeId);
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 206, 179, 254),

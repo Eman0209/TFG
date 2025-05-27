@@ -8,16 +8,22 @@ class FirebaseRewardsDatasource {
 
   final Logger _logger = Logger('FirebaseRoutesDatasource');
 
-  Future<List<Map<String, dynamic>>> getTrophies() async {
+  Future<List<Map<String, dynamic>>> getTrophies(String language) async {
     try {
-      final querySnapshot = await FirebaseFirestore.instance.collection('trophy').get();
+      final querySnapshot = await firestore.collection('trophy').get();
+
+      final langKey = language.toLowerCase();
 
       final trophies = querySnapshot.docs.map((doc) {
         final data = doc.data();
+
+        final nameKey = data.containsKey('name_$langKey') ? 'name_$langKey' : 'name';
+        final descriptionKey = data.containsKey('description_$langKey') ? 'description_$langKey' : 'description';
+
         return {
           'id': doc.id,
-          'name': data['name'] ?? '',
-          'description': data['description'] ?? '',
+          'name': data[nameKey] ?? '',
+          'description': data[descriptionKey] ?? '',
           'image': data['image'] ?? '',
         };
       }).toList();

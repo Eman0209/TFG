@@ -15,13 +15,13 @@ class RoutesController {
   final Logger _logger = Logger('RoutesController');
 
   // get all routes
-  Future<List<RouteData?>> fetchAllRoutesData() async {
-    return await datasource.getAllRoutesData();
+  Future<List<RouteData?>> fetchAllRoutesData(String language) async {
+    return await datasource.getAllRoutesData(language);
   }
 
   // get of a route in de bbdd
-  Future<RouteData?> fetchRouteData(String routeId) async {
-    return await datasource.getRouteData(routeId);
+  Future<RouteData?> fetchRouteData(String routeId, String language) async {
+    return await datasource.getRouteData(routeId, language);
   }
 
   // Donde irian estas funciones?
@@ -52,6 +52,30 @@ class RoutesController {
 
   Future<void> addDoneRoute(User? user, String routeId, Duration timeSpent) async {
     await datasource.addDoneRoute(user!.uid, routeId, timeSpent);
+  }
+
+  Future<void> addStardtedRoute(User? user, String routeId) async {
+    await datasource.addStardtedRoute(user!.uid, routeId);
+  }
+
+  Future<void> deleteStartedRoute(User? user, String routeId) async {
+    await datasource.deleteStartedRoute(user!.uid, routeId);
+  }
+
+  Future<bool> isRouteStarted(User? user, String routeId) async {
+    return await datasource.isRouteStarted(user!.uid, routeId);
+  }
+
+  Future<bool> isRouteFinished(User? user, String routeId) async {
+    return await datasource.isRouteFinished(user!.uid, routeId);
+  }
+  
+  Future<Duration?> fetchStartedRouteDuration(User? user, String routeId) async {
+    return await datasource.getStartedRouteDuration(user!.uid, routeId);
+  }
+
+   Future<void> updateStartedRouteDuration(User? user, String routeId, Duration newDuration) async {
+    await datasource.updateStartedRouteDuration(user!.uid, routeId, newDuration);
   }
 
   Future<Duration?> fetchRouteDuration(User? user, String routeId) async {

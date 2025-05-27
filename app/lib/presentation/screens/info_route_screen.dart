@@ -219,9 +219,47 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
         padding: const EdgeInsets.only(right: 16.0),
         child: ElevatedButton(
           onPressed: () async {
-            // Modificar el string 
+            final isStarted = await _presentationController.isRouteStarted(routeId);
+            final isFinished = await _presentationController.isRouteDone(routeId);
             String mysteryId = await _presentationController.getMysteryId(routeId);
-            _presentationController.introductionScreen(context, mysteryId, routeId);
+            
+            if (isStarted) {
+              // Show popup
+              await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('route_started'.tr()),
+                    content: Text('route_started_explanation'.tr()),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+              _presentationController.mysteryScreen(context, routeId, mysteryId);
+            } else if(isFinished) {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('route_completed'.tr()),
+                  content: Text('route_completed_explanation'.tr()),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+            } else {     
+              _presentationController.introductionScreen(context, mysteryId, routeId);
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFECE3FF),

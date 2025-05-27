@@ -8,7 +8,7 @@ class CustomTopNavigationBar extends StatefulWidget implements PreferredSizeWidg
   const CustomTopNavigationBar({super.key, required this.onTabChange, required this.selectedIndex});
 
   @override
-  _CustomTopNavigationBarState createState() => _CustomTopNavigationBarState();
+  State<CustomTopNavigationBar> createState() => _CustomTopNavigationBarState();
 
   @override
   Size get preferredSize => const Size.fromHeight(80);

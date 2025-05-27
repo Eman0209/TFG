@@ -40,7 +40,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
 
   int lastStep = 0;
 
-  final timerService = TimerService();
+  final TimerService _timerService = TimerService();
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
     _routeTitle = _presentationController.getMysteryTitle(widget.routeId);
     _stepsFuture = _presentationController.getCompletedSteps(widget.mysteryId);
     _stepsLength = _presentationController.getLengthOfSteps(widget.mysteryId);
-    timerService.start();
+    _timerService.start();
   }
 
   @override
@@ -243,10 +243,11 @@ class _MysteryScreenState extends State<MysteryScreen> {
           SizedBox(height: 8),
           ElevatedButton(
             onPressed: () async {
-              timerService.stop();
+              _timerService.persistElapsedTime(_presentationController, widget.routeId);
 
-              final duration = timerService.elapsed;
+              final duration = await _presentationController.getStartedRouteDuration(widget.routeId);
 
+              _presentationController.deleteStartedRoute(context, widget.routeId);
               _presentationController.addDoneRoute(context, widget.routeId, duration);
             },
             style: ElevatedButton.styleFrom(
@@ -263,6 +264,7 @@ class _MysteryScreenState extends State<MysteryScreen> {
     return ElevatedButton(
       onPressed: () async {
         String mysteryId = await _presentationController.getMysteryId(_routeId);
+        await _timerService.persistElapsedTime(_presentationController, _routeId);
         _presentationController.stepScreen(context, mysteryId, _routeId, lastStep);
       },
       style: ElevatedButton.styleFrom(
@@ -277,13 +279,14 @@ class _MysteryScreenState extends State<MysteryScreen> {
     );
   }
 
-  void _onTabChange(int index) {
+  Future<void> _onTabChange(int index) async {
     setState(() {
       _selectedIndex = index;
     });
   
     switch (index) {
       case 0:
+        await _timerService.persistElapsedTime(_presentationController, _routeId);
         _presentationController.startedRouteScreen(context, _routeId);
         break;
       case 1:

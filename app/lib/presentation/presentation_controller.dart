@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/data/datasources/mystery_datasource.dart';
@@ -60,6 +61,7 @@ class PresentationController {
     userDatasource = FirebaseUserDatasource( 
       auth: FirebaseAuth.instance,
       firestore: FirebaseFirestore.instance,
+      googleSignIn: GoogleSignIn()
     );
     userController = UserController(userDatasource);
 
@@ -76,16 +78,13 @@ class PresentationController {
       _user = currentUser;
     }
 
-    // esto sera para pillar las rutas hechas de los users
-    if (userLogged()) {
-      //routesUser = await controladorDomini.getUserRoutes(_user!.uid);
-    }
-
     _pages.addAll([
       MapPage(presentationController: this),
       DonePage(presentationController: this),
       PerfilPage(presentationController: this),
     ]);
+
+    _loadLanguage();
   }
 
   bool userLogged() {
@@ -113,7 +112,6 @@ class PresentationController {
   void createUser(String username, BuildContext context) async {
     userController.createUser(_user, username);
     mapScreen(context);
-    //una vez creado el user que quiero hacer? Mostrar el mapa?
   }
 
   void editUsername(String username, BuildContext context) async {
@@ -161,10 +159,11 @@ class PresentationController {
   void changeLanguage(Locale? lang, BuildContext context) async {
     _language = lang;
     context.setLocale(lang!);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('languageCode', lang.languageCode);
    _loadLanguage();
   }
 
-  // Es necesario guardar el language en el controlador?
   Future<void> _loadLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final languageCode = prefs.getString('languageCode');
@@ -174,7 +173,15 @@ class PresentationController {
   }
 
   Future<List<Map<String, dynamic>>> getTrophies() async {
-    return rewardsController.fetchTrophies();
+    if(_language == Locale('en')) {
+      return rewardsController.fetchTrophies('en');
+    }
+    else if(_language == Locale('es')) {
+      return rewardsController.fetchTrophies('es');
+    }
+    else {
+      return rewardsController.fetchTrophies('ca');
+    }
   }
 
   Future<List<String>> getMyOwnTrophies() async {
@@ -195,9 +202,25 @@ class PresentationController {
     return infoRoutes;
   }
 
+  void addStardtedRoute(BuildContext context, String routeId) async {
+    await routesController.addStardtedRoute(_user, routeId);
+  }
+
+  void deleteStartedRoute(BuildContext context, String routeId) async {
+    await routesController.deleteStartedRoute(_user, routeId);
+  }
+
+  Future<bool> isRouteStarted(String routeId) async {
+    return await routesController.isRouteStarted(_user, routeId);
+  }
+
+  Future<bool> isRouteDone(String routeId) async {
+    return await routesController.isRouteFinished(_user, routeId);
+  }
+
   void addDoneRoute(BuildContext context, String routeId, Duration timeSpent) async {
     await routesController.addDoneRoute(_user, routeId, timeSpent);
-    // aqui se pueden ver las categorias de la ruta y añadir el reward correspondiente
+    // aqui se pueden ver las categorias de la ruta y se añade el reward correspondiente
     RouteData? routeInfo = await getRouteData(routeId);
     if (routeInfo!.category == "hystory") {
       await addUserTrophy("BrK3LP4sD9i6MWCAjksn");
@@ -211,12 +234,28 @@ class PresentationController {
     doneRoutesScreen(context);
   }
 
-  Future<List<RouteData?>> getAllRoutesData() async {
-    return routesController.fetchAllRoutesData();
+  Future<List<RouteData?>> getAllRoutesData(BuildContext context) async {
+    if(_language == Locale('en')) {
+      return routesController.fetchAllRoutesData('en');
+    }
+    else if(_language == Locale('es')) {
+      return routesController.fetchAllRoutesData('es');
+    }
+    else {
+      return routesController.fetchAllRoutesData('ca');
+    }
   }
 
   Future<RouteData?> getRouteData(String routeId) async {
-    return routesController.fetchRouteData(routeId);
+    if(_language == Locale('en')) {
+      return routesController.fetchRouteData(routeId, 'en');
+    }
+    else if(_language == Locale('es')) {
+      return routesController.fetchRouteData(routeId, 'es');
+    }
+    else {
+      return routesController.fetchRouteData(routeId, 'ca');
+    }
   }
 
   /*
@@ -243,8 +282,8 @@ class PresentationController {
   }
   */
 
-  Future<List<LatLng>> getRoutesPoints() async {
-    List<RouteData?> routes = await getAllRoutesData();
+  Future<List<LatLng>> getRoutesPoints(BuildContext context) async {
+    List<RouteData?> routes = await getAllRoutesData(context);
 
     List<String> addresses = routes
       .where((route) => route != null)
@@ -258,31 +297,74 @@ class PresentationController {
   }
 
   Future<String> getRouteId() async {
-    //maybe pasar el polyline y a partir de aqui que lo busque en la BBDD
+    // Maybe pasar el polyline y a partir de aqui que lo busque en la BBDD
     return "NWjKzu7Amz2AXJLZijQL";
   }
 
   Future<String> getMysteryId(String routeId) async {
-    RouteData? data = await routesController.fetchRouteData(routeId);
+    RouteData? data;
+    if(_language == Locale('en')) {
+       data = await routesController.fetchRouteData(routeId, 'en');
+    }
+    else if(_language == Locale('es')) {
+      data = await routesController.fetchRouteData(routeId, 'es');
+    }
+    else {
+      data = await routesController.fetchRouteData(routeId, 'ca');
+    }
     return data!.mysteryId;
   }
 
   Future<String> getMysteryTitle(String routeId) async {
-    RouteData? data = await routesController.fetchRouteData(routeId);
+    RouteData? data;
+    if(_language == Locale('en')) {
+       data = await routesController.fetchRouteData(routeId, 'en');
+    }
+    else if(_language == Locale('es')) {
+      data = await routesController.fetchRouteData(routeId, 'es');
+    }
+    else {
+      data = await routesController.fetchRouteData(routeId, 'ca');
+    }
     return data!.name;
   }
 
   Future<String> getIntroduction(String mysteryId) async {
-    String? intro = await mysteryController.fetchIntroduction(mysteryId);
+    String? intro;
+    if(_language == Locale('en')) {
+      intro = await mysteryController.fetchIntroduction(mysteryId, 'en');
+    }
+    else if(_language == Locale('es')) {
+      intro = await mysteryController.fetchIntroduction(mysteryId, 'es');
+    }
+    else {
+      intro = await mysteryController.fetchIntroduction(mysteryId, 'ca');
+    }
     return intro!;
   }
 
   Future<StepData?> getStepInfo(String mysteryId, int order) {
-    return mysteryController.fetchStepInfo(mysteryId, order);
+    if(_language == Locale('en')) {
+      return mysteryController.fetchStepInfo(mysteryId, order, 'steps_en');
+    }
+    else if(_language == Locale('es')) {
+      return mysteryController.fetchStepInfo(mysteryId, order, 'steps_es');
+    }
+    else {
+      return mysteryController.fetchStepInfo(mysteryId, order, 'steps');
+    }
   }
 
   Future<List<StepData>> getCompletedSteps(String mysteryId) {
-    return mysteryController.fetchCompletedSteps(_user!, mysteryId);
+    if(_language == Locale('en')) {
+      return mysteryController.fetchCompletedSteps(_user!, mysteryId, 'steps_en');
+    }
+    else if(_language == Locale('es')) {
+      return mysteryController.fetchCompletedSteps(_user!, mysteryId, 'steps_es');
+    }
+    else {
+      return mysteryController.fetchCompletedSteps(_user!, mysteryId, 'steps');
+    }
   }
 
   Future<int> getLengthOfSteps(String mysteryId) {
@@ -292,6 +374,15 @@ class PresentationController {
   Future<Duration> getRouteDuration(String routeId) async {
     Duration? duration = await routesController.fetchRouteDuration(_user!, routeId);
     return duration!;
+  }
+
+  Future<Duration> getStartedRouteDuration(String routeId) async {
+    Duration? duration = await routesController.fetchStartedRouteDuration(_user!, routeId);
+    return duration!;
+  }
+
+  Future<void> updateStartedRouteDuration(String routeId, Duration timeSpent) async {
+    await routesController.updateStartedRouteDuration(_user!, routeId, timeSpent);
   }
 
   /* ------------------------------ Screens ------------------------------ */
@@ -343,7 +434,7 @@ class PresentationController {
     );
   }
 
-  void misteriScreen(BuildContext context, String routeId, String mysteryId) async {
+  void mysteryScreen(BuildContext context, String routeId, String mysteryId) async {
     Navigator.push(
       context,
       MaterialPageRoute(
