@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app/data/datasources/user_datasource.dart';
 
-import 'mocks.mocks.dart';
+import '../mocks.mocks.dart';
 
 void main() {
   late MockFirebaseAuth mockAuth;
