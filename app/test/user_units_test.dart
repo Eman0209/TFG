@@ -7,16 +7,39 @@ import 'package:app/data/datasources/user_datasource.dart';
 import 'mocks.mocks.dart';
 
 void main() {
+  late MockFirebaseAuth mockAuth;
+  late MockUser mockUser;
+  late FirebaseUserDatasource datasource;
+  late MockFirebaseFirestore mockFirestore;
+  late MockGoogleSignIn mockGoogleSignIn;
+  late MockCollectionReference<Map<String, dynamic>> mockCollectionRef;
+  late MockDocumentReference<Map<String, dynamic>> mockDocumentRef;
+  late MockDocumentSnapshot<Map<String, dynamic>> mockDocumentSnapshot;
+  late MockGoogleSignInAccount mockGoogleUser;
+  late MockGoogleSignInAuthentication mockGoogleAuth;
+  late MockUserCredential mockUserCredential;
+
+  setUp(() {
+    mockAuth = MockFirebaseAuth();
+    mockUser = MockUser();
+    mockFirestore = MockFirebaseFirestore();
+    mockGoogleSignIn = MockGoogleSignIn();
+    mockCollectionRef = MockCollectionReference();
+    mockDocumentRef = MockDocumentReference();
+    mockDocumentSnapshot = MockDocumentSnapshot();
+    mockAuth = MockFirebaseAuth();
+    mockGoogleUser = MockGoogleSignInAccount();
+    mockGoogleAuth = MockGoogleSignInAuthentication();
+    mockUserCredential = MockUserCredential();
+
+    datasource = FirebaseUserDatasource(
+      auth: mockAuth,
+      firestore: mockFirestore,
+      googleSignIn: mockGoogleSignIn,
+    );
+  });
 
   group('userLogged', () {
-    late MockFirebaseAuth mockAuth;
-    late MockUser mockUser;
-
-    setUp(() {
-      mockAuth = MockFirebaseAuth();
-      mockUser = MockUser();
-    });
-
     bool userLoggedTest(FirebaseAuth auth) {
       User? currentUser = auth.currentUser;
       if (currentUser != null) {
@@ -44,35 +67,13 @@ void main() {
   });
 
   group('FirebaseUserDatasource.createUser', () {
-    late FirebaseUserDatasource datasource;
-    late MockFirebaseAuth mockAuth;
-    late MockFirebaseFirestore mockFirestore;
-    late MockGoogleSignIn mockGoogleSignIn;
-    late MockUser mockUser;
-    late MockCollectionReference<Map<String, dynamic>> mockCollectionRef;
-    late MockDocumentReference<Map<String, dynamic>> mockDocumentRef;
-    late MockDocumentSnapshot<Map<String, dynamic>> mockDocumentSnapshot;
 
     setUp(() {
-      mockAuth = MockFirebaseAuth();
-      mockFirestore = MockFirebaseFirestore();
-      mockGoogleSignIn = MockGoogleSignIn();
-      mockUser = MockUser();
-      mockCollectionRef = MockCollectionReference();
-      mockDocumentRef = MockDocumentReference();
-      mockDocumentSnapshot = MockDocumentSnapshot();
-
-      datasource = FirebaseUserDatasource(
-        auth: mockAuth,
-        firestore: mockFirestore,
-        googleSignIn: mockGoogleSignIn,
-      );
-
       when(mockUser.uid).thenReturn('uid_abc');
       when(mockUser.email).thenReturn('test@email.com');
       when(mockFirestore.collection('users')).thenReturn(mockCollectionRef);
-    when(mockCollectionRef.doc('uid_abc')).thenReturn(mockDocumentRef);
-    when(mockDocumentRef.get()).thenAnswer((_) async => mockDocumentSnapshot);
+      when(mockCollectionRef.doc('uid_abc')).thenReturn(mockDocumentRef);
+      when(mockDocumentRef.get()).thenAnswer((_) async => mockDocumentSnapshot);
     });
 
     test('creates user if not exists', () async {
@@ -101,26 +102,8 @@ void main() {
   });
 
   group('FirebaseUserDatasource.editUsername', () {
-    late FirebaseUserDatasource datasource;
-    late MockFirebaseAuth mockAuth;
-    late MockFirebaseFirestore mockFirestore;
-    late MockGoogleSignIn mockGoogleSignIn;
-    late MockUser mockUser;
-    late MockCollectionReference<Map<String, dynamic>> mockCollectionRef;
-    late MockDocumentReference<Map<String, dynamic>> mockDocumentRef;
-    late MockDocumentSnapshot<Map<String, dynamic>> mockDocumentSnapshot;
 
     setUp(() {
-      mockAuth = MockFirebaseAuth();
-      mockFirestore = MockFirebaseFirestore();
-      mockGoogleSignIn = MockGoogleSignIn();
-      mockUser = MockUser();
-      mockCollectionRef = MockCollectionReference<Map<String, dynamic>>();
-      mockDocumentRef = MockDocumentReference<Map<String, dynamic>>();
-      mockDocumentSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
-
-      datasource = FirebaseUserDatasource(auth: mockAuth, firestore: mockFirestore, googleSignIn: mockGoogleSignIn);
-
       when(mockUser.uid).thenReturn('user123');
 
       when(mockFirestore.collection('users')).thenReturn(mockCollectionRef);
@@ -150,29 +133,6 @@ void main() {
   });
 
   group('FirebaseUserDatasource.signInWithGoogle', () {
-    late FirebaseUserDatasource authService;
-    late MockFirebaseAuth mockAuth;
-    late MockFirebaseFirestore mockFirestore;
-    late MockGoogleSignIn mockGoogleSignIn;
-    late MockGoogleSignInAccount mockGoogleUser;
-    late MockGoogleSignInAuthentication mockGoogleAuth;
-    late MockUserCredential mockUserCredential;
-
-    setUp(() {
-      mockAuth = MockFirebaseAuth();
-      mockFirestore = MockFirebaseFirestore();
-      mockGoogleSignIn = MockGoogleSignIn();
-      mockGoogleUser = MockGoogleSignInAccount();
-      mockGoogleAuth = MockGoogleSignInAuthentication();
-      mockUserCredential = MockUserCredential();
-
-      authService = FirebaseUserDatasource(
-        auth: mockAuth,
-        firestore: mockFirestore,
-        googleSignIn: mockGoogleSignIn,
-      );
-    });
-
     test('returns UserCredential on successful sign in', () async {
       when(mockGoogleSignIn.signIn()).thenAnswer((_) async => mockGoogleUser);
       when(mockGoogleUser.authentication).thenAnswer((_) async => mockGoogleAuth);
@@ -180,7 +140,7 @@ void main() {
       when(mockGoogleAuth.idToken).thenReturn('id-token');
       when(mockAuth.signInWithCredential(any)).thenAnswer((_) async => mockUserCredential);
 
-      final result = await authService.signInWithGoogle();
+      final result = await datasource.signInWithGoogle();
 
       expect(result, mockUserCredential);
       verify(mockGoogleSignIn.signIn()).called(1);
@@ -190,7 +150,7 @@ void main() {
     test('returns null if user cancels sign in', () async {
       when(mockGoogleSignIn.signIn()).thenAnswer((_) async => null);
 
-      final result = await authService.signInWithGoogle();
+      final result = await datasource.signInWithGoogle();
 
       expect(result, null);
       verify(mockGoogleSignIn.signIn()).called(1);
@@ -200,7 +160,7 @@ void main() {
     test('logs and returns null on exception', () async {
       when(mockGoogleSignIn.signIn()).thenThrow(Exception('Failed to sign in'));
 
-      final result = await authService.signInWithGoogle();
+      final result = await datasource.signInWithGoogle();
 
       expect(result, null);
     });
@@ -208,26 +168,7 @@ void main() {
   });
 
   group('FirebaseUserDatasource.accountExists', () {
-    late FirebaseUserDatasource datasource;
-    late MockFirebaseFirestore mockFirestore;
-    late MockUser mockUser;
-    late MockCollectionReference<Map<String, dynamic>> mockCollectionRef;
-    late MockDocumentReference<Map<String, dynamic>> mockDocumentRef;
-    late MockDocumentSnapshot<Map<String, dynamic>> mockDocumentSnapshot;
-
     setUp(() {
-      mockFirestore = MockFirebaseFirestore();
-      mockUser = MockUser();
-      mockCollectionRef = MockCollectionReference<Map<String, dynamic>>();
-      mockDocumentRef = MockDocumentReference<Map<String, dynamic>>();
-      mockDocumentSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
-
-      datasource = FirebaseUserDatasource(
-        auth: MockFirebaseAuth(), 
-        firestore: mockFirestore,
-        googleSignIn: MockGoogleSignIn(), 
-      );
-
       when(mockUser.uid).thenReturn('user123');
       when(mockFirestore.collection('users')).thenReturn(mockCollectionRef);
       when(mockCollectionRef.doc('user123')).thenReturn(mockDocumentRef);

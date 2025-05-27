@@ -386,7 +386,6 @@ void main() {
   });
 
   group('FirebaseRoutesDatasource.updateStartedRouteDuration', () {
-
     test('updates duration when document exists', () async {
       when(mockFirestore.collection('startedRoutes')).thenReturn(mockCollection);
       when(mockCollection.where('userId', isEqualTo: anyNamed('isEqualTo')))
@@ -420,13 +419,6 @@ void main() {
   });
 
   group('FirebaseRoutesDatasource.getRouteDuration', () {
-    late MockQuerySnapshot<Map<String, dynamic>> mockSnapshot;
-    late MockQueryDocumentSnapshot<Map<String, dynamic>> mockDocSnapshot;
-
-    setUp(() {
-      mockSnapshot = MockQuerySnapshot<Map<String, dynamic>>();
-      mockDocSnapshot = MockQueryDocumentSnapshot<Map<String, dynamic>>();
-    });
 
     test('returns duration when found', () async {
       final mockData = {'duration': 180};
@@ -437,9 +429,9 @@ void main() {
       when(mockQuery.where('routeId', isEqualTo: anyNamed('isEqualTo')))
           .thenReturn(mockQuery);
       when(mockQuery.limit(1)).thenReturn(mockQuery);
-      when(mockQuery.get()).thenAnswer((_) async => mockSnapshot);
-      when(mockSnapshot.docs).thenReturn([mockDocSnapshot]);
-      when(mockDocSnapshot.data()).thenReturn(mockData);
+      when(mockQuery.get()).thenAnswer((_) async => mockQuerySnapshot);
+      when(mockQuerySnapshot.docs).thenReturn([mockDock3]);
+      when(mockDock3.data()).thenReturn(mockData);
 
       final result = await datasource.getRouteDuration('user1', 'route1');
 
@@ -453,8 +445,8 @@ void main() {
       when(mockQuery.where('routeId', isEqualTo: anyNamed('isEqualTo')))
           .thenReturn(mockQuery);
       when(mockQuery.limit(1)).thenReturn(mockQuery);
-      when(mockQuery.get()).thenAnswer((_) async => mockSnapshot);
-      when(mockSnapshot.docs).thenReturn([]);
+      when(mockQuery.get()).thenAnswer((_) async => mockQuerySnapshot);
+      when(mockQuerySnapshot.docs).thenReturn([]);
 
       final result = await datasource.getRouteDuration('user1', 'route1');
 

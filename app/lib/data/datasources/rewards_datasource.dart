@@ -10,7 +10,7 @@ class FirebaseRewardsDatasource {
 
   Future<List<Map<String, dynamic>>> getTrophies(String language) async {
     try {
-      final querySnapshot = await FirebaseFirestore.instance.collection('trophy').get();
+      final querySnapshot = await firestore.collection('trophy').get();
 
       final langKey = language.toLowerCase();
 
