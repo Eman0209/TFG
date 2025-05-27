@@ -394,6 +394,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
+				#include? "config/Secrets.xcconfig"
 			};
 			name = Debug;
 		};
@@ -409,6 +410,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
+				#include? "config/Secrets.xcconfig"
 			};
 			name = Release;
 		};
@@ -481,6 +483,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				#include? "config/Secrets.xcconfig"
 			};
 			name = Debug;
 		};
@@ -535,6 +538,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				#include? "config/Secrets.xcconfig"
 			};
 			name = Release;
 		};
@@ -557,6 +561,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				#include? "config/Secrets.xcconfig"
 			};
 			name = Debug;
 		};
@@ -578,6 +583,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				#include? "config/Secrets.xcconfig"
 			};
 			name = Release;
 		};
