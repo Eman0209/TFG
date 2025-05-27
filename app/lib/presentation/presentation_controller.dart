@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/data/datasources/mystery_datasource.dart';
@@ -60,6 +61,7 @@ class PresentationController {
     userDatasource = FirebaseUserDatasource( 
       auth: FirebaseAuth.instance,
       firestore: FirebaseFirestore.instance,
+      googleSignIn: GoogleSignIn()
     );
     userController = UserController(userDatasource);
 
@@ -110,7 +112,6 @@ class PresentationController {
   void createUser(String username, BuildContext context) async {
     userController.createUser(_user, username);
     mapScreen(context);
-    //una vez creado el user que quiero hacer? Mostrar el mapa?
   }
 
   void editUsername(String username, BuildContext context) async {
