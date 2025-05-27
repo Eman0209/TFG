@@ -14,5 +14,7 @@ import 'package:mockito/annotations.dart';
   GoogleSignIn,
   GoogleSignInAccount,
   GoogleSignInAuthentication,
+  QuerySnapshot<Map<String, dynamic>>,
+  QueryDocumentSnapshot<Map<String, dynamic>>,
 ])
 void main() {}

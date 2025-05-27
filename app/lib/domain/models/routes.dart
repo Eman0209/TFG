@@ -31,7 +31,7 @@ class RouteData {
       name: data[nameKey] ?? '',
       category: data['category'] ?? '',
       description: data[descriptionKey] ?? '',
-      duration: data['time'] ?? '1h',
+      duration: data['time'] is int ? data['time'] : 60,
       path: List<String>.from(data['path'] ?? []),
       mysteryId: data['mysteryId'] ?? ''
     );
