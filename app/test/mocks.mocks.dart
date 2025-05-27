@@ -2102,6 +2102,380 @@ class MockQuerySnapshot<T extends Object?> extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#size), returnValue: 0) as int);
 }
 
+/// A class which mocks [Query].
+///
+/// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
+class MockQuery<T extends Object?> extends _i1.Mock implements _i6.Query<T> {
+  MockQuery() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.FirebaseFirestore get firestore =>
+      (super.noSuchMethod(
+            Invocation.getter(#firestore),
+            returnValue: _FakeFirebaseFirestore_16(
+              this,
+              Invocation.getter(#firestore),
+            ),
+          )
+          as _i6.FirebaseFirestore);
+
+  @override
+  Map<String, dynamic> get parameters =>
+      (super.noSuchMethod(
+            Invocation.getter(#parameters),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+
+  @override
+  _i6.Query<T> endAtDocument(_i6.DocumentSnapshot<Object?>? documentSnapshot) =>
+      (super.noSuchMethod(
+            Invocation.method(#endAtDocument, [documentSnapshot]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#endAtDocument, [documentSnapshot]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> endAt(Iterable<Object?>? values) =>
+      (super.noSuchMethod(
+            Invocation.method(#endAt, [values]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#endAt, [values]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> endBeforeDocument(
+    _i6.DocumentSnapshot<Object?>? documentSnapshot,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#endBeforeDocument, [documentSnapshot]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#endBeforeDocument, [documentSnapshot]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> endBefore(Iterable<Object?>? values) =>
+      (super.noSuchMethod(
+            Invocation.method(#endBefore, [values]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#endBefore, [values]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i7.Future<_i6.QuerySnapshot<T>> get([_i5.GetOptions? options]) =>
+      (super.noSuchMethod(
+            Invocation.method(#get, [options]),
+            returnValue: _i7.Future<_i6.QuerySnapshot<T>>.value(
+              _FakeQuerySnapshot_12<T>(
+                this,
+                Invocation.method(#get, [options]),
+              ),
+            ),
+          )
+          as _i7.Future<_i6.QuerySnapshot<T>>);
+
+  @override
+  _i6.Query<T> limit(int? limit) =>
+      (super.noSuchMethod(
+            Invocation.method(#limit, [limit]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#limit, [limit]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> limitToLast(int? limit) =>
+      (super.noSuchMethod(
+            Invocation.method(#limitToLast, [limit]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#limitToLast, [limit]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i7.Stream<_i6.QuerySnapshot<T>> snapshots({
+    bool? includeMetadataChanges = false,
+    _i5.ListenSource? source = _i5.ListenSource.defaultSource,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#snapshots, [], {
+              #includeMetadataChanges: includeMetadataChanges,
+              #source: source,
+            }),
+            returnValue: _i7.Stream<_i6.QuerySnapshot<T>>.empty(),
+          )
+          as _i7.Stream<_i6.QuerySnapshot<T>>);
+
+  @override
+  _i6.Query<T> orderBy(Object? field, {bool? descending = false}) =>
+      (super.noSuchMethod(
+            Invocation.method(#orderBy, [field], {#descending: descending}),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#orderBy, [field], {#descending: descending}),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> startAfterDocument(
+    _i6.DocumentSnapshot<Object?>? documentSnapshot,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#startAfterDocument, [documentSnapshot]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#startAfterDocument, [documentSnapshot]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> startAfter(Iterable<Object?>? values) =>
+      (super.noSuchMethod(
+            Invocation.method(#startAfter, [values]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#startAfter, [values]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> startAtDocument(
+    _i6.DocumentSnapshot<Object?>? documentSnapshot,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#startAtDocument, [documentSnapshot]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#startAtDocument, [documentSnapshot]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> startAt(Iterable<Object?>? values) =>
+      (super.noSuchMethod(
+            Invocation.method(#startAt, [values]),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(#startAt, [values]),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<T> where(
+    Object? field, {
+    Object? isEqualTo,
+    Object? isNotEqualTo,
+    Object? isLessThan,
+    Object? isLessThanOrEqualTo,
+    Object? isGreaterThan,
+    Object? isGreaterThanOrEqualTo,
+    Object? arrayContains,
+    Iterable<Object?>? arrayContainsAny,
+    Iterable<Object?>? whereIn,
+    Iterable<Object?>? whereNotIn,
+    bool? isNull,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #where,
+              [field],
+              {
+                #isEqualTo: isEqualTo,
+                #isNotEqualTo: isNotEqualTo,
+                #isLessThan: isLessThan,
+                #isLessThanOrEqualTo: isLessThanOrEqualTo,
+                #isGreaterThan: isGreaterThan,
+                #isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+                #arrayContains: arrayContains,
+                #arrayContainsAny: arrayContainsAny,
+                #whereIn: whereIn,
+                #whereNotIn: whereNotIn,
+                #isNull: isNull,
+              },
+            ),
+            returnValue: _FakeQuery_13<T>(
+              this,
+              Invocation.method(
+                #where,
+                [field],
+                {
+                  #isEqualTo: isEqualTo,
+                  #isNotEqualTo: isNotEqualTo,
+                  #isLessThan: isLessThan,
+                  #isLessThanOrEqualTo: isLessThanOrEqualTo,
+                  #isGreaterThan: isGreaterThan,
+                  #isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+                  #arrayContains: arrayContains,
+                  #arrayContainsAny: arrayContainsAny,
+                  #whereIn: whereIn,
+                  #whereNotIn: whereNotIn,
+                  #isNull: isNull,
+                },
+              ),
+            ),
+          )
+          as _i6.Query<T>);
+
+  @override
+  _i6.Query<R> withConverter<R>({
+    required _i6.FromFirestore<R>? fromFirestore,
+    required _i6.ToFirestore<R>? toFirestore,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#withConverter, [], {
+              #fromFirestore: fromFirestore,
+              #toFirestore: toFirestore,
+            }),
+            returnValue: _FakeQuery_13<R>(
+              this,
+              Invocation.method(#withConverter, [], {
+                #fromFirestore: fromFirestore,
+                #toFirestore: toFirestore,
+              }),
+            ),
+          )
+          as _i6.Query<R>);
+
+  @override
+  _i6.AggregateQuery count() =>
+      (super.noSuchMethod(
+            Invocation.method(#count, []),
+            returnValue: _FakeAggregateQuery_17(
+              this,
+              Invocation.method(#count, []),
+            ),
+          )
+          as _i6.AggregateQuery);
+
+  @override
+  _i6.AggregateQuery aggregate(
+    _i5.AggregateField? aggregateField1, [
+    _i5.AggregateField? aggregateField2,
+    _i5.AggregateField? aggregateField3,
+    _i5.AggregateField? aggregateField4,
+    _i5.AggregateField? aggregateField5,
+    _i5.AggregateField? aggregateField6,
+    _i5.AggregateField? aggregateField7,
+    _i5.AggregateField? aggregateField8,
+    _i5.AggregateField? aggregateField9,
+    _i5.AggregateField? aggregateField10,
+    _i5.AggregateField? aggregateField11,
+    _i5.AggregateField? aggregateField12,
+    _i5.AggregateField? aggregateField13,
+    _i5.AggregateField? aggregateField14,
+    _i5.AggregateField? aggregateField15,
+    _i5.AggregateField? aggregateField16,
+    _i5.AggregateField? aggregateField17,
+    _i5.AggregateField? aggregateField18,
+    _i5.AggregateField? aggregateField19,
+    _i5.AggregateField? aggregateField20,
+    _i5.AggregateField? aggregateField21,
+    _i5.AggregateField? aggregateField22,
+    _i5.AggregateField? aggregateField23,
+    _i5.AggregateField? aggregateField24,
+    _i5.AggregateField? aggregateField25,
+    _i5.AggregateField? aggregateField26,
+    _i5.AggregateField? aggregateField27,
+    _i5.AggregateField? aggregateField28,
+    _i5.AggregateField? aggregateField29,
+    _i5.AggregateField? aggregateField30,
+  ]) =>
+      (super.noSuchMethod(
+            Invocation.method(#aggregate, [
+              aggregateField1,
+              aggregateField2,
+              aggregateField3,
+              aggregateField4,
+              aggregateField5,
+              aggregateField6,
+              aggregateField7,
+              aggregateField8,
+              aggregateField9,
+              aggregateField10,
+              aggregateField11,
+              aggregateField12,
+              aggregateField13,
+              aggregateField14,
+              aggregateField15,
+              aggregateField16,
+              aggregateField17,
+              aggregateField18,
+              aggregateField19,
+              aggregateField20,
+              aggregateField21,
+              aggregateField22,
+              aggregateField23,
+              aggregateField24,
+              aggregateField25,
+              aggregateField26,
+              aggregateField27,
+              aggregateField28,
+              aggregateField29,
+              aggregateField30,
+            ]),
+            returnValue: _FakeAggregateQuery_17(
+              this,
+              Invocation.method(#aggregate, [
+                aggregateField1,
+                aggregateField2,
+                aggregateField3,
+                aggregateField4,
+                aggregateField5,
+                aggregateField6,
+                aggregateField7,
+                aggregateField8,
+                aggregateField9,
+                aggregateField10,
+                aggregateField11,
+                aggregateField12,
+                aggregateField13,
+                aggregateField14,
+                aggregateField15,
+                aggregateField16,
+                aggregateField17,
+                aggregateField18,
+                aggregateField19,
+                aggregateField20,
+                aggregateField21,
+                aggregateField22,
+                aggregateField23,
+                aggregateField24,
+                aggregateField25,
+                aggregateField26,
+                aggregateField27,
+                aggregateField28,
+                aggregateField29,
+                aggregateField30,
+              ]),
+            ),
+          )
+          as _i6.AggregateQuery);
+}
+
 /// A class which mocks [QueryDocumentSnapshot].
 ///
 /// See the documentation for Mockito's code generation for more information.
