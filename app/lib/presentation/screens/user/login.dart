@@ -27,12 +27,12 @@ class _Login extends State<Login> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //Comprovar si ja hi ha una sessio iniciada
+      // Comprovar si ja hi ha una sessio iniciada
       _presentationController.checkLoggedInUser(context);
     });
   }
 
-  //Construccio de la pantalla
+  // Construccio de la pantalla
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +40,7 @@ class _Login extends State<Login> {
     );
   }
 
-  //Layout de login
+  // Layout de login
   Widget _loginLayout() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +53,7 @@ class _Login extends State<Login> {
           height: MediaQuery.of(context).size.height * 0.3,
           decoration: BoxDecoration(
             image: DecorationImage(
-              //Substituir esta imagen por el logo de la app
+              // Substituir esta imagen por el logo de la app
               image: AssetImage('assets/loginpicture.png'),
               fit: BoxFit.cover,
             )
@@ -65,7 +65,7 @@ class _Login extends State<Login> {
     );
   }
 
-  //Botó de login
+  // Botó de login
   Widget _googleSignInButton() {
     return Center(child: SizedBox(
       height: 50,
@@ -80,7 +80,7 @@ class _Login extends State<Login> {
     ));
   }
  
- //Inici de sessio
+ // Inici de sessio
   Future<void> _handleGoogleSignIn() async {
     await _presentationController.handleGoogleSignIn(context);
   }

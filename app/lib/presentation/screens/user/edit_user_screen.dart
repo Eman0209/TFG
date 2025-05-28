@@ -27,7 +27,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
     _usernameController.text = _username;
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('editUser'.tr())),
@@ -91,7 +91,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
   }
 
   void _saveUsername() {
-    // Here you can add validation or save the username logic
     if (_usernameController.text.isNotEmpty) {
       setState(() {
         _username = _usernameController.text;
@@ -99,7 +98,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('username_updated'.tr(args: [_username]))),
       );
-      //aqui se llamaria al update
+      // Calls to the update function
       _presentationController.editUsername(_username, context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

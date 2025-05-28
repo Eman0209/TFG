@@ -4,8 +4,20 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
-import 'dart:typed_data' as _i10;
+import 'dart:typed_data' as _i18;
+import 'dart:ui' as _i23;
 
+import 'package:app/data/datasources/mystery_datasource.dart' as _i15;
+import 'package:app/data/datasources/rewards_datasource.dart' as _i13;
+import 'package:app/data/datasources/routes_datasource.dart' as _i9;
+import 'package:app/data/datasources/user_datasource.dart' as _i11;
+import 'package:app/domain/controllers/mystery_controller.dart' as _i16;
+import 'package:app/domain/controllers/rewards_controller.dart' as _i14;
+import 'package:app/domain/controllers/routes_controller.dart' as _i10;
+import 'package:app/domain/controllers/user_controller.dart' as _i12;
+import 'package:app/domain/models/routes.dart' as _i21;
+import 'package:app/domain/models/steps.dart' as _i25;
+import 'package:app/presentation/presentation_controller.dart' as _i20;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i6;
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
     as _i5;
@@ -13,11 +25,13 @@ import 'package:firebase_auth/firebase_auth.dart' as _i4;
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart'
     as _i3;
 import 'package:firebase_core/firebase_core.dart' as _i2;
+import 'package:flutter/material.dart' as _i22;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as _i24;
 import 'package:google_sign_in/google_sign_in.dart' as _i8;
 import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart'
-    as _i11;
+    as _i19;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i9;
+import 'package:mockito/src/dummies.dart' as _i17;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -148,6 +162,64 @@ class _FakeSnapshotMetadata_19 extends _i1.SmartFake
 class _FakeGoogleSignInAuthentication_20 extends _i1.SmartFake
     implements _i8.GoogleSignInAuthentication {
   _FakeGoogleSignInAuthentication_20(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFirebaseRoutesDatasource_21 extends _i1.SmartFake
+    implements _i9.FirebaseRoutesDatasource {
+  _FakeFirebaseRoutesDatasource_21(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeRoutesController_22 extends _i1.SmartFake
+    implements _i10.RoutesController {
+  _FakeRoutesController_22(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFirebaseUserDatasource_23 extends _i1.SmartFake
+    implements _i11.FirebaseUserDatasource {
+  _FakeFirebaseUserDatasource_23(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeUserController_24 extends _i1.SmartFake
+    implements _i12.UserController {
+  _FakeUserController_24(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFirebaseRewardsDatasource_25 extends _i1.SmartFake
+    implements _i13.FirebaseRewardsDatasource {
+  _FakeFirebaseRewardsDatasource_25(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeRewardsController_26 extends _i1.SmartFake
+    implements _i14.RewardsController {
+  _FakeRewardsController_26(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFirebaseMysteryDatasource_27 extends _i1.SmartFake
+    implements _i15.FirebaseMysteryDatasource {
+  _FakeFirebaseMysteryDatasource_27(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeMysteryController_28 extends _i1.SmartFake
+    implements _i16.MysteryController {
+  _FakeMysteryController_28(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFirebaseAuth_29 extends _i1.SmartFake implements _i4.FirebaseAuth {
+  _FakeFirebaseAuth_29(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeDuration_30 extends _i1.SmartFake implements Duration {
+  _FakeDuration_30(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -571,7 +643,7 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
       (super.noSuchMethod(
             Invocation.method(#verifyPasswordResetCode, [code]),
             returnValue: _i7.Future<String>.value(
-              _i9.dummyValue<String>(
+              _i17.dummyValue<String>(
                 this,
                 Invocation.method(#verifyPasswordResetCode, [code]),
               ),
@@ -665,7 +737,7 @@ class MockUser extends _i1.Mock implements _i4.User {
   String get uid =>
       (super.noSuchMethod(
             Invocation.getter(#uid),
-            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#uid)),
+            returnValue: _i17.dummyValue<String>(this, Invocation.getter(#uid)),
           )
           as String);
 
@@ -960,7 +1032,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
   String get databaseURL =>
       (super.noSuchMethod(
             Invocation.getter(#databaseURL),
-            returnValue: _i9.dummyValue<String>(
+            returnValue: _i17.dummyValue<String>(
               this,
               Invocation.getter(#databaseURL),
             ),
@@ -971,7 +1043,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
   String get databaseId =>
       (super.noSuchMethod(
             Invocation.getter(#databaseId),
-            returnValue: _i9.dummyValue<String>(
+            returnValue: _i17.dummyValue<String>(
               this,
               Invocation.getter(#databaseId),
             ),
@@ -1063,7 +1135,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
           as _i7.Future<void>);
 
   @override
-  _i6.LoadBundleTask loadBundle(_i10.Uint8List? bundle) =>
+  _i6.LoadBundleTask loadBundle(_i18.Uint8List? bundle) =>
       (super.noSuchMethod(
             Invocation.method(#loadBundle, [bundle]),
             returnValue: _FakeLoadBundleTask_11(
@@ -1204,8 +1276,8 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
               {#timeout: timeout, #maxAttempts: maxAttempts},
             ),
             returnValue:
-                _i9.ifNotNull(
-                  _i9.dummyValueOrNull<T>(
+                _i17.ifNotNull(
+                  _i17.dummyValueOrNull<T>(
                     this,
                     Invocation.method(
                       #runTransaction,
@@ -1272,6 +1344,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
 /// A class which mocks [CollectionReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockCollectionReference<T extends Object?> extends _i1.Mock
     implements _i6.CollectionReference<T> {
   MockCollectionReference() {
@@ -1282,7 +1355,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i17.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -1290,7 +1363,10 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
   String get path =>
       (super.noSuchMethod(
             Invocation.getter(#path),
-            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#path)),
+            returnValue: _i17.dummyValue<String>(
+              this,
+              Invocation.getter(#path),
+            ),
           )
           as String);
 
@@ -1686,6 +1762,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
 /// A class which mocks [DocumentReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockDocumentReference<T extends Object?> extends _i1.Mock
     implements _i6.DocumentReference<T> {
   MockDocumentReference() {
@@ -1707,7 +1784,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i17.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -1726,7 +1803,10 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
   String get path =>
       (super.noSuchMethod(
             Invocation.getter(#path),
-            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#path)),
+            returnValue: _i17.dummyValue<String>(
+              this,
+              Invocation.getter(#path),
+            ),
           )
           as String);
 
@@ -1831,7 +1911,7 @@ class MockDocumentSnapshot<T extends Object?> extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i17.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -1889,12 +1969,12 @@ class MockGoogleSignIn extends _i1.Mock implements _i8.GoogleSignIn {
   }
 
   @override
-  _i11.SignInOption get signInOption =>
+  _i19.SignInOption get signInOption =>
       (super.noSuchMethod(
             Invocation.getter(#signInOption),
-            returnValue: _i11.SignInOption.standard,
+            returnValue: _i19.SignInOption.standard,
           )
-          as _i11.SignInOption);
+          as _i19.SignInOption);
 
   @override
   List<String> get scopes =>
@@ -1990,6 +2070,7 @@ class MockGoogleSignIn extends _i1.Mock implements _i8.GoogleSignIn {
 /// A class which mocks [GoogleSignInAccount].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockGoogleSignInAccount extends _i1.Mock
     implements _i8.GoogleSignInAccount {
   MockGoogleSignInAccount() {
@@ -2000,7 +2081,7 @@ class MockGoogleSignInAccount extends _i1.Mock
   String get email =>
       (super.noSuchMethod(
             Invocation.getter(#email),
-            returnValue: _i9.dummyValue<String>(
+            returnValue: _i17.dummyValue<String>(
               this,
               Invocation.getter(#email),
             ),
@@ -2011,7 +2092,7 @@ class MockGoogleSignInAccount extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i17.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -2102,6 +2183,7 @@ class MockQuerySnapshot<T extends Object?> extends _i1.Mock
 /// A class which mocks [Query].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockQuery<T extends Object?> extends _i1.Mock implements _i6.Query<T> {
   MockQuery() {
     _i1.throwOnMissingStub(this);
@@ -2485,7 +2567,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i17.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -2520,7 +2602,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   T data() =>
       (super.noSuchMethod(
             Invocation.method(#data, []),
-            returnValue: _i9.dummyValue<T>(this, Invocation.method(#data, [])),
+            returnValue: _i17.dummyValue<T>(this, Invocation.method(#data, [])),
           )
           as T);
 
@@ -2531,4 +2613,553 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   @override
   dynamic operator [](Object? field) =>
       super.noSuchMethod(Invocation.method(#[], [field]));
+}
+
+/// A class which mocks [PresentationController].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPresentationController extends _i1.Mock
+    implements _i20.PresentationController {
+  MockPresentationController() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i9.FirebaseRoutesDatasource get routesDatasource =>
+      (super.noSuchMethod(
+            Invocation.getter(#routesDatasource),
+            returnValue: _FakeFirebaseRoutesDatasource_21(
+              this,
+              Invocation.getter(#routesDatasource),
+            ),
+          )
+          as _i9.FirebaseRoutesDatasource);
+
+  @override
+  _i10.RoutesController get routesController =>
+      (super.noSuchMethod(
+            Invocation.getter(#routesController),
+            returnValue: _FakeRoutesController_22(
+              this,
+              Invocation.getter(#routesController),
+            ),
+          )
+          as _i10.RoutesController);
+
+  @override
+  _i11.FirebaseUserDatasource get userDatasource =>
+      (super.noSuchMethod(
+            Invocation.getter(#userDatasource),
+            returnValue: _FakeFirebaseUserDatasource_23(
+              this,
+              Invocation.getter(#userDatasource),
+            ),
+          )
+          as _i11.FirebaseUserDatasource);
+
+  @override
+  _i12.UserController get userController =>
+      (super.noSuchMethod(
+            Invocation.getter(#userController),
+            returnValue: _FakeUserController_24(
+              this,
+              Invocation.getter(#userController),
+            ),
+          )
+          as _i12.UserController);
+
+  @override
+  _i13.FirebaseRewardsDatasource get rewardsDatasource =>
+      (super.noSuchMethod(
+            Invocation.getter(#rewardsDatasource),
+            returnValue: _FakeFirebaseRewardsDatasource_25(
+              this,
+              Invocation.getter(#rewardsDatasource),
+            ),
+          )
+          as _i13.FirebaseRewardsDatasource);
+
+  @override
+  _i14.RewardsController get rewardsController =>
+      (super.noSuchMethod(
+            Invocation.getter(#rewardsController),
+            returnValue: _FakeRewardsController_26(
+              this,
+              Invocation.getter(#rewardsController),
+            ),
+          )
+          as _i14.RewardsController);
+
+  @override
+  _i15.FirebaseMysteryDatasource get mysteryDatasource =>
+      (super.noSuchMethod(
+            Invocation.getter(#mysteryDatasource),
+            returnValue: _FakeFirebaseMysteryDatasource_27(
+              this,
+              Invocation.getter(#mysteryDatasource),
+            ),
+          )
+          as _i15.FirebaseMysteryDatasource);
+
+  @override
+  _i16.MysteryController get mysteryController =>
+      (super.noSuchMethod(
+            Invocation.getter(#mysteryController),
+            returnValue: _FakeMysteryController_28(
+              this,
+              Invocation.getter(#mysteryController),
+            ),
+          )
+          as _i16.MysteryController);
+
+  @override
+  List<_i21.RouteData> get routesUser =>
+      (super.noSuchMethod(
+            Invocation.getter(#routesUser),
+            returnValue: <_i21.RouteData>[],
+          )
+          as List<_i21.RouteData>);
+
+  @override
+  set routesDatasource(_i9.FirebaseRoutesDatasource? _routesDatasource) =>
+      super.noSuchMethod(
+        Invocation.setter(#routesDatasource, _routesDatasource),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set routesController(_i10.RoutesController? _routesController) =>
+      super.noSuchMethod(
+        Invocation.setter(#routesController, _routesController),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set userDatasource(_i11.FirebaseUserDatasource? _userDatasource) =>
+      super.noSuchMethod(
+        Invocation.setter(#userDatasource, _userDatasource),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set userController(_i12.UserController? _userController) =>
+      super.noSuchMethod(
+        Invocation.setter(#userController, _userController),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set rewardsDatasource(_i13.FirebaseRewardsDatasource? _rewardsDatasource) =>
+      super.noSuchMethod(
+        Invocation.setter(#rewardsDatasource, _rewardsDatasource),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set rewardsController(_i14.RewardsController? _rewardsController) =>
+      super.noSuchMethod(
+        Invocation.setter(#rewardsController, _rewardsController),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set mysteryDatasource(_i15.FirebaseMysteryDatasource? _mysteryDatasource) =>
+      super.noSuchMethod(
+        Invocation.setter(#mysteryDatasource, _mysteryDatasource),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set mysteryController(_i16.MysteryController? _mysteryController) =>
+      super.noSuchMethod(
+        Invocation.setter(#mysteryController, _mysteryController),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set routesUser(List<_i21.RouteData>? _routesUser) => super.noSuchMethod(
+    Invocation.setter(#routesUser, _routesUser),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i7.Future<void> initialice() =>
+      (super.noSuchMethod(
+            Invocation.method(#initialice, []),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  bool userLogged() =>
+      (super.noSuchMethod(
+            Invocation.method(#userLogged, []),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  _i4.FirebaseAuth getFirebaseAuth() =>
+      (super.noSuchMethod(
+            Invocation.method(#getFirebaseAuth, []),
+            returnValue: _FakeFirebaseAuth_29(
+              this,
+              Invocation.method(#getFirebaseAuth, []),
+            ),
+          )
+          as _i4.FirebaseAuth);
+
+  @override
+  void setUser(_i4.User? event) => super.noSuchMethod(
+    Invocation.method(#setUser, [event]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void createUser(String? username, _i22.BuildContext? context) =>
+      super.noSuchMethod(
+        Invocation.method(#createUser, [username, context]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void editUsername(String? username, _i22.BuildContext? context) =>
+      super.noSuchMethod(
+        Invocation.method(#editUsername, [username, context]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void checkLoggedInUser(_i22.BuildContext? context) => super.noSuchMethod(
+    Invocation.method(#checkLoggedInUser, [context]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i7.Future<void> handleGoogleSignIn(_i22.BuildContext? context) =>
+      (super.noSuchMethod(
+            Invocation.method(#handleGoogleSignIn, [context]),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  void changeLanguage(_i23.Locale? lang, _i22.BuildContext? context) =>
+      super.noSuchMethod(
+        Invocation.method(#changeLanguage, [lang, context]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i7.Future<List<Map<String, dynamic>>> getTrophies() =>
+      (super.noSuchMethod(
+            Invocation.method(#getTrophies, []),
+            returnValue: _i7.Future<List<Map<String, dynamic>>>.value(
+              <Map<String, dynamic>>[],
+            ),
+          )
+          as _i7.Future<List<Map<String, dynamic>>>);
+
+  @override
+  _i7.Future<List<String>> getMyOwnTrophies() =>
+      (super.noSuchMethod(
+            Invocation.method(#getMyOwnTrophies, []),
+            returnValue: _i7.Future<List<String>>.value(<String>[]),
+          )
+          as _i7.Future<List<String>>);
+
+  @override
+  _i7.Future<void> addUserTrophy(String? trophyId) =>
+      (super.noSuchMethod(
+            Invocation.method(#addUserTrophy, [trophyId]),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  _i7.Future<List<_i21.RouteData>> getUserDoneRoutes() =>
+      (super.noSuchMethod(
+            Invocation.method(#getUserDoneRoutes, []),
+            returnValue: _i7.Future<List<_i21.RouteData>>.value(
+              <_i21.RouteData>[],
+            ),
+          )
+          as _i7.Future<List<_i21.RouteData>>);
+
+  @override
+  void addStardtedRoute(_i22.BuildContext? context, String? routeId) =>
+      super.noSuchMethod(
+        Invocation.method(#addStardtedRoute, [context, routeId]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void deleteStartedRoute(_i22.BuildContext? context, String? routeId) =>
+      super.noSuchMethod(
+        Invocation.method(#deleteStartedRoute, [context, routeId]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i7.Future<bool> isRouteStarted(String? routeId) =>
+      (super.noSuchMethod(
+            Invocation.method(#isRouteStarted, [routeId]),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> isRouteDone(String? routeId) =>
+      (super.noSuchMethod(
+            Invocation.method(#isRouteDone, [routeId]),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
+
+  @override
+  void addDoneRoute(
+    _i22.BuildContext? context,
+    String? routeId,
+    Duration? timeSpent,
+  ) => super.noSuchMethod(
+    Invocation.method(#addDoneRoute, [context, routeId, timeSpent]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i7.Future<List<_i21.RouteData?>> getAllRoutesData(
+    _i22.BuildContext? context,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllRoutesData, [context]),
+            returnValue: _i7.Future<List<_i21.RouteData?>>.value(
+              <_i21.RouteData?>[],
+            ),
+          )
+          as _i7.Future<List<_i21.RouteData?>>);
+
+  @override
+  _i7.Future<_i21.RouteData?> getRouteData(String? routeId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getRouteData, [routeId]),
+            returnValue: _i7.Future<_i21.RouteData?>.value(),
+          )
+          as _i7.Future<_i21.RouteData?>);
+
+  @override
+  _i7.Future<List<_i24.LatLng>> getRoutesPoints(_i22.BuildContext? context) =>
+      (super.noSuchMethod(
+            Invocation.method(#getRoutesPoints, [context]),
+            returnValue: _i7.Future<List<_i24.LatLng>>.value(<_i24.LatLng>[]),
+          )
+          as _i7.Future<List<_i24.LatLng>>);
+
+  @override
+  _i7.Future<String> getRouteId() =>
+      (super.noSuchMethod(
+            Invocation.method(#getRouteId, []),
+            returnValue: _i7.Future<String>.value(
+              _i17.dummyValue<String>(this, Invocation.method(#getRouteId, [])),
+            ),
+          )
+          as _i7.Future<String>);
+
+  @override
+  _i7.Future<String> getMysteryId(String? routeId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getMysteryId, [routeId]),
+            returnValue: _i7.Future<String>.value(
+              _i17.dummyValue<String>(
+                this,
+                Invocation.method(#getMysteryId, [routeId]),
+              ),
+            ),
+          )
+          as _i7.Future<String>);
+
+  @override
+  _i7.Future<String> getMysteryTitle(String? routeId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getMysteryTitle, [routeId]),
+            returnValue: _i7.Future<String>.value(
+              _i17.dummyValue<String>(
+                this,
+                Invocation.method(#getMysteryTitle, [routeId]),
+              ),
+            ),
+          )
+          as _i7.Future<String>);
+
+  @override
+  _i7.Future<String> getIntroduction(String? mysteryId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getIntroduction, [mysteryId]),
+            returnValue: _i7.Future<String>.value(
+              _i17.dummyValue<String>(
+                this,
+                Invocation.method(#getIntroduction, [mysteryId]),
+              ),
+            ),
+          )
+          as _i7.Future<String>);
+
+  @override
+  _i7.Future<_i25.StepData?> getStepInfo(String? mysteryId, int? order) =>
+      (super.noSuchMethod(
+            Invocation.method(#getStepInfo, [mysteryId, order]),
+            returnValue: _i7.Future<_i25.StepData?>.value(),
+          )
+          as _i7.Future<_i25.StepData?>);
+
+  @override
+  _i7.Future<List<_i25.StepData>> getCompletedSteps(String? mysteryId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getCompletedSteps, [mysteryId]),
+            returnValue: _i7.Future<List<_i25.StepData>>.value(
+              <_i25.StepData>[],
+            ),
+          )
+          as _i7.Future<List<_i25.StepData>>);
+
+  @override
+  _i7.Future<int> getLengthOfSteps(String? mysteryId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getLengthOfSteps, [mysteryId]),
+            returnValue: _i7.Future<int>.value(0),
+          )
+          as _i7.Future<int>);
+
+  @override
+  _i7.Future<Duration> getRouteDuration(String? routeId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getRouteDuration, [routeId]),
+            returnValue: _i7.Future<Duration>.value(
+              _FakeDuration_30(
+                this,
+                Invocation.method(#getRouteDuration, [routeId]),
+              ),
+            ),
+          )
+          as _i7.Future<Duration>);
+
+  @override
+  _i7.Future<Duration> getStartedRouteDuration(String? routeId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getStartedRouteDuration, [routeId]),
+            returnValue: _i7.Future<Duration>.value(
+              _FakeDuration_30(
+                this,
+                Invocation.method(#getStartedRouteDuration, [routeId]),
+              ),
+            ),
+          )
+          as _i7.Future<Duration>);
+
+  @override
+  _i7.Future<void> updateStartedRouteDuration(
+    String? routeId,
+    Duration? timeSpent,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateStartedRouteDuration, [
+              routeId,
+              timeSpent,
+            ]),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  void mostrarSignup(_i22.BuildContext? context) => super.noSuchMethod(
+    Invocation.method(#mostrarSignup, [context]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void mapScreen(_i22.BuildContext? context) => super.noSuchMethod(
+    Invocation.method(#mapScreen, [context]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void infoRoute(
+    _i22.BuildContext? context,
+    bool? completedScreen,
+    String? routeId,
+  ) => super.noSuchMethod(
+    Invocation.method(#infoRoute, [context, completedScreen, routeId]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void startedRouteScreen(_i22.BuildContext? context, String? routeId) =>
+      super.noSuchMethod(
+        Invocation.method(#startedRouteScreen, [context, routeId]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void mysteryScreen(
+    _i22.BuildContext? context,
+    String? routeId,
+    String? mysteryId,
+  ) => super.noSuchMethod(
+    Invocation.method(#mysteryScreen, [context, routeId, mysteryId]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void introductionScreen(
+    _i22.BuildContext? context,
+    String? mysteryId,
+    String? routeId,
+  ) => super.noSuchMethod(
+    Invocation.method(#introductionScreen, [context, mysteryId, routeId]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void stepScreen(
+    _i22.BuildContext? context,
+    String? mysteryId,
+    String? routeId,
+    int? stepOrder,
+  ) => super.noSuchMethod(
+    Invocation.method(#stepScreen, [context, mysteryId, routeId, stepOrder]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void doneRoutesScreen(_i22.BuildContext? context) => super.noSuchMethod(
+    Invocation.method(#doneRoutesScreen, [context]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void meScreen(_i22.BuildContext? context) => super.noSuchMethod(
+    Invocation.method(#meScreen, [context]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void editUserScreen(_i22.BuildContext? context) => super.noSuchMethod(
+    Invocation.method(#editUserScreen, [context]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void rewardsScreen(_i22.BuildContext? context) => super.noSuchMethod(
+    Invocation.method(#rewardsScreen, [context]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void howToPlayScreen(_i22.BuildContext? context) => super.noSuchMethod(
+    Invocation.method(#howToPlayScreen, [context]),
+    returnValueForMissingStub: null,
+  );
 }
