@@ -1,5 +1,6 @@
 import 'package:app/presentation/screens/user/login.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
+import 'package:app/presentation/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -175,6 +176,38 @@ void main() {
       await tester.tap(find.widgetWithText(GButton, 'me'));
       await tester.pumpAndSettle();
       expect(tappedIndex, 2);
+    });
+  });
+
+  group("CustomTopNavigationBar Tests", () {
+    testWidgets('TabBar switches views and triggers callback', (WidgetTester tester) async {
+      int selectedIndex = 0;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: CustomTopNavigationBar(
+            selectedIndex: selectedIndex,
+            onTabChange: (index) {
+              selectedIndex = index;
+            },
+          ),
+        ),
+      );
+
+      // Ensure first tab is selected
+      expect(find.text('Map View'), findsOneWidget);
+      expect(find.text('Mystery View'), findsNothing);
+
+      // Tap on the second tab ("mistery")
+      await tester.tap(find.text('mistery'));
+      await tester.pumpAndSettle();
+
+      // Check if the callback was triggered
+      expect(selectedIndex, 1);
+
+      // Ensure second view is now shown
+      expect(find.text('Map View'), findsNothing);
+      expect(find.text('Mystery View'), findsOneWidget);
     });
   });
 
