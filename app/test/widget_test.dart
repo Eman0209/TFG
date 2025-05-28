@@ -1,8 +1,5 @@
-import 'dart:ui' as ui;
 import 'package:app/presentation/screens/user/login.dart';
-import 'package:app/presentation/screens/user/rewards_screen.dart';
 import 'package:app/presentation/widgets/bnav_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -10,7 +7,6 @@ import 'package:app/presentation/screens/user/how_to_play_screen.dart';
 import 'package:app/presentation/screens/user/edit_user_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sign_in_button/sign_in_button.dart';
 
 import 'mocks.mocks.dart';
 
