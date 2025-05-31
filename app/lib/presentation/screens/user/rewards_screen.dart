@@ -157,7 +157,6 @@ class _RewardsScreenState extends State<RewardsScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12,
-              //esto es del nombre, pensar si quiero que se modifique
               color: isOwned ? Colors.black : Colors.grey,
               fontWeight: isOwned ? FontWeight.bold : FontWeight.normal,
             ),
