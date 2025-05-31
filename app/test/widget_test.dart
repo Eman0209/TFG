@@ -1,13 +1,20 @@
-import 'package:app/presentation/screens/user/login.dart';
-import 'package:app/presentation/widgets/bnav_bar.dart';
-import 'package:app/presentation/widgets/custom_appbar.dart';
+import 'dart:async';
+
+import 'package:app/presentation/screens/mystery/route_screen.dart';
+import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mockito/mockito.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:app/presentation/widgets/bnav_bar.dart';
 import 'package:app/presentation/screens/user/how_to_play_screen.dart'; 
 import 'package:app/presentation/screens/user/edit_user_screen.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:mockito/mockito.dart';
+import 'package:app/presentation/screens/user/login.dart';
+import 'package:app/presentation/screens/mystery/introduction_screen.dart';
+import 'package:app/presentation/screens/mystery/mystery_screen.dart';
+import 'package:app/presentation/widgets/custom_appbar.dart';
+import 'package:app/domain/models/steps.dart';
 
 import 'mocks.mocks.dart';
 
@@ -35,10 +42,10 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      expect(find.text('how_to_play_1_title'.tr()), findsOneWidget);
-      expect(find.text('how_to_play_1_body'.tr()), findsOneWidget);
-      expect(find.text('how_to_play_5_title'.tr()), findsOneWidget);
-      expect(find.text('how_to_play_tips_body'.tr()), findsOneWidget);
+      expect(find.text('how_to_play_1_title'), findsOneWidget);
+      expect(find.text('how_to_play_1_body'), findsOneWidget);
+      expect(find.text('how_to_play_5_title'), findsOneWidget);
+      expect(find.text('how_to_play_tips_body'), findsOneWidget);
     });
   });
 
@@ -211,4 +218,181 @@ void main() {
     });
   });
 
+  group("Introduction Screen Test", () {
+    testWidgets('loads introduction and navigates to map', (WidgetTester tester) async {
+      const mysteryId = 'mystery1';
+      const routeId = 'route1';
+      const introText = 'Welcome to the mystery!';
+
+      when(mockPresentationController.getIntroduction(mysteryId))
+          .thenAnswer((_) async => introText);
+
+      // Build the widget
+      await tester.pumpWidget(
+        MaterialApp(
+          home: IntroScreen(
+            mysteryId: mysteryId,
+            routeId: routeId,
+            presentationController: mockPresentationController,
+          ),
+        ),
+      );
+
+      // Wait for FutureBuilder to resolve
+      await tester.pumpAndSettle();
+
+      // Assert intro text
+      expect(find.text(introText), findsOneWidget);
+
+      // Assert "go to location" text
+      expect(find.textContaining('go_to_location'), findsOneWidget); // adjust if hardcoded string
+
+      // Find the button and tap it
+      final button = find.byType(ElevatedButton);
+      expect(button, findsOneWidget);
+      await tester.tap(button);
+      await tester.pumpAndSettle();
+
+      // Verify methods are called
+      verify(mockPresentationController.addStardtedRoute(any, routeId)).called(1);
+      verify(mockPresentationController.startedRouteScreen(any, routeId)).called(1);
+    });
+  });
+
+  group("Mystery Screen Test", () {
+    
+    Widget buildTestWidget() {
+      return MaterialApp(
+        home: MysteryScreen(
+          routeId: 'route1',
+          mysteryId: 'mystery1',
+          presentationController: mockPresentationController,
+        ),
+      );
+    }
+    testWidgets('MysteryScreen displays steps and handles finish logic', (WidgetTester tester) async {
+      // Mock responses
+      when(mockPresentationController.getMysteryTitle(any))
+          .thenAnswer((_) async => 'Mocked Route Title');
+
+      when(mockPresentationController.getCompletedSteps(any))
+          .thenAnswer((_) async => List.generate(5, (i) => StepData(
+            title: 'Step ${i + 1}',
+            resum: 'Description ${i + 1}',
+            order: i + 1,
+            narration: "Narracio",
+            instructions: "instructions"
+          )));
+
+      when(mockPresentationController.getLengthOfSteps(any))
+          .thenAnswer((_) async => 5);
+
+      when(mockPresentationController.getStartedRouteDuration(any))
+          .thenAnswer((_) async => const Duration(minutes: 10));
+
+      // Pump the widget
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pumpAndSettle();
+
+      // Verify title is shown
+      expect(find.text('Mocked Route Title'), findsOneWidget);
+
+      // Verify all steps are shown
+      for (int i = 1; i <= 5; i++) {
+        expect(find.text('Step $i'), findsOneWidget);
+        expect(find.text('Description $i'), findsOneWidget);
+      }
+
+      // Verify completion popup appears
+      expect(find.text('finished_congrats'), findsOneWidget);
+
+      // Tap "Close route" button
+      final closeButton = find.widgetWithText(ElevatedButton, 'close_route');
+      expect(closeButton, findsOneWidget);
+      await tester.tap(closeButton);
+      await tester.pumpAndSettle();
+
+      // Verify expected controller calls
+      verify(mockPresentationController.getStartedRouteDuration(any)).called(2);
+      verify(mockPresentationController.deleteStartedRoute(any, any)).called(1);
+      verify(mockPresentationController.addDoneRoute(any, any, any)).called(1);
+    });
+  });
+
+  group("Step Screen Test", () {
+    Widget buildTestWidget({required String mysteryId, required int stepOrder}) {
+      return MaterialApp(
+        home: StepScreen(
+          routeId: 'route1',
+          mysteryId: mysteryId,
+          stepOrder: stepOrder,
+          presentationController: mockPresentationController,
+        ),
+      );
+    }
+
+    testWidgets('shows loading indicator while fetching step', (WidgetTester tester) async {
+      // Arrange: stub to never complete
+      final completer = Completer<StepData?>();
+      when(mockPresentationController.getStepInfo(any, any)).thenAnswer((_) => completer.future);
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(mysteryId: 'mystery1', stepOrder: 1));
+
+      // Assert loading indicator shown
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('shows error text when step loading fails', (WidgetTester tester) async {
+      when(mockPresentationController.getStepInfo(any, any))
+        .thenAnswer((_) async => throw Exception('Failed to load'));
+
+      await tester.pumpWidget(buildTestWidget(mysteryId: 'mystery1', stepOrder: 1));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Step not found or error loading step.'), findsOneWidget);
+    });
+
+    testWidgets('shows error text when step is null', (WidgetTester tester) async {
+      when(mockPresentationController.getStepInfo(any, any)).thenAnswer((_) async => null);
+
+      await tester.pumpWidget(buildTestWidget(mysteryId: 'mystery1', stepOrder: 1));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Step not found or error loading step.'), findsOneWidget);
+    });
+
+    testWidgets('shows step narration and instructions when loaded', (WidgetTester tester) async {
+      final stepData = StepData(
+        title: 'Step 1',
+        resum: 'Desc',
+        order: 1,
+        narration: 'This is narration text',
+        instructions: 'These are instructions',
+      );
+
+      when(mockPresentationController.getStepInfo(any, any)).thenAnswer((_) async => stepData);
+
+      await tester.pumpWidget(buildTestWidget(mysteryId: 'mystery1', stepOrder: 1));
+      await tester.pumpAndSettle();
+
+      // Check UI
+      expect(find.text('Narration'), findsOneWidget);
+      expect(find.text('This is narration text'), findsOneWidget);
+      expect(find.text('Instructions'), findsOneWidget);
+      expect(find.text('These are instructions'), findsOneWidget);
+
+      // Check app bar title (assuming localization is set up correctly)
+      expect(find.text('new_track'), findsOneWidget);
+
+      // Check button text
+      expect(find.widgetWithText(ElevatedButton, 'start_game'), findsOneWidget);
+    });
+
+  });
+
 } 
+
+extension TestTr on String {
+  String tr() => this; 
+}
