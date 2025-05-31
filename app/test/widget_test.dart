@@ -1,7 +1,4 @@
 import 'dart:async';
-
-import 'package:app/presentation/screens/mystery/route_screen.dart';
-import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -13,6 +10,7 @@ import 'package:app/presentation/screens/user/edit_user_screen.dart';
 import 'package:app/presentation/screens/user/login.dart';
 import 'package:app/presentation/screens/mystery/introduction_screen.dart';
 import 'package:app/presentation/screens/mystery/mystery_screen.dart';
+import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:app/presentation/widgets/custom_appbar.dart';
 import 'package:app/domain/models/steps.dart';
 
