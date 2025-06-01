@@ -1,0 +1,17 @@
+Overall Combined Coverage Summary
+----------------------------------------
+Test type: unit
+  Total lines: 231
+  Covered lines: 223
+  Coverage: 96.54%
+
+Test type: widget
+  Total lines: 1004
+  Covered lines: 366
+  Coverage: 36.45%
+
+----------------------------------------
+Combined Total:
+  Total lines: 1235
+  Covered lines: 589
+  Overall coverage: 47.69%

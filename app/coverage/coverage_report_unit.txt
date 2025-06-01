@@ -1,0 +1,26 @@
+Coverage report for unit tests
+------------------------------------------------------------
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/data/datasources/mystery_datasource.dart
+  Total lines: 62
+  Covered lines: 61
+  Coverage: 98.39%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/data/datasources/rewards_datasource.dart
+  Total lines: 36
+  Covered lines: 36
+  Coverage: 100.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/data/datasources/routes_datasource.dart
+  Total lines: 108
+  Covered lines: 101
+  Coverage: 93.52%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/data/datasources/user_datasource.dart
+  Total lines: 25
+  Covered lines: 25
+  Coverage: 100.00%
+
+------------------------------------------------------------
+Total lines: 231
+Covered lines: 223
+Overall coverage: 96.54%

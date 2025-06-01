@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +14,7 @@ import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:app/presentation/widgets/custom_appbar.dart';
 import 'package:app/domain/models/steps.dart';
 
-import 'mocks.mocks.dart';
+import '../mocks.mocks.dart';
 
 void main() {
 
