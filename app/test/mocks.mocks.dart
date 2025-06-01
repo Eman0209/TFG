@@ -19,6 +19,7 @@ import 'package:app/domain/models/routes.dart' as _i21;
 import 'package:app/domain/models/steps.dart' as _i25;
 import 'package:app/presentation/presentation_controller.dart' as _i20;
 import 'package:app/presentation/screens/mystery/time_service.dart' as _i26;
+
 import 'package:cloud_firestore/cloud_firestore.dart' as _i6;
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
     as _i5;
@@ -26,6 +27,7 @@ import 'package:firebase_auth/firebase_auth.dart' as _i4;
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart'
     as _i3;
 import 'package:firebase_core/firebase_core.dart' as _i2;
+
 import 'package:flutter/material.dart' as _i22;
 import 'package:google_maps_flutter/google_maps_flutter.dart' as _i24;
 import 'package:google_sign_in/google_sign_in.dart' as _i8;
@@ -33,6 +35,7 @@ import 'package:google_sign_in_platform_interface/google_sign_in_platform_interf
     as _i19;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i17;
+
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
