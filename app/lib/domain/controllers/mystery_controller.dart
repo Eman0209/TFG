@@ -25,4 +25,8 @@ class MysteryController {
     return await datasource.getStepsLength(mysteryId);
   }
 
+  Future<void> addDoneStep(User user, String mysteryId, int order) async {
+    await datasource.addCompletedStep(user.uid, mysteryId, order);
+  }
+
 }

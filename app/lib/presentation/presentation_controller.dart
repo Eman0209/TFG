@@ -385,6 +385,10 @@ class PresentationController {
     await routesController.updateStartedRouteDuration(_user!, routeId, timeSpent);
   }
 
+  Future<void> addDoneStep(String mysteryId, int order) async {
+    await mysteryController.addDoneStep(_user!, mysteryId, order);
+  }
+
   /* ------------------------------ Screens ------------------------------ */
   
   // Move to the signup screen
