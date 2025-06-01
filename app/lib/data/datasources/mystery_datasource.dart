@@ -138,10 +138,10 @@ class FirebaseMysteryDatasource {
             .collection('mystery')
             .doc(mysteryId)
             .collection(subcollection)
-            .where('order', isEqualTo: order)
+            .where('order', isEqualTo: order+1)
             .limit(1)
             .get();
-
+            
         return query.docs.isNotEmpty ? query.docs.first.id : null;
       }
       
@@ -152,7 +152,7 @@ class FirebaseMysteryDatasource {
 
       // Skip if no steps found
       if (stepIdEn == null && stepIdEs == null && stepIdCa == null) {
-        _logger.severe('No steps found for order $order');
+        _logger.warning('No steps found for order $order');
         return;
       }
 
