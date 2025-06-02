@@ -279,7 +279,8 @@ void main() {
             resum: 'Description ${i + 1}',
             order: i + 1,
             narration: "Narracio",
-            instructions: "instructions"
+            instructions: "instructions",
+            next_step: "Next step"
           )));
 
       when(mockPresentationController.getLengthOfSteps(any))
@@ -367,6 +368,7 @@ void main() {
         order: 1,
         narration: 'This is narration text',
         instructions: 'These are instructions',
+        next_step: 'Next step'
       );
 
       when(mockPresentationController.getStepInfo(any, any)).thenAnswer((_) async => stepData);

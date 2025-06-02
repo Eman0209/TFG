@@ -45,7 +45,7 @@ class _StepScreenState extends State<StepScreen> {
           backgroundColor: const Color(0xFFF8F4FF),
           appBar: _buildAppBar(context),
           body: buildStepContent(step),
-          floatingActionButton: startGame(),
+          floatingActionButton: startGame(step.next_step),
         );
       }
     );
@@ -97,10 +97,12 @@ class _StepScreenState extends State<StepScreen> {
     );
   }
 
-  Widget startGame() {
+  Widget startGame(String nextStep) {
     return ElevatedButton(
       onPressed: () {
-
+        // Esto es para finalizar el juego, mover al fichero donde toque
+        //_presentationController.addDoneStep(widget.mysteryId, widget.stepOrder);
+        //finalPopUp(nextStep);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -111,6 +113,27 @@ class _StepScreenState extends State<StepScreen> {
         ),
       ),
       child: Text('start_game'.tr()),
+    );
+  }
+
+  void finalPopUp(String nextStep) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('completed_enigma'.tr()),
+          content: Text(nextStep),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
+              },
+              child: Text('continue'.tr()),
+            ),
+          ],
+        );
+      },
     );
   }
 
