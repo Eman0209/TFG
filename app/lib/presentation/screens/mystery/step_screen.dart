@@ -1,7 +1,7 @@
-import 'package:app/domain/models/steps.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:app/presentation/presentation_controller.dart';
+import 'package:app/domain/models/steps.dart';
 
 class StepScreen extends StatefulWidget {
   final PresentationController presentationController;
@@ -45,7 +45,7 @@ class _StepScreenState extends State<StepScreen> {
           backgroundColor: const Color(0xFFF8F4FF),
           appBar: _buildAppBar(context),
           body: buildStepContent(step),
-          floatingActionButton: startGame(step.next_step),
+          floatingActionButton: startGame(),
         );
       }
     );
@@ -97,12 +97,10 @@ class _StepScreenState extends State<StepScreen> {
     );
   }
 
-  Widget startGame(String nextStep) {
+  Widget startGame() {
     return ElevatedButton(
       onPressed: () {
-        // Esto es para finalizar el juego, mover al fichero donde toque
-        //_presentationController.addDoneStep(widget.mysteryId, widget.stepOrder);
-        //finalPopUp(nextStep);
+        _presentationController.activityScreen(context, widget.routeId, widget.mysteryId, widget.stepOrder+1);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(255, 206, 179, 254),
@@ -113,27 +111,6 @@ class _StepScreenState extends State<StepScreen> {
         ),
       ),
       child: Text('start_game'.tr()),
-    );
-  }
-
-  void finalPopUp(String nextStep) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('completed_enigma'.tr()),
-          content: Text(nextStep),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
-              },
-              child: Text('continue'.tr()),
-            ),
-          ],
-        );
-      },
     );
   }
 

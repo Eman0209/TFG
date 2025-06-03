@@ -1,3 +1,4 @@
+import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -236,12 +237,15 @@ class PresentationController {
 
   Future<List<RouteData?>> getAllRoutesData(BuildContext context) async {
     if(_language == Locale('en')) {
+      print("pilla info en");
       return routesController.fetchAllRoutesData('en');
     }
     else if(_language == Locale('es')) {
+      print("pilla info es");
       return routesController.fetchAllRoutesData('es');
     }
     else {
+      print("pilla info ca");
       return routesController.fetchAllRoutesData('ca');
     }
   }
@@ -371,6 +375,11 @@ class PresentationController {
     return mysteryController.fetchLengthOfSteps(mysteryId);
   }
 
+  Future<String> getNextstep(String mysteryId, int order) async {
+    StepData? step = await getStepInfo(mysteryId, order);
+    return step!.next_step;
+  }
+
   Future<Duration> getRouteDuration(String routeId) async {
     Duration? duration = await routesController.fetchRouteDuration(_user!, routeId);
     return duration!;
@@ -466,6 +475,18 @@ class PresentationController {
           StepScreen(presentationController: this, mysteryId: mysteryId, routeId: routeId, stepOrder: stepOrder),
       ),
     );
+  }
+
+  void activityScreen(BuildContext context, String routeId, String mysteryId, int stepOrder) {
+    if (stepOrder == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            TranslationPuzzleScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
   }
 
   // Move to the done routes screen
