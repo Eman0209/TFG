@@ -59,11 +59,11 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Incorrecte'),
-          content: Text('La frase no és correcta. Torna-ho a provar!'),
+          title: Text('incorrect'.tr()),
+          content: Text('incorrect_phrase'.tr()),
           actions: [
             TextButton(
-              child: Text('D\'acord'),
+              child: Text('ok'.tr()),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -83,7 +83,7 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Joc de traducció'),
+        title: Text('translation_game'.tr()),
         actions: [
           IconButton(icon: Icon(Icons.refresh), onPressed: resetPuzzle),
         ],
@@ -93,7 +93,7 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
         child: Column(
           children: [
             Text(
-              'Reorganitza les paraules per formar la frase correcta:',
+              'ins_trans_game'.tr(),
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 20),
@@ -160,7 +160,7 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
             onPressed: currentOrder.length == correctOrder.length
                 ? checkAnswer
                 : null,
-            child: Text('Comprova'),
+            child: Text('check'.tr()),
           ),
         ],
       ),
