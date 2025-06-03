@@ -46,8 +46,7 @@ class PipePainter extends CustomPainter {
       ..strokeWidth = 10
       ..strokeCap = StrokeCap.round;
 
-    final center = Offset(size.width / 2, size.height / 2);
-    final half = size.width / 2;
+    final center = Offset(size.width / 2, size.height / 2); 
 
     for (var dir in tile.connections) {
       Offset end;

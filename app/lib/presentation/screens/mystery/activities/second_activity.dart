@@ -40,7 +40,6 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
   }
 
   void generatePuzzle() {
-    // Simple 4x4 grid with random rotations
     grid = List.generate(gridSize, (row) {
       return List.generate(gridSize, (col) {
         return PipeTile.random();
@@ -55,6 +54,20 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
       _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
       String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder);
       finalPopUp(nextStep);
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Encara no..."),
+          content: Text("La connexió no està completa. Prova de nou!"),
+          actions: [
+            TextButton(
+              child: Text("D'acord"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -69,48 +82,73 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               "Gira les peces tocant-les per connectar la font d'aigua amb el molí.\n"
-              "Has de començar adalt a l'esquerra i finalitzar abaix a la dreta.\n"
-              "Quan pensis que ho tens, prem el botó per comprovar-ho.",
+              "Pot sortir per el lateral.",
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 16),
+
           Expanded(
-            child: GridView.builder(
-              shrinkWrap: true,
-              itemCount: gridSize * gridSize,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: gridSize,
-              ),
-              itemBuilder: (context, index) {
-                int row = index ~/ gridSize;
-                int col = index % gridSize;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      grid[row][col].rotate();
-                    });
-                  },
-                  child: CustomPaint(
-                    painter: PipePainter(grid[row][col]),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade400),
-                      ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 60.0),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: gridSize * gridSize,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: gridSize,
                     ),
+                    itemBuilder: (context, index) {
+                      int row = index ~/ gridSize;
+                      int col = index % gridSize;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            grid[row][col].rotate();
+                          });
+                        },
+                        child: CustomPaint(
+                          painter: PipePainter(grid[row][col]),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+
+                Positioned(
+                  top: -22,
+                  child: Image.asset(
+                    'assets/wave.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+
+                Positioned(
+                  bottom: 20,
+                  right: 4,
+                  child: Image.asset(
+                    'assets/waterMill.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                ),      
+              ],
             ),
           ),
-          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: checkSolution,
             child: Text("Comprova connexió"),
           ),
-        ],
-      ),
+          const SizedBox(height: 20),
+        ]
+      )
     );
   }
 

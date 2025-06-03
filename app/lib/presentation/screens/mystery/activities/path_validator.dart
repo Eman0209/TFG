@@ -4,7 +4,11 @@ class PathValidator {
   static bool isConnected(List<List<PipeTile>> grid) {
     int n = grid.length;
     Set<String> visited = {};
-    return _dfs(grid, 0, 0, visited);
+    bool reached = _dfs(grid, 0, 0, visited);
+    if (!reached) return false;
+
+    PipeTile endTile = grid[n - 1][n - 1];
+    return endTile.connections.contains(Direction.down) || endTile.connections.contains(Direction.right);
   }
 
   static bool _dfs(List<List<PipeTile>> grid, int row, int col, Set<String> visited) {
@@ -43,8 +47,7 @@ class PathValidator {
           break;
       }
 
-      if (newRow >= 0 && newCol >= 0 &&
-          newRow < n && newCol < n &&
+      if (newRow >= 0 && newCol >= 0 && newRow < n && newCol < n &&
           grid[newRow][newCol].connections.contains(opposite)) {
         if (_dfs(grid, newRow, newCol, visited)) return true;
       }
