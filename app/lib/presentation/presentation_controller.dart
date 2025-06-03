@@ -1,4 +1,5 @@
 import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -237,15 +238,12 @@ class PresentationController {
 
   Future<List<RouteData?>> getAllRoutesData(BuildContext context) async {
     if(_language == Locale('en')) {
-      print("pilla info en");
       return routesController.fetchAllRoutesData('en');
     }
     else if(_language == Locale('es')) {
-      print("pilla info es");
       return routesController.fetchAllRoutesData('es');
     }
     else {
-      print("pilla info ca");
       return routesController.fetchAllRoutesData('ca');
     }
   }
@@ -484,6 +482,15 @@ class PresentationController {
         MaterialPageRoute(
           builder: (context) =>
             TranslationPuzzleScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            PlumbingGameScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
         ),
       );
     }

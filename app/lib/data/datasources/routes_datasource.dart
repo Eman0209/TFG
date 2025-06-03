@@ -158,7 +158,6 @@ class FirebaseRoutesDatasource {
   // Get de la duration de una startedRoute
   Future<Duration?> getStartedRouteDuration(String userId, String routeId) async {
     try {
-      print("startedRoute");
       final startedRoutesRef = firestore.collection('startedRoutes');
 
       final snapshot = await startedRoutesRef
