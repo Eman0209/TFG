@@ -46,13 +46,13 @@ class _MapReconstructionGameState extends State<MapReconstructionGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Reconstrueix el mapa")),
+      appBar: AppBar(title: Text('reconstruct_map'.tr())),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "Mou els fragments del mapa per reconstruir-lo i revelar les coordenades.",
+              'ins_map'.tr(),
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
