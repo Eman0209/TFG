@@ -45,7 +45,7 @@ class _HeraldicPuzzleScreenState extends State<HeraldicPuzzleScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width - 32;
-    double imageHeight = screenWidth * (rows / cols); // match image's logical shape
+    double imageHeight = screenWidth * (rows / cols);
     return Scaffold(
       appBar: AppBar(title: Text('rebuild'.tr())),
       body: Column(
@@ -103,7 +103,7 @@ class _HeraldicPuzzleScreenState extends State<HeraldicPuzzleScreen> {
     int col = index % cols;
 
     return ClipRect(
-      child: Container(
+      child: SizedBox(
         width: tileWidth,
         height: tileHeight,
         child: OverflowBox(

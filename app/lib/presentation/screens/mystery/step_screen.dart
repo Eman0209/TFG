@@ -1,3 +1,4 @@
+import 'package:app/presentation/screens/mystery/time_service.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:app/presentation/presentation_controller.dart';
@@ -26,6 +27,14 @@ class _StepScreenState extends State<StepScreen> {
 
   _StepScreenState(PresentationController presentationController) {
     _presentationController = presentationController;
+  }
+  
+  final TimerService _timerService = TimerService();
+
+  @override
+  void initState() {
+    super.initState();
+    _timerService.start();
   }
 
   @override
@@ -99,7 +108,8 @@ class _StepScreenState extends State<StepScreen> {
 
   Widget startGame() {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
+         await _timerService.persistElapsedTime(_presentationController, widget.routeId);
         _presentationController.activityScreen(context, widget.routeId, widget.mysteryId, widget.stepOrder+1);
       },
       style: ElevatedButton.styleFrom(

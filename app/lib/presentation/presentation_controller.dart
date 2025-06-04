@@ -1,4 +1,5 @@
 import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/fourth_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
@@ -500,6 +501,15 @@ class PresentationController {
         MaterialPageRoute(
           builder: (context) =>
             HeraldicPuzzleScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 4) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            MapReconstructionGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
         ),
       );
     }
