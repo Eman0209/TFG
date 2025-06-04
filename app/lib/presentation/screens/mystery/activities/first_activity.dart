@@ -18,7 +18,7 @@ class TranslationPuzzleScreen extends StatefulWidget {
   });
 
   @override
-  _TranslationPuzzleScreenState createState() => _TranslationPuzzleScreenState(presentationController);
+  State<TranslationPuzzleScreen> createState() => _TranslationPuzzleScreenState(presentationController);
 }
 
 class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {

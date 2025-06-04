@@ -18,7 +18,7 @@ class MapReconstructionGame extends StatefulWidget {
   });
 
   @override
-  _MapReconstructionGameState createState() => _MapReconstructionGameState(presentationController);
+  State<MapReconstructionGame> createState() => _MapReconstructionGameState(presentationController);
 }
 
 class _MapReconstructionGameState extends State<MapReconstructionGame> {

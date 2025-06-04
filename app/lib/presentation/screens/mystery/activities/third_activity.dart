@@ -19,7 +19,7 @@ class HeraldicPuzzleScreen extends StatefulWidget {
   });
 
   @override
-  _HeraldicPuzzleScreenState createState() => _HeraldicPuzzleScreenState(presentationController);
+  State<HeraldicPuzzleScreen> createState() => _HeraldicPuzzleScreenState(presentationController);
 }
 
 class _HeraldicPuzzleScreenState extends State<HeraldicPuzzleScreen> {
