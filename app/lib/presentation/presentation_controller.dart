@@ -376,7 +376,7 @@ class PresentationController {
 
   Future<String> getNextstep(String mysteryId, int order) async {
     StepData? step = await getStepInfo(mysteryId, order);
-    return step!.next_step;
+    return step!.nextStep;
   }
 
   Future<Duration> getRouteDuration(String routeId) async {
