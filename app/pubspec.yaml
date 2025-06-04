@@ -85,6 +85,8 @@ flutter:
     - assets/loginpicture.png
     - assets/wave.png
     - assets/waterMill.png
+    - assets/escut.png
+    # Rewards
     - assets/rewards/caçador_llegendes.png
     - assets/rewards/cartograf.png
     - assets/rewards/cercador_detalls.png

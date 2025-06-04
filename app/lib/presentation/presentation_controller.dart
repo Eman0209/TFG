@@ -1,5 +1,6 @@
 import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/third_actuvity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -490,6 +491,15 @@ class PresentationController {
         MaterialPageRoute(
           builder: (context) =>
             PlumbingGameScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            HeraldicPuzzleScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
         ),
       );
     }
