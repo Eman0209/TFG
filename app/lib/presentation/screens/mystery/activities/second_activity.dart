@@ -1,5 +1,6 @@
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/screens/mystery/activities/path_validator.dart';
+import 'package:app/presentation/screens/mystery/time_service.dart';
 import 'package:app/presentation/widgets/pipe.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +34,13 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
 
   List<List<PipeTile>> grid = [];
 
+  final TimerService _timerService = TimerService();
+
   @override
   void initState() {
     super.initState();
     generatePuzzle();
+    _timerService.start();
   }
 
   void generatePuzzle() {
@@ -51,6 +55,7 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
 
   Future<void> checkSolution() async {
     if (PathValidator.isConnected(grid)) {
+      await _timerService.persistElapsedTime(_presentationController, widget.routeId);
       _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
       String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder);
       finalPopUp(nextStep);
@@ -58,11 +63,11 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text("Encara no..."),
-          content: Text("La connexió no està completa. Prova de nou!"),
+          title: Text('not_yet'.tr()),
+          content: Text('error_pumb'.tr()),
           actions: [
             TextButton(
-              child: Text("D'acord"),
+              child: Text('ok'.tr()),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -74,15 +79,14 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Puzzle de canonades")),
+      appBar: AppBar(title: Text('pumb_game'.tr())),
       body: Column(
         children: [
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              "Gira les peces tocant-les per connectar la font d'aigua amb el molí.\n"
-              "Pot sortir per el lateral.",
+              'ins_pumb_game'.tr(),
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -144,7 +148,7 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
           ),
           ElevatedButton(
             onPressed: checkSolution,
-            child: Text("Comprova connexió"),
+            child: Text('check'.tr()),
           ),
           const SizedBox(height: 20),
         ]

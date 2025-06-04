@@ -1,3 +1,4 @@
+import 'package:app/presentation/screens/mystery/time_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:app/presentation/presentation_controller.dart';
@@ -40,12 +41,14 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
   List<String> shuffledWords = [];
 
   bool showResults = false;
+  final TimerService _timerService = TimerService();
 
   @override
   void initState() {
     super.initState();
     shuffledWords = List.from(correctOrder)..shuffle();
     currentOrder = [];
+    _timerService.start();
   }
 
   Future<void> checkAnswer() async {
@@ -53,6 +56,7 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
     bool isCorrect = currentOrder.join(' ') == correctOrder.join(' ');
     if (isCorrect) {
       _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
+      await _timerService.persistElapsedTime(_presentationController, widget.routeId);
       String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder);
       finalPopUp(nextStep);
     } else {

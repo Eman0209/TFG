@@ -299,7 +299,6 @@ class PresentationController {
   }
 
   Future<String> getRouteId() async {
-    // Maybe pasar el polyline y a partir de aqui que lo busque en la BBDD
     return "NWjKzu7Amz2AXJLZijQL";
   }
 

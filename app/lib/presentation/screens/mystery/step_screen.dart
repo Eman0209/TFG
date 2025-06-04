@@ -36,7 +36,7 @@ class _StepScreenState extends State<StepScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
-          return Center(child: Text('Step not found or error loading step.'));
+          return Center(child: Text('error_step'.tr()));
         }
 
         final step = snapshot.data!;
@@ -74,7 +74,7 @@ class _StepScreenState extends State<StepScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Narration',
+            'narration'.tr(),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8),
@@ -84,7 +84,7 @@ class _StepScreenState extends State<StepScreen> {
           ),
           SizedBox(height: 24),
           Text(
-            'Instructions',
+            'instructions'.tr(),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8),
