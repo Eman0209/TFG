@@ -9,6 +9,7 @@ class PathValidator {
 
     PipeTile endTile = grid[n - 1][n - 1];
     return endTile.connections.contains(Direction.down) || endTile.connections.contains(Direction.right);
+    //return endTile.connections.contains(Direction.down);
   }
 
   static bool _dfs(List<List<PipeTile>> grid, int row, int col, Set<String> visited) {

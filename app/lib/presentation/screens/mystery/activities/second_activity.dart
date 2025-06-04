@@ -57,7 +57,7 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
     if (PathValidator.isConnected(grid)) {
       await _timerService.persistElapsedTime(_presentationController, widget.routeId);
       _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
-      String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder);
+      String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder-1);
       finalPopUp(nextStep);
     } else {
       showDialog(

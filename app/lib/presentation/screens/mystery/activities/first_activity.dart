@@ -57,7 +57,7 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
     if (isCorrect) {
       _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
       await _timerService.persistElapsedTime(_presentationController, widget.routeId);
-      String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder);
+      String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder-1);
       finalPopUp(nextStep);
     } else {
       showDialog(
