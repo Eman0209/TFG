@@ -42,66 +42,17 @@ class _HeraldicPuzzleScreenState extends State<HeraldicPuzzleScreen> {
     _timerService.start();
   }
 
-  void _shuffleTiles() {
-    positions = List.generate(rows * cols, (index) => index);
-    positions.shuffle(Random());
-  }
-
-  void _onSwap(int oldIndex, int newIndex) async {
-    setState(() {
-      final temp = positions[oldIndex];
-      positions[oldIndex] = positions[newIndex];
-      positions[newIndex] = temp;
-    });
-
-    if (_isSolved()) {
-      _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder - 1);
-      await _timerService.persistElapsedTime(_presentationController, widget.routeId);
-      String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder - 1);
-      finalPopUp(nextStep);
-    }
-    
-  }
-
-  bool _isSolved() {
-    for (int i = 0; i < positions.length; i++) {
-      if (positions[i] != i) return false;
-    }
-    return true;
-  }
-
-  void finalPopUp(String nextStep) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('completed_enigma'.tr()),
-          content: Text(nextStep),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
-              },
-              child: Text('continue'.tr()),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width - 32;
     double imageHeight = screenWidth * (rows / cols); // match image's logical shape
     return Scaffold(
-      appBar: AppBar(title: Text('Reconstrueix l’escut nobiliari')),
+      appBar: AppBar(title: Text('rebuild'.tr())),
       body: Column(
         children: [
           SizedBox(height: 16),
           Text(
-            'Arrossega les peces per recompondre l’escut de la família desapareguda.',
+            'ins_rebuild'.tr(),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16),
           ),
@@ -138,7 +89,7 @@ class _HeraldicPuzzleScreenState extends State<HeraldicPuzzleScreen> {
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => setState(() => _shuffleTiles()),
-            child: Text("Reinicia el trencaclosques"),
+            child: Text('restart'.tr()),
           ),
         ],
       ),
@@ -172,4 +123,53 @@ class _HeraldicPuzzleScreenState extends State<HeraldicPuzzleScreen> {
       ),
     );
   }
+
+  void _shuffleTiles() {
+    positions = List.generate(rows * cols, (index) => index);
+    positions.shuffle(Random());
+  }
+
+  void _onSwap(int oldIndex, int newIndex) async {
+    setState(() {
+      final temp = positions[oldIndex];
+      positions[oldIndex] = positions[newIndex];
+      positions[newIndex] = temp;
+    });
+
+    if (_isSolved()) {
+      _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder - 1);
+      await _timerService.persistElapsedTime(_presentationController, widget.routeId);
+      String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder - 1);
+      finalPopUp(nextStep);
+    }
+  }
+
+  bool _isSolved() {
+    for (int i = 0; i < positions.length; i++) {
+      if (positions[i] != i) return false;
+    }
+    return true;
+  }
+
+  void finalPopUp(String nextStep) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('completed_enigma'.tr()),
+          content: Text(nextStep),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
+              },
+              child: Text('continue'.tr()),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

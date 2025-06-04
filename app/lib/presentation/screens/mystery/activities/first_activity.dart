@@ -51,7 +51,96 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
     _timerService.start();
   }
 
-  Future<void> checkAnswer() async {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('translation_game'.tr()),
+        actions: [
+          IconButton(icon: Icon(Icons.refresh), onPressed: resetPuzzle),
+        ],
+      ),
+      body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text(
+                'ins_trans_game'.tr(),
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 20),
+              Wrap(
+                spacing: 8,
+                children: shuffledWords.map((word) {
+                  Color? tileColor;
+
+                  if (showResults && currentOrder.contains(word)) {
+                    int correctIndex = correctOrder.indexOf(word);
+                    int currentIndex = currentOrder.indexOf(word);
+                    bool isCorrectPosition = currentIndex == correctIndex;
+                    tileColor = isCorrectPosition ? Colors.greenAccent : Colors.orangeAccent;
+                  }
+
+                  return Draggable<String>(
+                    data: word,
+                    feedback: Material(
+                      color: Colors.transparent,
+                      child: WordTile(word: word, color: tileColor),
+                    ),
+                    childWhenDragging: WordTile(word: '', faded: true),
+                    child: WordTile(word: word, color: tileColor),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 40),
+              DragTarget<String>(
+              onAccept: (word) {
+                setState(() {
+                  if (currentOrder.length < correctOrder.length) {
+                    currentOrder.add(word);
+                  }
+                });
+              },
+              builder: (context, candidateData, rejectedData) {
+                return Container(
+                  height: 100,
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.deepPurple),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Wrap(
+                    spacing: 8,
+                    children: currentOrder
+                          .map((word) => GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    currentOrder.remove(word);
+                                  });
+                                },
+                                child: WordTile(word: word),
+                              ))
+                          .toList(),
+                  ),
+                );
+              },
+            ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: currentOrder.length == correctOrder.length
+                  ? checkAnswer
+                  : null,
+              child: Text('check'.tr()),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+    Future<void> checkAnswer() async {
     setState(() => showResults = true);
     bool isCorrect = currentOrder.join(' ') == correctOrder.join(' ');
     if (isCorrect) {
@@ -81,95 +170,6 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
       currentOrder.clear();
       showResults = true;
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('translation_game'.tr()),
-        actions: [
-          IconButton(icon: Icon(Icons.refresh), onPressed: resetPuzzle),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text(
-              'ins_trans_game'.tr(),
-              style: TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            Wrap(
-              spacing: 8,
-              children: shuffledWords.map((word) {
-                Color? tileColor;
-
-                if (showResults && currentOrder.contains(word)) {
-                  int correctIndex = correctOrder.indexOf(word);
-                  int currentIndex = currentOrder.indexOf(word);
-                  bool isCorrectPosition = currentIndex == correctIndex;
-                  tileColor = isCorrectPosition ? Colors.greenAccent : Colors.orangeAccent;
-                }
-
-                return Draggable<String>(
-                  data: word,
-                  feedback: Material(
-                    color: Colors.transparent,
-                    child: WordTile(word: word, color: tileColor),
-                  ),
-                  childWhenDragging: WordTile(word: '', faded: true),
-                  child: WordTile(word: word, color: tileColor),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 40),
-            DragTarget<String>(
-            onAccept: (word) {
-              setState(() {
-                if (currentOrder.length < correctOrder.length) {
-                  currentOrder.add(word);
-                }
-              });
-            },
-            builder: (context, candidateData, rejectedData) {
-              return Container(
-                height: 100,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.deepPurple),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Wrap(
-                  spacing: 8,
-                  children: currentOrder
-                        .map((word) => GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  currentOrder.remove(word);
-                                });
-                              },
-                              child: WordTile(word: word),
-                            ))
-                        .toList(),
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 20),
-
-          ElevatedButton(
-            onPressed: currentOrder.length == correctOrder.length
-                ? checkAnswer
-                : null,
-            child: Text('check'.tr()),
-          ),
-        ],
-      ),
-    ),
-  );
   }
 
   void finalPopUp(String nextStep) {

@@ -43,39 +43,6 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
     _timerService.start();
   }
 
-  void generatePuzzle() {
-    grid = List.generate(gridSize, (row) {
-      return List.generate(gridSize, (col) {
-        return PipeTile.random();
-      });
-    });
-
-    setState(() {});
-  }
-
-  Future<void> checkSolution() async {
-    if (PathValidator.isConnected(grid)) {
-      await _timerService.persistElapsedTime(_presentationController, widget.routeId);
-      _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
-      String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder-1);
-      finalPopUp(nextStep);
-    } else {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text('not_yet'.tr()),
-          content: Text('error_pumb'.tr()),
-          actions: [
-            TextButton(
-              child: Text('ok'.tr()),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,6 +121,39 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
         ]
       )
     );
+  }
+
+  void generatePuzzle() {
+    grid = List.generate(gridSize, (row) {
+      return List.generate(gridSize, (col) {
+        return PipeTile.random();
+      });
+    });
+
+    setState(() {});
+  }
+
+  Future<void> checkSolution() async {
+    if (PathValidator.isConnected(grid)) {
+      await _timerService.persistElapsedTime(_presentationController, widget.routeId);
+      _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
+      String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder-1);
+      finalPopUp(nextStep);
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('not_yet'.tr()),
+          content: Text('error_pumb'.tr()),
+          actions: [
+            TextButton(
+              child: Text('ok'.tr()),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void finalPopUp(String nextStep) {
