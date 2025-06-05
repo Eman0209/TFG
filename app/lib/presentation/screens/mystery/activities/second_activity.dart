@@ -115,6 +115,14 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
           ),
           ElevatedButton(
             onPressed: checkSolution,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 206, 179, 254),
+              foregroundColor: Colors.black,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
             child: Text('check'.tr()),
           ),
           const SizedBox(height: 20),
@@ -147,8 +155,16 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
           content: Text('error_pumb'.tr()),
           actions: [
             TextButton(
-              child: Text('ok'.tr()),
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               onPressed: () => Navigator.of(context).pop(),
+              child: Text('ok'.tr()),
             ),
           ],
         ),
@@ -169,6 +185,14 @@ class _PlumbingGameScreenState extends State<PlumbingGameScreen> {
                 Navigator.of(context).pop();
                 _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               child: Text('continue'.tr()),
             ),
           ],

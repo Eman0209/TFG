@@ -89,6 +89,14 @@ class _HeraldicPuzzleScreenState extends State<HeraldicPuzzleScreen> {
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => setState(() => _shuffleTiles()),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 206, 179, 254),
+              foregroundColor: Colors.black,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
             child: Text('restart'.tr()),
           ),
         ],
@@ -164,6 +172,14 @@ class _HeraldicPuzzleScreenState extends State<HeraldicPuzzleScreen> {
                 Navigator.of(context).pop();
                 _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               child: Text('continue'.tr()),
             ),
           ],

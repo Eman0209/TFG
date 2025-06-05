@@ -68,11 +68,11 @@ class _CryptogramGameState extends State<CryptogramGame> {
     else {
       switch (locale.languageCode) {
         case 'es':
-          return "Se descubrió una cámara subterránea. Se cerró y nunca más hablamos de ella.";
+          return "Se descubrio una camara subterranea. Se cerro y nunca mas hablamos de ella.";
         case 'en':
           return "An underground chamber was discovered. It was sealed, and we never spoke of it again.";
         default:
-          return "Es va descobrir una cambra subterrània. Es va tancar i mai més en vam parlar.";
+          return "Es va descobrir una cambra subterrania. Es va tancar i mai mes en vam parlar.";
       }
     }
   }
@@ -108,6 +108,14 @@ class _CryptogramGameState extends State<CryptogramGame> {
         child: SafeArea(
           child: ElevatedButton(
             onPressed: _checkSolution,
+             style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 206, 179, 254),
+              foregroundColor: Colors.black,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
             child: Text('check'.tr()),
           ),
         ),
@@ -225,6 +233,14 @@ class _CryptogramGameState extends State<CryptogramGame> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               child: Text('close'.tr()),
             ),
           ],
@@ -246,6 +262,14 @@ class _CryptogramGameState extends State<CryptogramGame> {
                 Navigator.of(context).pop();
                 _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               child: Text('continue'.tr()),
             ),
           ],

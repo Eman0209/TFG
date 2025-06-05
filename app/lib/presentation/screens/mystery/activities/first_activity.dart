@@ -74,12 +74,9 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
                 children: shuffledWords.map((word) {
                   Color? tileColor;
 
-                  if (showResults && currentOrder.contains(word)) {
-                    int correctIndex = correctOrder.indexOf(word);
-                    int currentIndex = currentOrder.indexOf(word);
-                    bool isCorrectPosition = currentIndex == correctIndex;
-                    tileColor = isCorrectPosition ? Colors.greenAccent : Colors.orangeAccent;
-                  }
+                  if (currentOrder.contains(word)) {
+                    tileColor = Colors.grey.shade400;
+                  } 
 
                   return Draggable<String>(
                     data: word,
@@ -94,34 +91,63 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
               ),
               const SizedBox(height: 40),
               DragTarget<String>(
-              onAccept: (word) {
-                setState(() {
-                  if (currentOrder.length < correctOrder.length) {
-                    currentOrder.add(word);
-                  }
-                });
-              },
-              builder: (context, candidateData, rejectedData) {
-                return Container(
-                  height: 100,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.deepPurple),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Wrap(
-                    spacing: 8,
-                    children: currentOrder
-                          .map((word) => GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    currentOrder.remove(word);
-                                  });
-                                },
-                                child: WordTile(word: word),
-                              ))
-                          .toList(),
-                  ),
+                onAccept: (word) {
+                  setState(() {
+                    if (currentOrder.length < correctOrder.length) {
+                      currentOrder.add(word);
+                    }
+                  });
+                },
+                builder: (context, candidateData, rejectedData) {
+                  return Container(
+                    height: 160,
+                    width: double.infinity,
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.purple.shade50,
+                      border: Border.all(
+                        color: Colors.deepPurple,
+                        width: 2,
+                        style: BorderStyle.solid,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: currentOrder.isEmpty
+                      ? Center(
+                          child: Text(
+                            'Drop words here',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.deepPurple,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        )
+                      : Wrap(
+                          spacing: 8,
+                          children: currentOrder.asMap().entries.map((entry) {
+                            final index = entry.key;
+                            final word = entry.value;
+                            Color? color;
+
+                            if (showResults) {
+                              if (word == correctOrder[index]) {
+                                color = Colors.greenAccent;
+                              } else {
+                                color = Colors.orangeAccent;
+                              }
+                            }
+
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  currentOrder.removeAt(index);
+                                });
+                              },
+                              child: WordTile(word: word, color: color),
+                            );
+                          }).toList(),
+                        )
                 );
               },
             ),
@@ -132,6 +158,14 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
               onPressed: currentOrder.length == correctOrder.length
                   ? checkAnswer
                   : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               child: Text('check'.tr()),
             ),
           ],
@@ -156,8 +190,16 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
           content: Text('incorrect_phrase'.tr()),
           actions: [
             TextButton(
-              child: Text('ok'.tr()),
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               onPressed: () => Navigator.of(context).pop(),
+              child: Text('ok'.tr()),
             ),
           ],
         ),
@@ -185,6 +227,14 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
                 Navigator.of(context).pop();
                 _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               child: Text('continue'.tr()),
             ),
           ],

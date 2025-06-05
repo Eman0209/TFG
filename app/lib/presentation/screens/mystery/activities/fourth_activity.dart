@@ -43,6 +43,12 @@ class _MapReconstructionGameState extends State<MapReconstructionGame> {
     _timerService.start();
   }
 
+  void _resetGame() {
+    setState(() {
+      _initializeTiles();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +81,22 @@ class _MapReconstructionGameState extends State<MapReconstructionGame> {
                   ),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: ElevatedButton(
+              onPressed: _resetGame,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: Text('restart'.tr()), 
             ),
           ),
         ],
@@ -203,6 +225,14 @@ class _MapReconstructionGameState extends State<MapReconstructionGame> {
                 Navigator.of(context).pop();
                 _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               child: Text('continue'.tr()),
             ),
           ],
