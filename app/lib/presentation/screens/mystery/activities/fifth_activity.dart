@@ -86,8 +86,7 @@ class _CryptogramGameState extends State<CryptogramGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: const Text('Criptograma')),
+      appBar: AppBar(title: Text('cryptogram'.tr())),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -109,7 +108,7 @@ class _CryptogramGameState extends State<CryptogramGame> {
         child: SafeArea(
           child: ElevatedButton(
             onPressed: _checkSolution,
-            child: const Text('Comprovar'),
+            child: Text('check'.tr()),
           ),
         ),
       ),
@@ -124,7 +123,6 @@ class _CryptogramGameState extends State<CryptogramGame> {
       final isLetter = RegExp(r'[A-Za-z]').hasMatch(char);
 
       if (!isLetter) {
-        // Add non-letter character as plain text (punctuation or space)
         tiles.add(
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2),
@@ -222,12 +220,12 @@ class _CryptogramGameState extends State<CryptogramGame> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('❌ Incorrecte'),
-          content: Text('Try again, it\'s not quite right.'),
+          title: Text('incorrect'.tr()),
+          content: Text('incorrect_cryp'.tr()),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text('close'.tr()),
             ),
           ],
         ),
