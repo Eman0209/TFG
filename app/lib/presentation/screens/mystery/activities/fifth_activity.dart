@@ -108,7 +108,7 @@ class _CryptogramGameState extends State<CryptogramGame> {
         child: SafeArea(
           child: ElevatedButton(
             onPressed: _checkSolution,
-             style: ElevatedButton.styleFrom(
+            style: ElevatedButton.styleFrom(
               backgroundColor: Color.fromARGB(255, 206, 179, 254),
               foregroundColor: Colors.black,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

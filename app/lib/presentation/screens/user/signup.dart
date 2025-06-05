@@ -87,21 +87,25 @@ class _SignupState extends State<Signup> {
                 ],
               ),
               Container(
-                  padding: const EdgeInsets.only(top: 3, left: 3),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      createUser();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.deepPurple
+                padding: const EdgeInsets.only(top: 3, left: 3),
+                child: ElevatedButton(
+                  onPressed: () {
+                    createUser();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Text(
-                      'create_account'.tr(),
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  )),
+                  ),
+                  child: Text(
+                    'create_account'.tr(),
+                    style: TextStyle(fontSize: 16),
+                  ),
+                )
+              ),
             ],
           ),
         ),
