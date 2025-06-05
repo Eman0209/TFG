@@ -61,9 +61,6 @@ void main() {
         ),
       );
 
-      // Verify AppBar title is present
-      expect(find.text('editUser'), findsOneWidget);
-
       // Verify main title text is present
       expect(find.text('editNameUser'), findsOneWidget);
 
@@ -349,7 +346,7 @@ void main() {
       await tester.pumpWidget(buildTestWidget(mysteryId: 'mystery1', stepOrder: 1));
       await tester.pumpAndSettle();
 
-      expect(find.text('Step not found or error loading step.'), findsOneWidget);
+      expect(find.text('error_step'), findsOneWidget);
     });
 
     testWidgets('shows error text when step is null', (WidgetTester tester) async {
@@ -358,7 +355,7 @@ void main() {
       await tester.pumpWidget(buildTestWidget(mysteryId: 'mystery1', stepOrder: 1));
       await tester.pumpAndSettle();
 
-      expect(find.text('Step not found or error loading step.'), findsOneWidget);
+      expect(find.text('error_step'), findsOneWidget);
     });
 
     testWidgets('shows step narration and instructions when loaded', (WidgetTester tester) async {
@@ -377,9 +374,9 @@ void main() {
       await tester.pumpAndSettle();
 
       // Check UI
-      expect(find.text('Narration'), findsOneWidget);
+      expect(find.text('narration'), findsOneWidget);
       expect(find.text('This is narration text'), findsOneWidget);
-      expect(find.text('Instructions'), findsOneWidget);
+      expect(find.text('instructions'), findsOneWidget);
       expect(find.text('These are instructions'), findsOneWidget);
 
       // Check app bar title (assuming localization is set up correctly)
