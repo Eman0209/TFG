@@ -1,3 +1,4 @@
+import 'package:app/presentation/screens/mystery/activities/fifth_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/fourth_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
@@ -510,6 +511,15 @@ class PresentationController {
         MaterialPageRoute(
           builder: (context) =>
             MapReconstructionGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 5) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!),
         ),
       );
     }

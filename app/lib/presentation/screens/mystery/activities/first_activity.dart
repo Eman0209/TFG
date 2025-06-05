@@ -140,7 +140,7 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
     );
   }
 
-    Future<void> checkAnswer() async {
+  Future<void> checkAnswer() async {
     setState(() => showResults = true);
     bool isCorrect = currentOrder.join(' ') == correctOrder.join(' ');
     if (isCorrect) {
