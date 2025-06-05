@@ -48,26 +48,6 @@ class _FinalScreenState extends State<FinalScreen> {
     return nextStep.split('~');
   }
 
-  void _showPopup(String selectedOption) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: Text(selectedOption),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              //_presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
-              await _timerService.persistElapsedTime(_presentationController, widget.routeId);
-              _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
-            },
-            child: Text('close'.tr()),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +58,7 @@ class _FinalScreenState extends State<FinalScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError || snapshot.data == null || snapshot.data!.length != 2) {
-            return const Center(child: Text('Error al cargar las opciones.'));
+            return Center(child: Text('error_options'.tr()));
           }
 
           final options = snapshot.data!;
@@ -86,18 +66,21 @@ class _FinalScreenState extends State<FinalScreen> {
           return Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('¿Qué decides hacer?', style: Theme.of(context).textTheme.headlineSmall),
+                Text('decide_option'.tr(), style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () => _showPopup(options[0]),
-                  child: Text("puedes compartir con todo el mundo lo que has descubierto y de esa forma investigar mas lo que sucedio", textAlign: TextAlign.center),
+                  child: Text('decision_1'.tr(), textAlign: TextAlign.center),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () => _showPopup(options[1]),
-                  child: Text("Puedes eliminar toda lo que has averiguado y que siga siendo un misterio", textAlign: TextAlign.center),
+                  onPressed: () { 
+                    _presentationController.addUserTrophy("gkfgRiFCNPHANMyLYOZD");
+                    _showPopup(options[1]);
+                  },
+                  child: Text('decision_2'.tr(), textAlign: TextAlign.center),
                 ),
               ],
             ),
@@ -106,4 +89,24 @@ class _FinalScreenState extends State<FinalScreen> {
       ),
     );
   }
+
+  void _showPopup(String selectedOption) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(selectedOption),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await _presentationController.addDoneStep(widget.mysteryId, widget.stepOrder-1);
+              await _timerService.persistElapsedTime(_presentationController, widget.routeId);
+              _presentationController.mysteryScreen(context, widget.routeId, widget.mysteryId);
+            },
+            child: Text('close'.tr()),
+          ),
+        ],
+      ),
+    );
+  }
+  
 }
