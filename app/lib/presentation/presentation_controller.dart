@@ -519,7 +519,16 @@ class PresentationController {
         context,
         MaterialPageRoute(
           builder: (context) =>
-            CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!),
+            CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!, game: 5),
+        ),
+      );
+    }
+    if (stepOrder == 6) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!, game: 6),
         ),
       );
     }

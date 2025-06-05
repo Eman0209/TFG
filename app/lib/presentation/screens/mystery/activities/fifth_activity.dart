@@ -10,6 +10,7 @@ class CryptogramGame extends StatefulWidget {
   final String mysteryId;
   final int stepOrder;
   final Locale language;
+  final int game;
   
   const CryptogramGame({
     super.key,
@@ -17,7 +18,8 @@ class CryptogramGame extends StatefulWidget {
     required this.routeId,
     required this.mysteryId,
     required this.stepOrder,
-    required this.language
+    required this.language,
+    required this.game
   });
 
   @override
@@ -53,13 +55,25 @@ class _CryptogramGameState extends State<CryptogramGame> {
   }
 
   String _getPhraseByLocale(Locale locale) {
-    switch (locale.languageCode) {
-      case 'es':
-        return "Bajo la fabrica de cemento, se esconde lo que la guerra no destruyo.";
-      case 'en':
-        return "Beneath the cement factorie, lies what the war didn't destroy.";
-      default:
-        return "Sota la fabrica de ciment, s'amaga allo que la guerra no va destruir.";
+    if (widget.game == 5) {
+      switch (locale.languageCode) {
+        case 'es':
+          return "Bajo la fabrica de cemento, se esconde lo que la guerra no destruyo.";
+        case 'en':
+          return "Beneath the cement factorie, lies what the war didn't destroy.";
+        default:
+          return "Sota la fabrica de ciment, s'amaga allo que la guerra no va destruir.";
+      }
+    }
+    else {
+      switch (locale.languageCode) {
+        case 'es':
+          return "Se descubrió una cámara subterránea. Se cerró y nunca más hablamos de ella.";
+        case 'en':
+          return "An underground chamber was discovered. It was sealed, and we never spoke of it again.";
+        default:
+          return "Es va descobrir una cambra subterrània. Es va tancar i mai més en vam parlar.";
+      }
     }
   }
 
@@ -72,7 +86,7 @@ class _CryptogramGameState extends State<CryptogramGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('Criptograma')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -87,12 +101,16 @@ class _CryptogramGameState extends State<CryptogramGame> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _checkSolution,
-              child: const Text('Comprovar'),
-            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(100, 8, 100, 16),
+        child: SafeArea(
+          child: ElevatedButton(
+            onPressed: _checkSolution,
+            child: const Text('Comprovar'),
+          ),
         ),
       ),
     );
