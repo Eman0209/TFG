@@ -57,21 +57,12 @@ class _MapReconstructionGameState extends State<MapReconstructionGame> {
               textAlign: TextAlign.center,
             ),
           ),
+          const SizedBox(height: 24),
           Expanded(
             child: Stack(
               children: [
-                Center(
-                  child: Opacity(
-                    opacity: 0.15,
-                    child: Image.asset(
-                      'assets/mapa.png',
-                      width: 300,
-                      height: 300,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Center(
+                Align(
+                  alignment: Alignment.topCenter,
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: GridView.builder(
