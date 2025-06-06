@@ -1,3 +1,9 @@
+import 'package:app/presentation/screens/mystery/activities/fifth_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/final_screen.dart';
+import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/fourth_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -297,7 +303,6 @@ class PresentationController {
   }
 
   Future<String> getRouteId() async {
-    // Maybe pasar el polyline y a partir de aqui que lo busque en la BBDD
     return "NWjKzu7Amz2AXJLZijQL";
   }
 
@@ -371,6 +376,11 @@ class PresentationController {
     return mysteryController.fetchLengthOfSteps(mysteryId);
   }
 
+  Future<String> getNextstep(String mysteryId, int order) async {
+    StepData? step = await getStepInfo(mysteryId, order);
+    return step!.nextStep;
+  }
+
   Future<Duration> getRouteDuration(String routeId) async {
     Duration? duration = await routesController.fetchRouteDuration(_user!, routeId);
     return duration!;
@@ -383,6 +393,10 @@ class PresentationController {
 
   Future<void> updateStartedRouteDuration(String routeId, Duration timeSpent) async {
     await routesController.updateStartedRouteDuration(_user!, routeId, timeSpent);
+  }
+
+  Future<void> addDoneStep(String mysteryId, int order) async {
+    await mysteryController.addDoneStep(_user!, mysteryId, order);
   }
 
   /* ------------------------------ Screens ------------------------------ */
@@ -462,6 +476,72 @@ class PresentationController {
           StepScreen(presentationController: this, mysteryId: mysteryId, routeId: routeId, stepOrder: stepOrder),
       ),
     );
+  }
+
+  void activityScreen(BuildContext context, String routeId, String mysteryId, int stepOrder) {
+    if (stepOrder == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            TranslationPuzzleScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            PlumbingGameScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            HeraldicPuzzleScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 4) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            MapReconstructionGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 5) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!, game: 5),
+        ),
+      );
+    }
+    if (stepOrder == 6) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!, game: 6),
+        ),
+      );
+    }
+    if (stepOrder == 8) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            FinalScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
   }
 
   // Move to the done routes screen

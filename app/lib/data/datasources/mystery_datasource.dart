@@ -129,4 +129,66 @@ class FirebaseMysteryDatasource {
     }
   }
 
+  Future<void> addCompletedStep(String userId, String mysteryId, int order) async {
+    try {
+      final doneStepsCollection = firestore.collection('doneSteps');
+
+      Future<String?> getStepId(String subcollection) async {
+        final query = await firestore
+            .collection('mystery')
+            .doc(mysteryId)
+            .collection(subcollection)
+            .where('order', isEqualTo: order+1)
+            .limit(1)
+            .get();
+            
+        return query.docs.isNotEmpty ? query.docs.first.id : null;
+      }
+      
+      // Get step IDs from both subcollections
+      final stepIdEn = await getStepId('steps_en');
+      final stepIdEs = await getStepId('steps_es');
+      final stepIdCa = await getStepId('steps');
+
+      // Skip if no steps found
+      if (stepIdEn == null && stepIdEs == null && stepIdCa == null) {
+        _logger.warning('No steps found for order $order');
+        return;
+      }
+
+      // Find or create the document for this user
+      final existingQuery = await doneStepsCollection
+          .where('userId', isEqualTo: userId)
+          .limit(1)
+          .get();
+
+      DocumentReference docRef;
+
+      if (existingQuery.docs.isNotEmpty) {
+        docRef = existingQuery.docs.first.reference;
+      } else {
+        // Create new doc with userId
+        final newDoc = await doneStepsCollection.add({
+          'userId': userId,
+          'steps_en': [],
+          'steps_es': [],
+          'steps_ca': [],
+        });
+        docRef = newDoc;
+      }
+
+      // Prepare update map
+      Map<String, dynamic> updateData = {};
+
+      if (stepIdEn != null) updateData['steps_en'] = FieldValue.arrayUnion([stepIdEn]);
+      if (stepIdEs != null) updateData['steps_es'] = FieldValue.arrayUnion([stepIdEs]);
+      if (stepIdCa != null) updateData['steps'] = FieldValue.arrayUnion([stepIdCa]);
+
+      await docRef.update(updateData);
+
+    } catch (e) {
+      _logger.severe('Error adding step to done list: $e');
+    }
+  }
+
 }

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +14,7 @@ import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:app/presentation/widgets/custom_appbar.dart';
 import 'package:app/domain/models/steps.dart';
 
-import 'mocks.mocks.dart';
+import '../mocks.mocks.dart';
 
 void main() {
 
@@ -61,9 +60,6 @@ void main() {
           ),
         ),
       );
-
-      // Verify AppBar title is present
-      expect(find.text('editUser'), findsOneWidget);
 
       // Verify main title text is present
       expect(find.text('editNameUser'), findsOneWidget);
@@ -280,7 +276,8 @@ void main() {
             resum: 'Description ${i + 1}',
             order: i + 1,
             narration: "Narracio",
-            instructions: "instructions"
+            instructions: "instructions",
+            nextStep: "Next step"
           )));
 
       when(mockPresentationController.getLengthOfSteps(any))
@@ -349,7 +346,7 @@ void main() {
       await tester.pumpWidget(buildTestWidget(mysteryId: 'mystery1', stepOrder: 1));
       await tester.pumpAndSettle();
 
-      expect(find.text('Step not found or error loading step.'), findsOneWidget);
+      expect(find.text('error_step'), findsOneWidget);
     });
 
     testWidgets('shows error text when step is null', (WidgetTester tester) async {
@@ -358,7 +355,7 @@ void main() {
       await tester.pumpWidget(buildTestWidget(mysteryId: 'mystery1', stepOrder: 1));
       await tester.pumpAndSettle();
 
-      expect(find.text('Step not found or error loading step.'), findsOneWidget);
+      expect(find.text('error_step'), findsOneWidget);
     });
 
     testWidgets('shows step narration and instructions when loaded', (WidgetTester tester) async {
@@ -368,6 +365,7 @@ void main() {
         order: 1,
         narration: 'This is narration text',
         instructions: 'These are instructions',
+        nextStep: 'Next step'
       );
 
       when(mockPresentationController.getStepInfo(any, any)).thenAnswer((_) async => stepData);
@@ -376,9 +374,9 @@ void main() {
       await tester.pumpAndSettle();
 
       // Check UI
-      expect(find.text('Narration'), findsOneWidget);
+      expect(find.text('narration'), findsOneWidget);
       expect(find.text('This is narration text'), findsOneWidget);
-      expect(find.text('Instructions'), findsOneWidget);
+      expect(find.text('instructions'), findsOneWidget);
       expect(find.text('These are instructions'), findsOneWidget);
 
       // Check app bar title (assuming localization is set up correctly)

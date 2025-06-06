@@ -20,7 +20,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(50.0)),
       ),
       child: GNav(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 24),
         backgroundColor: const Color.fromARGB(255, 206, 179, 254),
         color: Colors.black,
         activeColor: Colors.black,

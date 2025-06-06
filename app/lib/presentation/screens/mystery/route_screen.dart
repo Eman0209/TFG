@@ -67,7 +67,6 @@ class _RouteScreenState extends State<RouteScreen> {
               child: Text('carrega'.tr(),)
             )
           : maps(),
-          // Alert Popup
           if (_showAlert) alertPopUp()
         ]
       )

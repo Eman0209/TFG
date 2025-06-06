@@ -53,6 +53,7 @@ dependencies:
   geocoding: ^2.1.0
   geolocator: ^10.1.0 
   share_plus: ^10.0.0
+  http: ^1.4.0
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +83,11 @@ flutter:
   assets:
     # Images
     - assets/loginpicture.png
+    - assets/wave.png
+    - assets/waterMill.png
+    - assets/escut.png
+    - assets/mapa.png
+    # Rewards
     - assets/rewards/caçador_llegendes.png
     - assets/rewards/cartograf.png
     - assets/rewards/cercador_detalls.png
