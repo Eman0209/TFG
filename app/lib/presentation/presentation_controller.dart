@@ -2,6 +2,7 @@ import 'package:app/presentation/screens/mystery/activities/fifth_activity.dart'
 import 'package:app/presentation/screens/mystery/activities/final_screen.dart';
 import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/fourth_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/ra_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
@@ -530,6 +531,15 @@ class PresentationController {
         MaterialPageRoute(
           builder: (context) =>
             CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!, game: 6),
+        ),
+      );
+    }
+    if (stepOrder == 7) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            SimpleArCoreView(),
         ),
       );
     }

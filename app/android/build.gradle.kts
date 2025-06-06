@@ -1,3 +1,17 @@
+import org.gradle.api.tasks.compile.JavaCompile
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.1.0")
+        // otras dependencias si necesitas
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -18,4 +32,10 @@ subprojects {
 
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
+}
+
+subprojects {
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.remove("-Werror")
+    }
 }

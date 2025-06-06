@@ -60,7 +60,7 @@ class _CryptogramGameState extends State<CryptogramGame> {
         case 'es':
           return "Bajo la fabrica de cemento, se esconde lo que la guerra no destruyo.";
         case 'en':
-          return "Beneath the cement factorie, lies what the war didn't destroy.";
+          return "Beneath the cement factory, lies what the war didn't destroy.";
         default:
           return "Sota la fabrica de ciment, s'amaga allo que la guerra no va destruir.";
       }
