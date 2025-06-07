@@ -19,7 +19,6 @@ import 'package:app/domain/models/routes.dart' as _i21;
 import 'package:app/domain/models/steps.dart' as _i25;
 import 'package:app/presentation/presentation_controller.dart' as _i20;
 import 'package:app/presentation/screens/mystery/time_service.dart' as _i26;
-
 import 'package:cloud_firestore/cloud_firestore.dart' as _i6;
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
     as _i5;
@@ -27,15 +26,13 @@ import 'package:firebase_auth/firebase_auth.dart' as _i4;
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart'
     as _i3;
 import 'package:firebase_core/firebase_core.dart' as _i2;
-
 import 'package:flutter/material.dart' as _i22;
-import 'package:google_maps_flutter/google_maps_flutter.dart' as _i24;
+import 'package:flutter_polyline_points/flutter_polyline_points.dart' as _i24;
 import 'package:google_sign_in/google_sign_in.dart' as _i8;
 import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart'
     as _i19;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i17;
-
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -2950,12 +2947,16 @@ class MockPresentationController extends _i1.Mock
           as _i7.Future<_i21.RouteData?>);
 
   @override
-  _i7.Future<List<_i24.LatLng>> getRoutesPoints(_i22.BuildContext? context) =>
+  _i7.Future<List<_i24.PointLatLng>> getRoutesPoints(
+    _i22.BuildContext? context,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#getRoutesPoints, [context]),
-            returnValue: _i7.Future<List<_i24.LatLng>>.value(<_i24.LatLng>[]),
+            returnValue: _i7.Future<List<_i24.PointLatLng>>.value(
+              <_i24.PointLatLng>[],
+            ),
           )
-          as _i7.Future<List<_i24.LatLng>>);
+          as _i7.Future<List<_i24.PointLatLng>>);
 
   @override
   _i7.Future<String> getRouteId() =>
@@ -3033,6 +3034,19 @@ class MockPresentationController extends _i1.Mock
           as _i7.Future<int>);
 
   @override
+  _i7.Future<String> getNextstep(String? mysteryId, int? order) =>
+      (super.noSuchMethod(
+            Invocation.method(#getNextstep, [mysteryId, order]),
+            returnValue: _i7.Future<String>.value(
+              _i17.dummyValue<String>(
+                this,
+                Invocation.method(#getNextstep, [mysteryId, order]),
+              ),
+            ),
+          )
+          as _i7.Future<String>);
+
+  @override
   _i7.Future<Duration> getRouteDuration(String? routeId) =>
       (super.noSuchMethod(
             Invocation.method(#getRouteDuration, [routeId]),
@@ -3068,6 +3082,15 @@ class MockPresentationController extends _i1.Mock
               routeId,
               timeSpent,
             ]),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  _i7.Future<void> addDoneStep(String? mysteryId, int? order) =>
+      (super.noSuchMethod(
+            Invocation.method(#addDoneStep, [mysteryId, order]),
             returnValue: _i7.Future<void>.value(),
             returnValueForMissingStub: _i7.Future<void>.value(),
           )
@@ -3130,6 +3153,22 @@ class MockPresentationController extends _i1.Mock
     int? stepOrder,
   ) => super.noSuchMethod(
     Invocation.method(#stepScreen, [context, mysteryId, routeId, stepOrder]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void activityScreen(
+    _i22.BuildContext? context,
+    String? routeId,
+    String? mysteryId,
+    int? stepOrder,
+  ) => super.noSuchMethod(
+    Invocation.method(#activityScreen, [
+      context,
+      routeId,
+      mysteryId,
+      stepOrder,
+    ]),
     returnValueForMissingStub: null,
   );
 

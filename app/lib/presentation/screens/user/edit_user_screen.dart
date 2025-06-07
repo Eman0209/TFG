@@ -23,7 +23,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize with an existing username if needed
     _usernameController.text = _username;
   }
 
@@ -89,7 +88,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   ),
                 ),
               ),
-              const Spacer(flex: 3), // Optional: adds breathing room below
+              const Spacer(flex: 3), 
             ],
           ),
         ),
@@ -105,7 +104,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('username_updated'.tr(args: [_username]))),
       );
-      // Calls to the update function
       _presentationController.editUsername(_username, context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
