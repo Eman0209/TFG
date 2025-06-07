@@ -1,11 +1,3 @@
-import 'package:app/presentation/screens/mystery/activities/fifth_activity.dart';
-import 'package:app/presentation/screens/mystery/activities/final_screen.dart';
-import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
-import 'package:app/presentation/screens/mystery/activities/fourth_activity.dart';
-import 'package:app/presentation/screens/mystery/activities/ra_activity.dart';
-import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
-import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
-import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,6 +10,12 @@ import 'package:app/data/datasources/mystery_datasource.dart';
 import 'package:app/data/datasources/rewards_datasource.dart';
 import 'package:app/data/datasources/routes_datasource.dart';
 import 'package:app/data/datasources/user_datasource.dart';
+import 'package:app/domain/models/routes.dart';
+import 'package:app/domain/models/steps.dart';
+import 'package:app/domain/controllers/user_controller.dart';
+import 'package:app/domain/controllers/routes_controller.dart';
+import 'package:app/domain/controllers/rewards_controller.dart';
+import 'package:app/domain/controllers/mystery_controller.dart';
 import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
@@ -29,12 +27,14 @@ import 'package:app/presentation/screens/info_route_screen.dart';
 import 'package:app/presentation/screens/mystery/route_screen.dart';
 import 'package:app/presentation/screens/mystery/mystery_screen.dart';
 import 'package:app/presentation/screens/mystery/introduction_screen.dart';
-import 'package:app/domain/models/routes.dart';
-import 'package:app/domain/models/steps.dart';
-import 'package:app/domain/controllers/user_controller.dart';
-import 'package:app/domain/controllers/routes_controller.dart';
-import 'package:app/domain/controllers/rewards_controller.dart';
-import 'package:app/domain/controllers/mystery_controller.dart';
+import 'package:app/presentation/screens/mystery/activities/fifth_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/final_screen.dart';
+import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/fourth_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/ra_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
+import 'package:app/presentation/screens/mystery/step_screen.dart';
 
 
 // Functions to see the screens
