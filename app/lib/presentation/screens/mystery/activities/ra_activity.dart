@@ -112,6 +112,12 @@ class _SimpleArCoreViewState extends State<SimpleArCoreView> {
                   String nextStep = await _presentationController.getNextstep(widget.mysteryId, widget.stepOrder-1);
                   finalPopUp(nextStep);
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),),
+                ),
                 child: Text('get_info'.tr()),
               ),
             ),

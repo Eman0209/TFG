@@ -71,11 +71,23 @@ class _FinalScreenState extends State<FinalScreen> {
                 Text('decide_option'.tr(), style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 40),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),),
+                  ),
                   onPressed: () => _showPopup(options[0]),
                   child: Text('decision_1'.tr(), textAlign: TextAlign.center),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),),
+                  ),
                   onPressed: () { 
                     _presentationController.addUserTrophy("gkfgRiFCNPHANMyLYOZD");
                     _showPopup(options[1]);
