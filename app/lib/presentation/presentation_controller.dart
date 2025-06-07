@@ -425,12 +425,10 @@ class PresentationController {
 
   // Move to the information screen
   void infoRoute(BuildContext context, bool completedScreen, String routeId) {
-    // aqui se tendra que revisar que este en el listado de rutas completadas para enviar el isCompleted true
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
-            // He d'aconseguir el id de la ruta un cop fagi el display al mapa
             RouteInfoScreen(
               routeId: routeId,
               fromCompletedScreen: completedScreen, 
@@ -539,7 +537,7 @@ class PresentationController {
         context,
         MaterialPageRoute(
           builder: (context) =>
-            SimpleArCoreView(),
+            SimpleArCoreView(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
         ),
       );
     }
