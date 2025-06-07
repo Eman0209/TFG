@@ -117,8 +117,12 @@ class _RewardsScreenState extends State<RewardsScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFECE3FF),
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
                 foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
               onPressed: () => Navigator.pop(context),
               child: Text('close'.tr()),
@@ -132,37 +136,41 @@ class _RewardsScreenState extends State<RewardsScreen> {
   Widget _buildTrophyTile(String title, String description, String image, bool isOwned,) {
     return GestureDetector(
       onTap: () {
-        _showTrophyDialog(title, description); 
+        _showTrophyDialog(title, description);
       },
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              border: null,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.all(8),
-            child: Image(
-              width: 100,
-              height: 100,
-              image: AssetImage(image),
-              color: isOwned ? null : Colors.grey,
-              colorBlendMode: isOwned ? null : BlendMode.srcIn,
+          SizedBox(
+            height: 100,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.all(8),
+              child: Image(
+                width: 80,
+                height: 80,
+                image: AssetImage(image),
+                fit: BoxFit.contain,
+                color: isOwned ? null : Colors.grey,
+                colorBlendMode: isOwned ? null : BlendMode.srcIn,
+              ),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12,
-              //esto es del nombre, pensar si quiero que se modifique
-              color: isOwned ? Colors.black : Colors.grey,
-              fontWeight: isOwned ? FontWeight.bold : FontWeight.normal,
+          Flexible(
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                color: isOwned ? Colors.black : Colors.grey,
+                fontWeight: isOwned ? FontWeight.bold : FontWeight.normal,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
           ),
         ],
       ),

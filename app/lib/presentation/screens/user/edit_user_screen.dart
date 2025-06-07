@@ -27,10 +27,10 @@ class _EditUserScreenState extends State<EditUserScreen> {
     _usernameController.text = _username;
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('editUser'.tr())),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -70,16 +70,23 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _saveUsername,
-                style: ElevatedButton.styleFrom(
-                  shape: const StadiumBorder(),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  backgroundColor: Colors.deepPurple,
-                ),
-                child: Text(
-                  'saveChanges'.tr(),
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+              Container(
+                padding: const EdgeInsets.only(top: 30, left: 3),
+                child:
+                ElevatedButton(
+                  onPressed: _saveUsername,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text(
+                    'saveChanges'.tr(),
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ),
               const Spacer(flex: 3), // Optional: adds breathing room below
@@ -91,7 +98,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
   }
 
   void _saveUsername() {
-    // Here you can add validation or save the username logic
     if (_usernameController.text.isNotEmpty) {
       setState(() {
         _username = _usernameController.text;
@@ -99,7 +105,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('username_updated'.tr(args: [_username]))),
       );
-      //aqui se llamaria al update
+      // Calls to the update function
       _presentationController.editUsername(_username, context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

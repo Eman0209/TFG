@@ -1,7 +1,8 @@
-import 'package:app/domain/models/steps.dart';
+import 'package:app/presentation/screens/mystery/time_service.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:app/presentation/presentation_controller.dart';
+import 'package:app/domain/models/steps.dart';
 
 class StepScreen extends StatefulWidget {
   final PresentationController presentationController;
@@ -27,6 +28,14 @@ class _StepScreenState extends State<StepScreen> {
   _StepScreenState(PresentationController presentationController) {
     _presentationController = presentationController;
   }
+  
+  final TimerService _timerService = TimerService();
+
+  @override
+  void initState() {
+    super.initState();
+    _timerService.start();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +45,7 @@ class _StepScreenState extends State<StepScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
-          return Center(child: Text('Step not found or error loading step.'));
+          return Center(child: Text('error_step'.tr()));
         }
 
         final step = snapshot.data!;
@@ -74,7 +83,7 @@ class _StepScreenState extends State<StepScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Narration',
+            'narration'.tr(),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8),
@@ -84,7 +93,7 @@ class _StepScreenState extends State<StepScreen> {
           ),
           SizedBox(height: 24),
           Text(
-            'Instructions',
+            'instructions'.tr(),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8),
@@ -99,8 +108,9 @@ class _StepScreenState extends State<StepScreen> {
 
   Widget startGame() {
     return ElevatedButton(
-      onPressed: () {
-
+      onPressed: () async {
+         await _timerService.persistElapsedTime(_presentationController, widget.routeId);
+        _presentationController.activityScreen(context, widget.routeId, widget.mysteryId, widget.stepOrder+1);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(255, 206, 179, 254),

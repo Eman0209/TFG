@@ -1,0 +1,26 @@
+Coverage report for unit tests
+------------------------------------------------------------
+File: lib/data/datasources/mystery_datasource.dart
+  Total lines: 92
+  Covered lines: 86
+  Coverage: 93.48%
+
+File: lib/data/datasources/rewards_datasource.dart
+  Total lines: 36
+  Covered lines: 36
+  Coverage: 100.00%
+
+File: lib/data/datasources/routes_datasource.dart
+  Total lines: 108
+  Covered lines: 101
+  Coverage: 93.52%
+
+File: lib/data/datasources/user_datasource.dart
+  Total lines: 25
+  Covered lines: 25
+  Coverage: 100.00%
+
+------------------------------------------------------------
+Total lines: 261
+Covered lines: 248
+Overall coverage: 95.02%

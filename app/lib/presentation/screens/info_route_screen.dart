@@ -211,7 +211,7 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
           String shareText = 'share_text'.tr(namedArgs: {'routeName': routeName});
           Share.share(shareText);
         },
-        backgroundColor: const Color(0xFFECE3FF),
+        backgroundColor: const Color.fromARGB(255, 206, 179, 254),
         child: const Icon(Icons.share),
       );
     } else {
@@ -236,7 +236,7 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text('OK'),
+                        child: Text('ok'.tr()),
                       ),
                     ],
                   );
@@ -252,7 +252,7 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text('OK'),
+                      child: Text('ok'.tr()),
                     ),
                   ],
                 ),
@@ -262,12 +262,12 @@ class _RouteInfoScreenState extends State<RouteInfoScreen> {
             }
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFECE3FF),
+            backgroundColor: Color.fromARGB(255, 206, 179, 254),
             foregroundColor: Colors.black,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
             child: Text('start'.tr()),
           ),
         ),

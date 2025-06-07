@@ -1,9 +1,12 @@
-import 'package:app/domain/models/routes.dart';
-import 'package:app/data/datasources/routes_datasource.dart';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logging/logging.dart';
+import 'package:http/http.dart' as http;
+import 'package:app/consts.dart';
+import 'package:app/domain/models/routes.dart';
+import 'package:app/data/datasources/routes_datasource.dart';
 
 // Clase per a conectar amb el back
 class RoutesController {
@@ -28,7 +31,8 @@ class RoutesController {
   Future<List<LatLng>> getRouteCoordinatesFromNames(List<String> names) async {
     List<LatLng> coords = [];
     for (String name in names) {
-      final coord = await getLatLngFromAddress(name);
+      //final coord = await getLatLngFromAddress(name);
+      final coord = await getLatLngFromGoogle(name, apiKey);
       if (coord != null) coords.add(coord);
     }
     return coords;
@@ -39,9 +43,25 @@ class RoutesController {
       List<Location> locations = await locationFromAddress(address);
       if (locations.isNotEmpty) {
         return LatLng(locations[0].latitude, locations[0].longitude);
-      }
+      } 
     } catch (e) {
       _logger.severe("Geocoding failed: $e");
+    }
+    return null;
+  }
+
+  Future<LatLng?> getLatLngFromGoogle(String address, String apiKey) async {
+    final uri = Uri.parse(
+      'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$apiKey',
+    );
+
+    final response = await http.get(uri);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data['results'] != null && data['results'].length > 0) {
+        final location = data['results'][0]['geometry']['location'];
+        return LatLng(location['lat'], location['lng']);
+      }
     }
     return null;
   }

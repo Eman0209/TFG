@@ -1,4 +1,3 @@
-import 'package:app/presentation/screens/mystery/step_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,6 +10,12 @@ import 'package:app/data/datasources/mystery_datasource.dart';
 import 'package:app/data/datasources/rewards_datasource.dart';
 import 'package:app/data/datasources/routes_datasource.dart';
 import 'package:app/data/datasources/user_datasource.dart';
+import 'package:app/domain/models/routes.dart';
+import 'package:app/domain/models/steps.dart';
+import 'package:app/domain/controllers/user_controller.dart';
+import 'package:app/domain/controllers/routes_controller.dart';
+import 'package:app/domain/controllers/rewards_controller.dart';
+import 'package:app/domain/controllers/mystery_controller.dart';
 import 'package:app/presentation/screens/map_screen.dart';
 import 'package:app/presentation/screens/me_screen.dart';
 import 'package:app/presentation/screens/done_routes.dart';
@@ -22,12 +27,14 @@ import 'package:app/presentation/screens/info_route_screen.dart';
 import 'package:app/presentation/screens/mystery/route_screen.dart';
 import 'package:app/presentation/screens/mystery/mystery_screen.dart';
 import 'package:app/presentation/screens/mystery/introduction_screen.dart';
-import 'package:app/domain/models/routes.dart';
-import 'package:app/domain/models/steps.dart';
-import 'package:app/domain/controllers/user_controller.dart';
-import 'package:app/domain/controllers/routes_controller.dart';
-import 'package:app/domain/controllers/rewards_controller.dart';
-import 'package:app/domain/controllers/mystery_controller.dart';
+import 'package:app/presentation/screens/mystery/activities/fifth_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/final_screen.dart';
+import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/fourth_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/ra_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
+import 'package:app/presentation/screens/mystery/step_screen.dart';
 
 
 // Functions to see the screens
@@ -297,7 +304,6 @@ class PresentationController {
   }
 
   Future<String> getRouteId() async {
-    // Maybe pasar el polyline y a partir de aqui que lo busque en la BBDD
     return "NWjKzu7Amz2AXJLZijQL";
   }
 
@@ -371,6 +377,11 @@ class PresentationController {
     return mysteryController.fetchLengthOfSteps(mysteryId);
   }
 
+  Future<String> getNextstep(String mysteryId, int order) async {
+    StepData? step = await getStepInfo(mysteryId, order);
+    return step!.nextStep;
+  }
+
   Future<Duration> getRouteDuration(String routeId) async {
     Duration? duration = await routesController.fetchRouteDuration(_user!, routeId);
     return duration!;
@@ -383,6 +394,10 @@ class PresentationController {
 
   Future<void> updateStartedRouteDuration(String routeId, Duration timeSpent) async {
     await routesController.updateStartedRouteDuration(_user!, routeId, timeSpent);
+  }
+
+  Future<void> addDoneStep(String mysteryId, int order) async {
+    await mysteryController.addDoneStep(_user!, mysteryId, order);
   }
 
   /* ------------------------------ Screens ------------------------------ */
@@ -410,12 +425,10 @@ class PresentationController {
 
   // Move to the information screen
   void infoRoute(BuildContext context, bool completedScreen, String routeId) {
-    // aqui se tendra que revisar que este en el listado de rutas completadas para enviar el isCompleted true
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
-            // He d'aconseguir el id de la ruta un cop fagi el display al mapa
             RouteInfoScreen(
               routeId: routeId,
               fromCompletedScreen: completedScreen, 
@@ -462,6 +475,81 @@ class PresentationController {
           StepScreen(presentationController: this, mysteryId: mysteryId, routeId: routeId, stepOrder: stepOrder),
       ),
     );
+  }
+
+  void activityScreen(BuildContext context, String routeId, String mysteryId, int stepOrder) {
+    if (stepOrder == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            TranslationPuzzleScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            PlumbingGameScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            HeraldicPuzzleScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 4) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            MapReconstructionGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 5) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!, game: 5),
+        ),
+      );
+    }
+    if (stepOrder == 6) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!, game: 6),
+        ),
+      );
+    }
+    if (stepOrder == 7) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            SimpleArCoreView(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
+    if (stepOrder == 8) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            FinalScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+        ),
+      );
+    }
   }
 
   // Move to the done routes screen
