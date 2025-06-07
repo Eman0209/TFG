@@ -50,5 +50,6 @@ ios/config/Secrets.xcconfig
 
 # API keys
 .env
+app/lib/consts.dart
 
 
