@@ -115,7 +115,7 @@ class _TranslationPuzzleScreenState extends State<TranslationPuzzleScreen> {
                     child: currentOrder.isEmpty
                       ? Center(
                           child: Text(
-                            'Drop words here',
+                            'drop_words'.tr(),
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.deepPurple,

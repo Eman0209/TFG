@@ -32,7 +32,7 @@ class RoutesController {
     List<LatLng> coords = [];
     for (String name in names) {
       //final coord = await getLatLngFromAddress(name);
-      final coord = await getLatLngFromGoogle(name, GOOGLE_MAPS_APIKEY);
+      final coord = await getLatLngFromGoogle(name, apiKey);
       if (coord != null) coords.add(coord);
     }
     return coords;

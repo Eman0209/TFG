@@ -172,7 +172,7 @@ class FirebaseMysteryDatasource {
           'userId': userId,
           'steps_en': [],
           'steps_es': [],
-          'steps_ca': [],
+          'steps': [],
         });
         docRef = newDoc;
       }

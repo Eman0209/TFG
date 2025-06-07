@@ -2,6 +2,7 @@ import 'package:app/presentation/screens/mystery/activities/fifth_activity.dart'
 import 'package:app/presentation/screens/mystery/activities/final_screen.dart';
 import 'package:app/presentation/screens/mystery/activities/first_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/fourth_activity.dart';
+import 'package:app/presentation/screens/mystery/activities/ra_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/second_activity.dart';
 import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
@@ -424,12 +425,10 @@ class PresentationController {
 
   // Move to the information screen
   void infoRoute(BuildContext context, bool completedScreen, String routeId) {
-    // aqui se tendra que revisar que este en el listado de rutas completadas para enviar el isCompleted true
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
-            // He d'aconseguir el id de la ruta un cop fagi el display al mapa
             RouteInfoScreen(
               routeId: routeId,
               fromCompletedScreen: completedScreen, 
@@ -530,6 +529,15 @@ class PresentationController {
         MaterialPageRoute(
           builder: (context) =>
             CryptogramGame(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder, language: _language!, game: 6),
+        ),
+      );
+    }
+    if (stepOrder == 7) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+            SimpleArCoreView(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
         ),
       );
     }

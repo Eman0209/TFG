@@ -36,7 +36,7 @@ android {
         applicationId = "com.example.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -55,4 +55,16 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+
+    // Provides ARCore Session and related resources.
+    implementation("com.google.ar:core:1.37.0")
+
+    // Provides ArFragment, and other UX resources.
+    implementation("com.google.ar.sceneform.ux:sceneform-ux:1.15.0")
+
+    // Alternatively, use ArSceneView without the UX dependency.
+    implementation("com.google.ar.sceneform:core:1.15.0")
 }
