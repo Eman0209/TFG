@@ -1,0 +1,76 @@
+Coverage report for widget tests
+------------------------------------------------------------
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/mystery/time_service.dart
+  Total lines: 21
+  Covered lines: 18
+  Coverage: 85.71%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/user/how_to_play_screen.dart
+  Total lines: 56
+  Covered lines: 56
+  Coverage: 100.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/user/edit_user_screen.dart
+  Total lines: 45
+  Covered lines: 45
+  Coverage: 100.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/user/login.dart
+  Total lines: 34
+  Covered lines: 30
+  Coverage: 88.24%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/mystery/introduction_screen.dart
+  Total lines: 40
+  Covered lines: 39
+  Coverage: 97.50%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/mystery/mystery_screen.dart
+  Total lines: 147
+  Covered lines: 130
+  Coverage: 88.44%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/mystery/step_screen.dart
+  Total lines: 50
+  Covered lines: 48
+  Coverage: 96.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/map_screen.dart
+  Total lines: 135
+  Covered lines: 0
+  Coverage: 0.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/me_screen.dart
+  Total lines: 75
+  Covered lines: 0
+  Coverage: 0.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/done_routes.dart
+  Total lines: 61
+  Covered lines: 0
+  Coverage: 0.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/user/signup.dart
+  Total lines: 46
+  Covered lines: 0
+  Coverage: 0.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/user/rewards_screen.dart
+  Total lines: 65
+  Covered lines: 0
+  Coverage: 0.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/info_route_screen.dart
+  Total lines: 122
+  Covered lines: 0
+  Coverage: 0.00%
+
+File: /Users/rosahortelano/Desktop/TFG/Repos/TFG/app/coverage/lib/presentation/screens/mystery/route_screen.dart
+  Total lines: 107
+  Covered lines: 0
+  Coverage: 0.00%
+
+------------------------------------------------------------
+Total lines: 1004
+Covered lines: 366
+Overall coverage: 36.45%
