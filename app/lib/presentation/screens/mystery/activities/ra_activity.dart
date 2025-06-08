@@ -5,13 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:app/presentation/presentation_controller.dart';
 import 'package:app/presentation/screens/mystery/time_service.dart';
 
-class SimpleArCoreView extends StatefulWidget {
+class ArCoreScreen extends StatefulWidget {
   final PresentationController presentationController;
   final String routeId;
   final String mysteryId;
   final int stepOrder;
   
-  const SimpleArCoreView({
+  const ArCoreScreen({
     super.key,
     required this.presentationController,
     required this.routeId,
@@ -20,13 +20,13 @@ class SimpleArCoreView extends StatefulWidget {
   });
 
   @override
-  State<SimpleArCoreView> createState() => _SimpleArCoreViewState(presentationController);
+  State<ArCoreScreen> createState() => _ArCoreScreenState(presentationController);
 }
 
-class _SimpleArCoreViewState extends State<SimpleArCoreView> {
+class _ArCoreScreenState extends State<ArCoreScreen> {
   late PresentationController _presentationController;
 
-  _SimpleArCoreViewState(PresentationController presentationController) {
+  _ArCoreScreenState(PresentationController presentationController) {
     _presentationController = presentationController;
   }
 
