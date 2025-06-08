@@ -34,10 +34,21 @@ class _ArCoreScreenState extends State<ArCoreScreen> {
 
   late ArCoreController arCoreController;
 
-  final Set<String> tappedNodes = {};
   bool showButton = false;
   bool _showAr = true;
   bool _disposed = false;
+
+  final List<String> correctOrder = [
+    "red_sphere",
+    "green_sphere",
+    "blue_sphere",
+    "yellow_sphere",
+    "purple_sphere",
+    "orange_sphere"
+  ];
+
+  final List<String> tappedOrder = [];
+  final Map<String, Vector3> nodePositions = {};
 
   @override
   void initState() {
@@ -128,7 +139,11 @@ class _ArCoreScreenState extends State<ArCoreScreen> {
 
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
+    _addSpheres();
+    arCoreController.onNodeTap = _handleNodeTap;
+  }
 
+  Future<void> _addSpheres () async {
     final material = ArCoreMaterial(color: Colors.red);
     final sphere = ArCoreSphere(materials: [material], radius: 0.05);
     final node = ArCoreNode(
@@ -136,6 +151,7 @@ class _ArCoreScreenState extends State<ArCoreScreen> {
       shape: sphere,
       position: Vector3(0, 1, -1.5),
     );
+    nodePositions["red_sphere"] = Vector3(0, 1, -1.5);
 
     final material2 = ArCoreMaterial(color: Colors.green);
     final sphere2 = ArCoreSphere(materials: [material2], radius: 0.05);
@@ -144,6 +160,7 @@ class _ArCoreScreenState extends State<ArCoreScreen> {
       shape: sphere2,
       position: Vector3(0.5, 0.5, -1.5),
     );
+    nodePositions["green_sphere"] = Vector3(0.5, 0.5, -1.5);
 
     final material3 = ArCoreMaterial(color: Colors.blue);
     final sphere3 = ArCoreSphere(materials: [material3], radius: 0.05);
@@ -152,45 +169,118 @@ class _ArCoreScreenState extends State<ArCoreScreen> {
       shape: sphere3,
       position: Vector3(-0.5, -1, -1.5),
     );
+    nodePositions["blue_sphere"] = Vector3(-0.5, -1, -1.5);
 
     final node4 = ArCoreNode(
       name: "yellow_sphere",
       shape: ArCoreSphere(materials: [ArCoreMaterial(color: Colors.yellow)], radius: 0.05),
       position: Vector3(1.5, 0.5, -2.0),
     );
+    nodePositions["yellow_sphere"] = Vector3(1.5, 0.5, -2.0);
 
     final node5 = ArCoreNode(
       name: "purple_sphere",
       shape: ArCoreSphere(materials: [ArCoreMaterial(color: Colors.purple)], radius: 0.05),
       position: Vector3(-1.5, -0.2, -2.5),
     );
+    nodePositions["purple_sphere"] = Vector3(-1.5, -0.2, -2.5);
 
     final node6 = ArCoreNode(
       name: "orange_sphere",
       shape: ArCoreSphere(materials: [ArCoreMaterial(color: Colors.orange)], radius: 0.05),
       position: Vector3(0.0, 1.2, -3.0),
     );
+    nodePositions["orange_sphere"] = Vector3(0.0, 1.2, -3.0);
 
-    // Add the node right away, without any tap
-    arCoreController.addArCoreNode(node);
-    arCoreController.addArCoreNode(node2);
-    arCoreController.addArCoreNode(node3);
-    arCoreController.addArCoreNode(node4);
-    arCoreController.addArCoreNode(node5);
-    arCoreController.addArCoreNode(node6);
-
-    arCoreController.onNodeTap = _handleNodeTap;
+    await arCoreController.addArCoreNode(node);
+    await arCoreController.addArCoreNode(node2);
+    await arCoreController.addArCoreNode(node3);
+    await arCoreController.addArCoreNode(node4);
+    await arCoreController.addArCoreNode(node5);
+    await arCoreController.addArCoreNode(node6);
   }
 
-  void _handleNodeTap(String nodeName) {
-    tappedNodes.add(nodeName);
+  void _handleNodeTap(String nodeName) async {
+    if (tappedOrder.contains(nodeName)) return;
 
-    if (tappedNodes.containsAll(["red_sphere", "green_sphere", "blue_sphere", "yellow_sphere",
-        "purple_sphere", "orange_sphere"])) {
-        setState(() {
-          showButton = true;
-        });
-      }
+    final expectedNode = correctOrder[tappedOrder.length];
+
+    if (nodeName != expectedNode) {
+      final expectedPosition = correctOrder.indexOf(nodeName) + 1;
+
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Ordre incorrecte"),
+          content: RichText (
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium,
+              children: [
+                const TextSpan(text: "Aquesta esfera és la número "),
+                TextSpan(
+                  text: "$expectedPosition",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const TextSpan(text: " a la seqüència.\nTorna a començar."),
+              ] 
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () { 
+                Navigator.of(context).pop();
+                resetGame();
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 206, 179, 254),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: Text('ok'.tr()),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    tappedOrder.add(nodeName);
+
+    final position = nodePositions[nodeName] ?? Vector3.zero();
+    final grayMaterial = ArCoreMaterial(color: Colors.grey);
+    final newSphere = ArCoreSphere(materials: [grayMaterial], radius: 0.05);
+
+    final updatedNode = ArCoreNode(
+      name: nodeName,
+      shape: newSphere,
+      position: position,
+    );
+
+    await arCoreController.removeNode(nodeName: nodeName);
+    await arCoreController.addArCoreNode(updatedNode);
+    
+    if (tappedOrder.length == correctOrder.length) {
+      setState(() {
+        showButton = true;
+      });
+    }
+  }
+
+  Future<void> resetGame() async {
+    tappedOrder.clear();
+    showButton = false;
+
+    for (final name in correctOrder) {
+      await arCoreController.removeNode(nodeName: name);
+      await arCoreController.removeNode(nodeName: '${name}_sphere');
+    }
+
+    await _addSpheres();
+    
+    setState(() {});
   }
 
   void finalPopUp(String nextStep) {
