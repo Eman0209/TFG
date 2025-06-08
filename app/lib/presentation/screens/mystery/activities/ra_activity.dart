@@ -211,17 +211,17 @@ class _ArCoreScreenState extends State<ArCoreScreen> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text("Ordre incorrecte"),
+          title: Text('incorrect_order'.tr()),
           content: RichText (
             text: TextSpan(
               style: Theme.of(context).textTheme.bodyMedium,
               children: [
-                const TextSpan(text: "Aquesta esfera és la número "),
+                TextSpan(text: 'sphere_number'.tr()),
                 TextSpan(
                   text: "$expectedPosition",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                const TextSpan(text: " a la seqüència.\nTorna a començar."),
+                TextSpan(text: 'sphere_phrase'.tr()),
               ] 
             ),
           ),
