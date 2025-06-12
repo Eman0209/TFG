@@ -11,9 +11,9 @@ File: lib/data/datasources/rewards_datasource.dart
   Coverage: 100.00%
 
 File: lib/data/datasources/routes_datasource.dart
-  Total lines: 108
-  Covered lines: 101
-  Coverage: 93.52%
+  Total lines: 107
+  Covered lines: 100
+  Coverage: 93.46%
 
 File: lib/data/datasources/user_datasource.dart
   Total lines: 25
@@ -21,6 +21,6 @@ File: lib/data/datasources/user_datasource.dart
   Coverage: 100.00%
 
 ------------------------------------------------------------
-Total lines: 261
-Covered lines: 248
-Overall coverage: 95.02%
+Total lines: 260
+Covered lines: 247
+Overall coverage: 95.00%
