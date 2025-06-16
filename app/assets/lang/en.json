@@ -26,6 +26,7 @@
     "english": "English",
     "error_introduction": "Error loading introduction",
     "error_length": "Error loading steps length",
+    "error_loading": "Error loading routes",
     "error_options": "Error loading options.",
     "error_pumb": "The connection is not complete. Try again!",
     "error_step": "Error loading step",
@@ -68,6 +69,7 @@
     "introduction": "Introduction",
     "language": "Language",
     "last_message": "It's going to last about {duration}",
+    "logout": "Sign out",
     "map": "Map",
     "me": "Me",
     "mistery": "Mysteri",
@@ -76,6 +78,7 @@
     "name": "Name",
     "narration": "Narration",
     "new_track": "New track",
+    "no_routes": "No routes completed",
     "not_yet": "Not yet...",
     "ok": "OK",
     "pumb_game": "Puzzle of pipes",
@@ -105,5 +108,5 @@
     "username": "Username",
     "username_empty": "Username cannot be empty!",
     "username_updated": "Username updated to: {}",
-    "welcome_txt": "Welcome to XXX"
+    "welcome_txt": "Welcome to Hidden Routes"
 }

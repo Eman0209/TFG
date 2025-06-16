@@ -26,6 +26,7 @@
     "english": "Anglès",
     "error_introduction": "Error carregant la introducció",
     "error_length": "Error carregant la longitud dels pasos",
+    "error_loading": "Error carregant rutes",
     "error_options": "Error al carregar les opcions.",
     "error_pumb": "La connexió no està completa. Prova de nou!",
     "error_step": "Error carregant el pas",
@@ -68,6 +69,7 @@
     "introduction": "Introducció",
     "language": "Idioma",
     "last_message": "Durarà al voltent de {duration}",
+    "logout": "Tancar sessió",
     "map": "Mapa",
     "me": "Jo",
     "mistery": "Misteri",
@@ -76,6 +78,7 @@
     "name": "Nom",
     "narration": "Narració",
     "new_track": "Nova pista",
+    "no_routes": "No hi ha rutes completades",
     "not_yet": "Encara no...",
     "ok": "D'acord",
     "pumb_game": "Puzzle de canonades",
@@ -105,5 +108,5 @@
     "username": "Nom d'usuari",
     "username_empty": "Nom d'usuari no pot estar buit!",
     "username_updated": "Nom d'usuari actualitzat a: {}",
-    "welcome_txt": "Benvingut a XXX"
+    "welcome_txt": "Benvingut a Hidden Routes"
 }
