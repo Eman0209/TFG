@@ -66,7 +66,7 @@ class _PerfilPageState extends State<PerfilPage> {
             ),
             const SizedBox(height: 10),
             _buildMenuItem(
-              icon: Icons.warning_amber_outlined,
+              icon: Icons.logout,
               text: 'logout'.tr(),
                onTap: () {
                 _presentationController.logout(context);
