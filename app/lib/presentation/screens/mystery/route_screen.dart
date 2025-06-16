@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:app/consts.dart';
 import 'package:app/presentation/screens/mystery/time_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -37,7 +39,7 @@ class _RouteScreenState extends State<RouteScreen> {
   final Location _locationController = Location();
   LatLng? currentP; 
 
-  final Set<Polyline> _polylines = {};
+  Map<PolylineId, Polyline> polylines = {};
 
   bool _showAlert = false;
 
@@ -46,8 +48,13 @@ class _RouteScreenState extends State<RouteScreen> {
   @override
   void initState(){
     super.initState();
-    getLocationUpdates();
-    _setPolyline();
+    getLocationUpdates().then(
+      (_) => {
+        getPolylinePoints().then((coordinates) => {
+          generatePolylineFromPoints(coordinates)
+        }),
+      }
+    );
     _timerService.start();
   }
 
@@ -76,7 +83,7 @@ class _RouteScreenState extends State<RouteScreen> {
   Widget maps() {
     return CustomGoogleMap(
       currentPosition: currentP!,
-      polylines: _polylines,
+      polylines: Set<Polyline>.of(polylines.values),
       mapControllerCompleter: _mapController,
     );
   }
@@ -120,15 +127,48 @@ class _RouteScreenState extends State<RouteScreen> {
     await controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }
 
-  Future<void> _setPolyline() async {
-    _polylines.add(
-      Polyline(
-        polylineId: PolylineId('route'),
-        points: await _presentationController.getRoutesPoints(context),
-        color: Colors.deepPurple,
-        width: 5,
-      ),
+  Future<List<LatLng>> getPolylinePoints() async {
+    List<LatLng> polylineCoordinates = [];
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> routePoints = await _presentationController.getRoutesPoints(context);
+
+    final request = PolylineRequest(
+      origin: routePoints.first,
+      destination: routePoints.last,
+      mode: TravelMode.walking,
+      wayPoints: routePoints
+          .sublist(1, routePoints.length - 1)
+          .map((point) => PolylineWayPoint(location: '${point.latitude},${point.longitude}'))
+          .toList(),
     );
+    
+    final result = await polylinePoints.getRouteBetweenCoordinates(
+      googleApiKey: apiKey,
+      request: request,
+    );
+
+    if (result.points.isNotEmpty) {
+      for (var point in result.points) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        }
+    } else {
+      debugPrint(result.errorMessage);
+    }
+    return polylineCoordinates;
+
+  }
+
+  void generatePolylineFromPoints(List<LatLng> polylineCoordinates) async {
+    PolylineId id = PolylineId("poly"); 
+    Polyline polyline = Polyline(
+      polylineId: id, 
+      color: Colors.deepPurple, 
+      points: polylineCoordinates,
+      width: 8
+    );
+    setState(() {
+      polylines[id] = polyline;
+    });
   }
 
   Future<double> calculateDistance(double lat1, double lon1, double lat2, double lon2) async {
@@ -137,7 +177,7 @@ class _RouteScreenState extends State<RouteScreen> {
 
   Future<void> checkProximity(double userLat, double userLon) async {
     List<LatLng> waypoints = [];
-    for (var polyline in _polylines) {
+    for (var polyline in Set<Polyline>.of(polylines.values)) {
       waypoints.addAll(polyline.points);
     }
 

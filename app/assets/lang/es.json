@@ -26,6 +26,7 @@
     "english": "Inglés",
     "error_introduction": "Error cargando la introducción",
     "error_length": "Error cargando la longitud de los pasos",
+    "error_loading": "Error cargando rutas",
     "error_options": "Error al cargar las opciones.",
     "error_pumb": "La conexión no está completa. Prueba de nuevo!",
     "error_step": "Error cagarndo el paso",
@@ -56,6 +57,7 @@
     "how_to_play_tips_body": "- Asegúrate de tener el GPS activado.\n- Puedes volver a una ruta si no la terminaste.\n- ¡Diviértete resolviendo!",
     "incorrect": "Incorrecto",
     "incorrect_cryp": "Prueba de nuevo, no está del todo bueno.",
+    "incorrect_order": "Orden incorrecto",
     "incorrect_phrase": "La frase no es correcta. Vuelve a probar! Ahora tendrás un poco de ayuda.",
     "info": "Info",
     "info_route": "Información sobre la ruta",
@@ -67,6 +69,7 @@
     "introduction": "Introducción",
     "language": "Idioma",
     "last_message": "Durara alrededor de {duration}",
+    "logout": "Cerrar sessión",
     "map": "Mapa",
     "me": "Yo",
     "mistery": "Misterio",
@@ -75,6 +78,7 @@
     "name": "Nombre",
     "narration": "Narración",
     "new_track": "Nueva pista",
+    "no_routes": "No hay rutas completadas",
     "not_yet": "Todavía no...",
     "ok": "De acuerdo",
     "pumb_game": "Puzzle de cañerías",
@@ -94,6 +98,8 @@
     "search": "Busca rutas...",
     "share_text": "He completado el misterio de la ruta: {routeName}! 🕵️‍♂️🔍 Pruébalo tú también!",
     "spanish": "Castellano",
+    "sphere_number": "Esta esfera es la número ",
+    "sphere_phrase": " en la secuencia.\nVuelve a empezar.",
     "start": "Empezar",
     "start_game": "Comenzar desafio",
     "start_new_track": "Empezar nueva pista",
@@ -102,5 +108,5 @@
     "username": "Nombre de usuario",
     "username_empty": "Nombre de usuario no puede estar vacio!",
     "username_updated": "Nombre de usuario actualizado a: {}",
-    "welcome_txt": "Bienvenido a XXX"
+    "welcome_txt": "Bienvenido a Hidden Routes"
 }

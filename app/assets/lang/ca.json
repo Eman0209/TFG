@@ -26,6 +26,7 @@
     "english": "Anglès",
     "error_introduction": "Error carregant la introducció",
     "error_length": "Error carregant la longitud dels pasos",
+    "error_loading": "Error carregant rutes",
     "error_options": "Error al carregar les opcions.",
     "error_pumb": "La connexió no està completa. Prova de nou!",
     "error_step": "Error carregant el pas",
@@ -56,6 +57,7 @@
     "how_to_play_tips_body": "- Assegura't que el GPS estigui activat.\n- Pots tornar a una ruta si no l'has acabat.\n- No t'oblidis de passar-ho bé resolent!",
     "incorrect": "Incorrecte",
     "incorrect_cryp": "Prova de nou, no està del tot bé.",
+    "incorrect_order": "Ordre incorrecte",
     "incorrect_phrase": "La frase no és correcta. Torna-ho a provar! Ara tindràs una mica d'ajuda.",
     "info": "Info",
     "info_route": "Informació sobre la ruta",
@@ -67,6 +69,7 @@
     "introduction": "Introducció",
     "language": "Idioma",
     "last_message": "Durarà al voltent de {duration}",
+    "logout": "Tancar sessió",
     "map": "Mapa",
     "me": "Jo",
     "mistery": "Misteri",
@@ -75,6 +78,7 @@
     "name": "Nom",
     "narration": "Narració",
     "new_track": "Nova pista",
+    "no_routes": "No hi ha rutes completades",
     "not_yet": "Encara no...",
     "ok": "D'acord",
     "pumb_game": "Puzzle de canonades",
@@ -94,6 +98,8 @@
     "search": "Cerca rutes...",
     "share_text": "He completat el misteri de la ruta: {routeName}! 🕵️‍♂️🔍 Prova'l tu també!",
     "spanish": "Castellà",
+    "sphere_number": "Aquesta esfera és la número ",
+    "sphere_phrase": " a la seqüència.\nTorna a començar.",
     "start": "Començar",
     "start_game": "Començar desafiament",
     "start_new_track": "Començar nova pista",
@@ -102,5 +108,5 @@
     "username": "Nom d'usuari",
     "username_empty": "Nom d'usuari no pot estar buit!",
     "username_updated": "Nom d'usuari actualitzat a: {}",
-    "welcome_txt": "Benvingut a XXX"
+    "welcome_txt": "Benvingut a Hidden Routes"
 }

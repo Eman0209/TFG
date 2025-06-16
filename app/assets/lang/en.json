@@ -26,6 +26,7 @@
     "english": "English",
     "error_introduction": "Error loading introduction",
     "error_length": "Error loading steps length",
+    "error_loading": "Error loading routes",
     "error_options": "Error loading options.",
     "error_pumb": "The connection is not complete. Try again!",
     "error_step": "Error loading step",
@@ -56,6 +57,7 @@
     "how_to_play_tips_body": "- Make sure your GPS is on.\n- You can return to a route if you didn’t finish it.\n- Don’t forget to have fun while solving!",
     "incorrect": "Incorrect",
     "incorrect_cryp": "Try again, it's not quite right.",
+    "incorrect_order": "Wrong order",
     "incorrect_phrase": "The sentence is not correct. Try again! Now you will have a little help.",
     "info": "Info",
     "info_route": "Information about the route",
@@ -67,6 +69,7 @@
     "introduction": "Introduction",
     "language": "Language",
     "last_message": "It's going to last about {duration}",
+    "logout": "Sign out",
     "map": "Map",
     "me": "Me",
     "mistery": "Mysteri",
@@ -75,6 +78,7 @@
     "name": "Name",
     "narration": "Narration",
     "new_track": "New track",
+    "no_routes": "No routes completed",
     "not_yet": "Not yet...",
     "ok": "OK",
     "pumb_game": "Puzzle of pipes",
@@ -94,6 +98,8 @@
     "search": "Search routes...",
     "share_text": "I just completed the mystery route: {routeName}! 🕵️‍♂️🔍 Try it out too!",
     "spanish": "Spanish",
+    "sphere_number": "This sphere is the number ",
+    "sphere_phrase": " in the sequence.\nStart again.",
     "start": "Start",
     "start_game": "Start challenge",
     "start_new_track": "Start new track",
@@ -102,5 +108,5 @@
     "username": "Username",
     "username_empty": "Username cannot be empty!",
     "username_updated": "Username updated to: {}",
-    "welcome_txt": "Welcome to XXX"
+    "welcome_txt": "Welcome to Hidden Routes"
 }

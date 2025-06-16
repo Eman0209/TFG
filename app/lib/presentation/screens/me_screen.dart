@@ -66,6 +66,14 @@ class _PerfilPageState extends State<PerfilPage> {
             ),
             const SizedBox(height: 10),
             _buildMenuItem(
+              icon: Icons.logout,
+              text: 'logout'.tr(),
+               onTap: () {
+                _presentationController.logout(context);
+              }
+            ),
+            const SizedBox(height: 10),
+            _buildMenuItem(
               icon: Icons.warning_amber_outlined,
               text: 'howToPlay'.tr(),
                onTap: () {
@@ -119,7 +127,6 @@ class _PerfilPageState extends State<PerfilPage> {
             title: Text('english'.tr()),
             onTap: () {
               Navigator.pop(context); 
-              // Switch to English
               changeLanguage(Locale('en'));
             },
           ),
@@ -127,7 +134,6 @@ class _PerfilPageState extends State<PerfilPage> {
             title: Text('spanish'.tr()),
             onTap: () {
               Navigator.pop(context);
-              // Switch to Spanish
               changeLanguage(Locale('es'));
             },
           ),
@@ -135,7 +141,6 @@ class _PerfilPageState extends State<PerfilPage> {
             title: Text('catalan'.tr()),
             onTap: () {
               Navigator.pop(context);
-              // Switch to Catalan
               changeLanguage(Locale('ca'));
             },
           ),

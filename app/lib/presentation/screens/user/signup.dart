@@ -102,7 +102,7 @@ class _SignupState extends State<Signup> {
                   ),
                   child: Text(
                     'create_account'.tr(),
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
               )
@@ -114,18 +114,7 @@ class _SignupState extends State<Signup> {
   }
 
   Future<void> createUser() async {
-    //if (await _presentationController.usernameUnique(usernameController.text)) {
-      _presentationController.createUser(usernameController.text, context);
-    //}
-    /*else {
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text('Ja hi ha un usuari amb aquest username'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }*/
+    _presentationController.createUser(usernameController.text, context);
   }
 
 }

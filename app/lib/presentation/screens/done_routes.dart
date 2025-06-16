@@ -45,9 +45,9 @@ class _DonePageState extends State<DonePage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(child: Text('Error loading routes'));
+            return Center(child: Text('error_loading'.tr()));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No routes completed'));
+            return Center(child: Text('no_routes'.tr()));
           }
 
           final routes = snapshot.data!;

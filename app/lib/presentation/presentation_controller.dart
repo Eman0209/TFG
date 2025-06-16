@@ -1,5 +1,7 @@
+import 'package:app/presentation/screens/user/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +38,6 @@ import 'package:app/presentation/screens/mystery/activities/second_activity.dart
 import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
 
-
-// Functions to see the screens
 class PresentationController {
   
   late final FirebaseRoutesDatasource routesDatasource;
@@ -58,6 +58,7 @@ class PresentationController {
   Locale? get language => _language;
 
   final Logger _logger = Logger('PresentationController');
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   PresentationController() {
     final firestore = FirebaseFirestore.instance;
@@ -137,31 +138,49 @@ class PresentationController {
     }
   }
 
-  Future<void> handleGoogleSignIn(BuildContext context) async {
+  void logout(BuildContext context) async {
+    await _auth.signOut();
     try {
-      GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
-      final UserCredential userCredential = await _auth.signInWithProvider(googleAuthProvider);
-      bool userExists = await userController.accountExists(userCredential.user);
-      _user = userCredential.user;
-      // If there is no user of the google account, move to a signup screen
-      if (!userExists) {
-        mostrarSignup(context);
-      }
-      // Otherwise move to map screen
-      else {
-        mapScreen(context);
-      }
-    } catch (error) {
-      _logger.severe('An error occurred: $error');
+      await _googleSignIn.disconnect(); 
+    } catch (e) {
+      debugPrint('Error al cerrar sesión: $e');
     }
+
+    Future.delayed(const Duration(seconds: 1), () {
+      mostrarLogin(context);
+    });
   }
 
-  /*
-  // Quiero obligar a que el username sea unique?
-  Future<bool> usernameUnique(String username) {
-    return userController.usernameUnique(username);
+  Future<void> handleGoogleSignIn(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        _logger.warning("Login cancelado por el usuario.");
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      final bool userExists = await userController.accountExists(userCredential.user);
+      _user = userCredential.user;
+
+      if (!userExists) {
+        mostrarSignup(context);
+      } else {
+        mapScreen(context);
+      }
+    } catch (e) {
+      _logger.severe('Login con Google falló: $e');
+    }
   }
-  */
 
   void changeLanguage(Locale? lang, BuildContext context) async {
     _language = lang;
@@ -265,9 +284,9 @@ class PresentationController {
     }
   }
 
-  /*
-  Future<List<PointLatLng>> getRoutesPoints() async {
-    List<RouteData?> routes = await getAllRoutesData();
+  
+  Future<List<PointLatLng>> getRoutesPoints(BuildContext context) async {
+    List<RouteData?> routes = await getAllRoutesData(context);
 
     List<String> addresses = routes
       .where((route) => route != null)
@@ -281,28 +300,8 @@ class PresentationController {
       .toList();
 
     return points;
-
-    // Convertir direcciones a coordenadas
-    //List<LatLng> directions = await routesController.getRouteCoordinatesFromNames(addresses);
-
-    //return directions;
   }
-  */
-
-  Future<List<LatLng>> getRoutesPoints(BuildContext context) async {
-    List<RouteData?> routes = await getAllRoutesData(context);
-
-    List<String> addresses = routes
-      .where((route) => route != null)
-      .expand((route) => route!.path)
-      .toList();
-
-    // Convertir direcciones a coordenadas
-    List<LatLng> directions = await routesController.getRouteCoordinatesFromNames(addresses);
-
-    return directions;
-  }
-
+  
   Future<String> getRouteId() async {
     return "NWjKzu7Amz2AXJLZijQL";
   }
@@ -537,7 +536,7 @@ class PresentationController {
         context,
         MaterialPageRoute(
           builder: (context) =>
-            SimpleArCoreView(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+            ArCoreScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
         ),
       );
     }
@@ -592,6 +591,15 @@ class PresentationController {
       MaterialPageRoute(
         builder: (context) =>
             RewardsScreen(presentationController: this),
+      ),
+    );
+  }
+
+  void mostrarLogin(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Login(presentationController: this),
       ),
     );
   }
