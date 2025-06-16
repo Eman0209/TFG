@@ -7,6 +7,7 @@ def parse_lcov(file_path, test_type, include_prefix, output_filename):
     coverage_data = {}
     current_file = None
     include_prefix = normalize_path(os.path.abspath(include_prefix))
+    exclude_path = normalize_path(os.path.abspath(os.path.join(include_prefix, 'mystery/activities')))
 
     try:
         with open(file_path, 'r') as f:
@@ -16,9 +17,17 @@ def parse_lcov(file_path, test_type, include_prefix, output_filename):
                     raw_path = line[3:]
                     norm_path = normalize_path(os.path.abspath(raw_path))
                     current_file = norm_path
-                    if current_file.startswith(include_prefix):
-                        if current_file not in coverage_data:
-                            coverage_data[current_file] = {'total': 0, 'covered': 0}
+                    if not current_file.startswith(include_prefix):
+                        current_file = None
+                        continue
+
+                    if current_file.startswith(exclude_path):
+                        current_file = None
+                        continue
+                    
+                    if current_file not in coverage_data:
+                        coverage_data[current_file] = {'total': 0, 'covered': 0}
+
                 elif line.startswith('DA:') and current_file and current_file.startswith(include_prefix):
                     parts = line[3:].split(',')
                     hit_count = int(parts[1])

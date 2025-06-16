@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +37,6 @@ import 'package:app/presentation/screens/mystery/activities/second_activity.dart
 import 'package:app/presentation/screens/mystery/activities/third_activity.dart';
 import 'package:app/presentation/screens/mystery/step_screen.dart';
 
-
-// Functions to see the screens
 class PresentationController {
   
   late final FirebaseRoutesDatasource routesDatasource;
@@ -265,9 +264,9 @@ class PresentationController {
     }
   }
 
-  /*
-  Future<List<PointLatLng>> getRoutesPoints() async {
-    List<RouteData?> routes = await getAllRoutesData();
+  
+  Future<List<PointLatLng>> getRoutesPoints(BuildContext context) async {
+    List<RouteData?> routes = await getAllRoutesData(context);
 
     List<String> addresses = routes
       .where((route) => route != null)
@@ -281,28 +280,8 @@ class PresentationController {
       .toList();
 
     return points;
-
-    // Convertir direcciones a coordenadas
-    //List<LatLng> directions = await routesController.getRouteCoordinatesFromNames(addresses);
-
-    //return directions;
   }
-  */
-
-  Future<List<LatLng>> getRoutesPoints(BuildContext context) async {
-    List<RouteData?> routes = await getAllRoutesData(context);
-
-    List<String> addresses = routes
-      .where((route) => route != null)
-      .expand((route) => route!.path)
-      .toList();
-
-    // Convertir direcciones a coordenadas
-    List<LatLng> directions = await routesController.getRouteCoordinatesFromNames(addresses);
-
-    return directions;
-  }
-
+  
   Future<String> getRouteId() async {
     return "NWjKzu7Amz2AXJLZijQL";
   }
@@ -537,7 +516,7 @@ class PresentationController {
         context,
         MaterialPageRoute(
           builder: (context) =>
-            SimpleArCoreView(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
+            ArCoreScreen(presentationController: this, routeId: routeId, mysteryId: mysteryId, stepOrder: stepOrder),
         ),
       );
     }
