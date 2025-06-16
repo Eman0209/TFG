@@ -165,8 +165,22 @@ class _CryptogramGameState extends State<CryptogramGame> {
               child: TextField(
                 controller: controller,
                 onChanged: (value) {
+                  if (value.isEmpty) return;
+
+                  final enteredChar = value.toUpperCase();
+                  final correctChar = phrase[i].toUpperCase();
+
                   setState(() {
                     userInput[i] = value;
+
+                    if (enteredChar == correctChar) {
+                      for (int j = 0; j < phrase.length; j++) {
+                        if (phrase[j].toUpperCase() == enteredChar) {
+                          userInput[j] = enteredChar;
+                          controllers[j]?.text = enteredChar;
+                        }
+                      }
+                    }
                   });
                 },
                 maxLength: 1,
