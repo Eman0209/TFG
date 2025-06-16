@@ -102,7 +102,7 @@ class _SignupState extends State<Signup> {
                   ),
                   child: Text(
                     'create_account'.tr(),
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
               )

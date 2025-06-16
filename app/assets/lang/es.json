@@ -26,6 +26,7 @@
     "english": "Inglés",
     "error_introduction": "Error cargando la introducción",
     "error_length": "Error cargando la longitud de los pasos",
+    "error_loading": "Error cargando rutas",
     "error_options": "Error al cargar las opciones.",
     "error_pumb": "La conexión no está completa. Prueba de nuevo!",
     "error_step": "Error cagarndo el paso",
@@ -68,6 +69,7 @@
     "introduction": "Introducción",
     "language": "Idioma",
     "last_message": "Durara alrededor de {duration}",
+    "logout": "Cerrar sessión",
     "map": "Mapa",
     "me": "Yo",
     "mistery": "Misterio",
@@ -76,6 +78,7 @@
     "name": "Nombre",
     "narration": "Narración",
     "new_track": "Nueva pista",
+    "no_routes": "No hay rutas completadas",
     "not_yet": "Todavía no...",
     "ok": "De acuerdo",
     "pumb_game": "Puzzle de cañerías",
@@ -105,5 +108,5 @@
     "username": "Nombre de usuario",
     "username_empty": "Nombre de usuario no puede estar vacio!",
     "username_updated": "Nombre de usuario actualizado a: {}",
-    "welcome_txt": "Bienvenido a XXX"
+    "welcome_txt": "Bienvenido a Hidden Routes"
 }
