@@ -73,7 +73,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 
 flutter_launcher_icons:
-  image_path: "assets/logo.png" # Ruta a tu nuevo ícono
+  image_path: "assets/logo.png" 
   android: true
   ios: true
 

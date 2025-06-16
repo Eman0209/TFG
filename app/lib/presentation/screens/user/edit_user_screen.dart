@@ -104,6 +104,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('username_updated'.tr(args: [_username]))),
       );
+
       _presentationController.editUsername(_username, context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
